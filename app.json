@@ -1,0 +1,8 @@
+{
+  "name": "MEAN Contact List Angular2",
+  "description": "A MEAN app that allows users to manage a contact list.",
+  "repository": "https://github.com/chrisckchang/mean-contactlist-angular2",
+  "logo": "https://mlab.com/company/brand/resources/mLab-logo-onlight.png",
+  "keywords": ["node", "express", "angular", "angular2", "MEAN", "mongodb", "REST", "API"],
+  "addons": ["mongolab"]
+}
