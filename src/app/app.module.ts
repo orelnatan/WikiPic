@@ -1,15 +1,15 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule }                from '@angular/platform-browser';
+import { NgModule }                     from '@angular/core';
+import { HttpModule, JsonpModule }      from     '@angular/http';
 
-
-import { appRootClass } from './appRoot.component';
+import { appRootClass }                 from './appRoot.component';
 
 
 @NgModule({
   
   declarations: [ appRootClass,  ],
   
-  imports: [ BrowserModule, ],
+  imports: [ BrowserModule, HttpModule, JsonpModule ],
   
   providers: [ ],
   
