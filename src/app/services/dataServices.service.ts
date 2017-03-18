@@ -8,15 +8,15 @@ import      { FormControl }        from      '@angular/forms';
 @Injectable()
 export class DataServices {
 
-    packageUrls = {
+    wikiApis = {
 
-        package0_Url:   'https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srwhat=text&srlimit=2000&srsearch=',
-        package1_Url:   'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=',
-        package2_Url:   ['https://en.wikipedia.org/w/api.php?search=', '&action=opensearch&format=json'],
-        package3_Url:   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&pageids=',
-        package4_Url:   ['https://en.wikipedia.org/w/api.php?action=query&pageids=', '&generator=images&prop=imageinfo&iiprop=url&format=json']
+        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srwhat=text&srlimit=2000&srsearch=',
+        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=',
+        descriptionsAndUrls_Api:       ['https://en.wikipedia.org/w/api.php?search=', '&action=opensearch&format=json'],
+        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&pageids=',
+        media_Api:                     ['https://en.wikipedia.org/w/api.php?action=query&pageids=', '&generator=images&prop=imageinfo&iiprop=url&format=json']
 
-    }
+    };
 
 
     constructor(private http: Http) {
@@ -30,7 +30,7 @@ export class DataServices {
         
         if(keyWord == '') return;
         
-        return this.http.get(this.packageUrls.package0_Url + keyWord).map(this.getAllTitles)
+        return this.http.get(this.wikiApis.allTitles_Api + keyWord).map(this.getAllTitles)
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptionsAndUrls)
@@ -61,7 +61,7 @@ export class DataServices {
 
         for(let i in titles){
                                 
-            let pageIdsAndUrls = this.http.get(this.packageUrls.package1_Url + titles[i]).map(this.extrctPageIdsAndTitles).catch(this.handleError);            
+            let pageIdsAndUrls = this.http.get(this.wikiApis.pageIdsAndTitles_Api + titles[i]).map(this.extrctPageIdsAndTitles).catch(this.handleError);            
             observables.push(pageIdsAndUrls);
    
         }
@@ -77,7 +77,7 @@ export class DataServices {
         
         for(let i in titles){
                         
-            let descriptionsAndUrls = this.http.get(this.packageUrls.package2_Url[0] + titles[i] + this.packageUrls.package2_Url[1]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
+            let descriptionsAndUrls = this.http.get(this.wikiApis.descriptionsAndUrls_Api[0] + titles[i] + this.wikiApis.descriptionsAndUrls_Api[1]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
             observables.push(descriptionsAndUrls);
    
         }
@@ -93,7 +93,7 @@ export class DataServices {
         
         for(let i in pageIds){
                         
-            let contents = this.http.get(this.packageUrls.package3_Url + pageIds[i]).map(this.extrctContents(array, parseInt(i))).catch(this.handleError);            
+            let contents = this.http.get(this.wikiApis.contents_Api + pageIds[i]).map(this.extrctContents(array, parseInt(i))).catch(this.handleError);            
             observables.push(contents);
    
         }
@@ -109,7 +109,7 @@ export class DataServices {
 
         for(let i in pageIds){
 
-            let media = this.http.get(this.packageUrls.package4_Url[0] + pageIds[i] + this.packageUrls.package4_Url[1]).map(this.extrctMedia(array, parseInt(i))).catch(this.handleError);
+            let media = this.http.get(this.wikiApis.media_Api[0] + pageIds[i] + this.wikiApis.media_Api[1]).map(this.extrctMedia(array, parseInt(i))).catch(this.handleError);
             observables.push(media);
 
         }
