@@ -4,7 +4,8 @@
 
     <div id = 'userPanelWrapper' >
 
-        <div id = 'searchBoxDiv'> <input  id = 'searchBox'  placeholder = 'Search for anything...'  (click) = 'getUserInput(boxRef.value)'  #boxRef > </div>
+        <div id = 'searchBoxDiv'> <input  id = 'searchBox'  placeholder = 'Search for anything...'   [formControl] = 'keyWord' > </div>
+        <!--div id = 'searchButtonDiv' > <button id = 'searchButton'  [ngStyle] = "{'background-image': 'url(' + notifications.searchIcoUrl + ')'}"   >    </button>   </div-->
 
     </div>
 

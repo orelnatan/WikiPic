@@ -2,8 +2,7 @@ import      { Component }          from      '@angular/core';
 import      { DataServices }       from      './services/dataServices.service';
 import      { Observable }         from      'rxjs/Rx';
 import      { Volume }             from      './classes/volume.class';
-import                                       './operators/rxjs-operators';
-
+import      { FormControl }        from      '@angular/forms';
 
 @Component({
 
@@ -19,32 +18,62 @@ export class appRootClass {
   
     notifications = {
 
+        searchIcoUrl:       'https://maxcdn.icons8.com/ultraviolet/PNG/20/Very_Basic/search-20.png'
+
     };
 
-    entrys: string[] = [];
-
+    volumes: Volume[] = [];
+    keyWord = new FormControl();
+    
     constructor(private dataServices: DataServices){
-
-    }
-
-
-    getUserInput(value: string){
-        
-        if(value == '') return;
-
-        this.dataServices.getAllVolumesFromServer(value).subscribe((response) => {
+  
+        this.keyWord.valueChanges.debounceTime(600)
+        .subscribe((keyWord) => {
             
-           console.log(response);
-        });
-        
-       
+            if(keyWord == '') return;
 
+            this.getDataFromService(keyWord);
+
+        });
+         
+    }
+
+
+    getDataFromService(keyWord){
         
+        this.dataServices.getAllVolumesFromServer(keyWord).subscribe((response) => {
+
+           this.volumes = []; 
+           this.analyzeData(response);
+           console.log(this.volumes);
+
+        });
 
     }
 
+
+    analyzeData(data: Array <Object>) {
+
+        for(let i in data){
+
+            let volume: Volume = new Volume(data[i]['title'], 
+                                            data[i]['description'], 
+                                            data[i]['content'], 
+                                            data[i]['images'],
+                                            data[i]['url'],
+                                            'vol' + i, 
+                                            data[i]['pageId']);
+
+            this.volumes.push(volume);                                
+
+        }
+
+    }
 
     
 
 
 }
+
+
+

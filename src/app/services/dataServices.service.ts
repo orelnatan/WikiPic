@@ -3,7 +3,7 @@ import    { Http , Response }   from        '@angular/http';
 import    { Volume }            from        '../classes/volume.class';
 import    { Observable }        from        'rxjs/Rx';
 import                                      'rxjs/add/operator/mergeMap';
-
+import      { FormControl }        from      '@angular/forms';
 
 @Injectable()
 export class DataServices {
@@ -26,7 +26,10 @@ export class DataServices {
 
 
   getAllVolumesFromServer(keyWord: string): Observable <any>{
-         
+        console.log('Searching...');
+        
+        if(keyWord == '') return;
+        
         return this.http.get(this.packageUrls.package0_Url + keyWord).map(this.getAllTitles)
 
         .flatMap(this.getPageIdsAndTitles)
@@ -136,6 +139,7 @@ export class DataServices {
         };
     }
 
+
     extrctDescriptionsAndUrls(array: Object[], index: number){
         
         return function(response: Response): Object {
@@ -157,6 +161,7 @@ export class DataServices {
 
     }
     
+
     extrctContents(array: Object[], index: number){    
 
         return function(response: Response): Object {
@@ -175,6 +180,7 @@ export class DataServices {
         }
     }
 
+
     extrctMedia(array: Object[], index: number){
         
         return function(response: Response): Object {
@@ -185,9 +191,7 @@ export class DataServices {
             let innerIndex:         string = '-1';
             let indexToNum:         number = 0;
 
-            try{
-                data = response.json().query.pages;   
-            } catch(error){ return {
+            let finalObj = {
 
                 description:     array[index]['description'],
                 url:             array[index]['url'],
@@ -196,7 +200,11 @@ export class DataServices {
                 content:         array[index]['content'],
                 images:          imgArray
 
-            };            }
+            };
+
+            try{
+                data = response.json().query.pages;   
+            } catch(error){ return finalObj; }
 
             for(let i in data){
 
@@ -210,16 +218,7 @@ export class DataServices {
                 innerIndex = indexToNum.toString();
             }
             
-            return {
-
-                description:     array[index]['description'],
-                url:             array[index]['url'],
-                pageId:          array[index]['pageId'],
-                title:           array[index]['title'],
-                content:         array[index]['content'],
-                images:          imgArray
-
-            };  
+            return finalObj;
         }
    
     }
