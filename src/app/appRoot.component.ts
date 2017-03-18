@@ -41,7 +41,8 @@ export class appRootClass {
 
     getDataFromService(keyWord){
         
-        this.dataServices.getAllVolumesFromServer(keyWord).subscribe((response) => {
+        this.dataServices.getAllVolumesFromServer(keyWord)
+        .subscribe((response) => {
 
            this.volumes = []; 
            this.analyzeData(response);

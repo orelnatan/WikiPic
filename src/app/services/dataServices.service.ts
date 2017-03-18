@@ -187,6 +187,69 @@ export class DataServices {
 
             let data               = []; 
             let imgArray: string[] = [];
+            let keys:     string[] = [];
+
+            let emptyImgUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2000px-No_image_available.svg.png';
+
+            let finalObj = {
+
+                description:     array[index]['description'],
+                url:             array[index]['url'],
+                pageId:          array[index]['pageId'],
+                title:           array[index]['title'],
+                content:         array[index]['content'],
+                images:          imgArray
+
+            };
+
+            try{
+                data = response.json().query.pages;   
+            } catch(error){ 
+                imgArray.push(emptyImgUrl);
+                return finalObj;
+             }
+
+            for (let key in data) { keys.push(key.toString()); }
+            
+            for(let i in keys){
+
+                let imgUrl = data[keys[i]].imageinfo[0].url;                
+                
+                if(imgUrl.split(".")[3] != 'svg'){ imgArray.push(imgUrl); } 
+
+            }
+
+            if(imgArray.length == 0){ imgArray.push(emptyImgUrl); }
+
+            return finalObj;
+        }
+   
+    }
+
+
+    private handleError(error: any): Promise<any> {
+        
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+
+    }
+
+
+
+}
+
+
+
+
+/*
+
+
+extrctMedia(array: Object[], index: number){
+        
+        return function(response: Response): Object {
+
+            let data               = []; 
+            let imgArray: string[] = [];
             
             let innerIndex:         string = '-1';
             let indexToNum:         number = 0;
@@ -224,13 +287,5 @@ export class DataServices {
     }
 
 
-    private handleError(error: any): Promise<any> {
-        
-        console.error('An error occurred', error); // for demo purposes only
-        return Promise.reject(error.message || error);
 
-    }
-
-
-
-}
+*/
