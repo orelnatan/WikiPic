@@ -8,13 +8,13 @@ import      { FormControl }        from      '@angular/forms';
 
   selector: 'app-root',
   templateUrl: './templates/appRootComponent.template.html',
-  styleUrls: ['./styles/appRootComponent.style.css'],
-  providers: [ DataServices ],
+  styleUrls:  ['./styles/appRootComponent.style.css'],
+  providers:  [ DataServices ],
 
 })
 
 
-export class appRootClass {
+export class AppRootClass {
   
     notifications = {
 
@@ -23,51 +23,39 @@ export class appRootClass {
     };
 
     volumes: Volume[] = [];
-    keyWord = new FormControl();
+    keyword = new FormControl();
     
     constructor(private dataServices: DataServices){
   
-        this.keyWord.valueChanges.debounceTime(600)
-        .subscribe((keyWord) => {
+        this.keyword.valueChanges.debounceTime(600)
+        .subscribe((keyword) => {
             
-            if(keyWord == '') return;
+            if(keyword == '') return;
 
-            this.getDataFromService(keyWord);
+            this.getDataFromService(keyword, 0, 40, false);
 
         });
          
     }
 
 
-    getDataFromService(keyWord){
+    getDataFromService(keyword, startIndex: number, amount: number, join: boolean){
         
-        this.dataServices.getAllVolumesFromServer(keyWord)
+        this.dataServices.getAllVolumesFromServer(keyword, startIndex, amount)
         .subscribe((response) => {
 
-           this.volumes = []; 
-           this.analyzeData(response);
-           console.log(this.volumes);
+           if(!join) this.volumes = [];
 
+           this.volumes = this.volumes.concat(response);
+           console.log(this.volumes);
         });
 
     }
 
 
-    analyzeData(data: Array <Object>) {
-
-        for(let i in data){
-
-            let volume: Volume = new Volume(data[i]['title'], 
-                                            data[i]['description'], 
-                                            data[i]['content'], 
-                                            data[i]['images'],
-                                            data[i]['url'],
-                                            'vol' + i, 
-                                            data[i]['pageId']);
-
-            this.volumes.push(volume);                                
-
-        }
+    processDataRequest(event){
+        
+        this.getDataFromService(this.keyword.value, event.startIndex, event.amount, event.join);
 
     }
 

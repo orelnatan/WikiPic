@@ -1,0 +1,36 @@
+
+#mainWrapper {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+
+#listWrapper {
+
+    background-color: transparent;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    padding-top: 30px;
+
+}
+
+
+#volumeDiv{
+
+    background-color: orange;
+
+    display: flex;
+    
+    margin: 10px;
+
+    width: 297.156px;
+    height: 164.875px;
+
+}

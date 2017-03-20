@@ -4,10 +4,34 @@
 
     <div id = 'userPanelWrapper' >
 
-        <div id = 'searchBoxDiv'> <input  id = 'searchBox'  placeholder = 'Search for anything...'   [formControl] = 'keyWord' > </div>
-        <!--div id = 'searchButtonDiv' > <button id = 'searchButton'  [ngStyle] = "{'background-image': 'url(' + notifications.searchIcoUrl + ')'}"   >    </button>   </div-->
+        <div id = 'searchBoxDiv'> <input  id = 'searchBox'  placeholder = 'Search for anything...'   [formControl] = 'keyword' > </div>
+        
+    </div>
+
+    <div id = 'volumesListDiv' >
+
+        <volumes-list  [setVolumesList] = 'volumes'  (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
 
     </div>
 
+
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--div id = 'searchButtonDiv' > <button id = 'searchButton'  [ngStyle] = "{'background-image': 'url(' + notifications.searchIcoUrl + ')'}"   >    </button>   </div-->

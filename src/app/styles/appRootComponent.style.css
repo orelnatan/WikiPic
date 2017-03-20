@@ -33,25 +33,8 @@
 
 }
 
+#volumesListDiv{
 
-#searchButtonDiv {
-
-    margin-left: 20px;
-    margin-top: 7px;
-
-}
-
-
-#searchButton {
-
-    background-color: transparent;
-
-    width: 30px;
-    height: 30px;
-
-    border-style: none;
-    outline: none;
-
-    background-repeat: no-repeat;
+    margin-top: 40px;
 
 }

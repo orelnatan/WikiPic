@@ -2,8 +2,10 @@ import    { Injectable }        from        '@angular/core';
 import    { Http , Response }   from        '@angular/http';
 import    { Volume }            from        '../classes/volume.class';
 import    { Observable }        from        'rxjs/Rx';
+import    { FormControl }       from        '@angular/forms';
+
 import                                      'rxjs/add/operator/mergeMap';
-import      { FormControl }        from      '@angular/forms';
+
 
 @Injectable()
 export class DataServices {
@@ -12,9 +14,9 @@ export class DataServices {
 
         allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srwhat=text&srlimit=2000&srsearch=',
         pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=',
-        descriptionsAndUrls_Api:       ['https://en.wikipedia.org/w/api.php?search=', '&action=opensearch&format=json'],
+        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=',
         contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&pageids=',
-        media_Api:                     ['https://en.wikipedia.org/w/api.php?action=query&pageids=', '&generator=images&prop=imageinfo&iiprop=url&format=json']
+        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
 
     };
 
@@ -25,35 +27,45 @@ export class DataServices {
     }
 
 
-  getAllVolumesFromServer(keyWord: string): Observable <any>{
+  getAllVolumesFromServer(keyword: string, startIndex: number, amount: number): Observable <any>{
+        
         console.log('Searching...');
+        if(keyword == '') return;
         
-        if(keyWord == '') return;
-        
-        return this.http.get(this.wikiApis.allTitles_Api + keyWord).map(this.getAllTitles)
+        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptionsAndUrls)
         .flatMap(this.getContents)
-        .flatMap(this.getMedia);
+        .flatMap(this.getMedia)
+        .flatMap(this.analyzeData);
              
     }
     
+   getAllTitles(startIndex: number, amount: number, classRef: any) {
 
-    getAllTitles(response: Response): string[] {
-       
-       let data = response.json().query.search;
-       let titls:   string[] = [];
+        return function (response: Response): string[] {
+        
+            let data = response.json().query.search;
+            let titls:   string[] = [];
 
-       for(var i in data){
+           let compResponse = classRef.rangeCompiler(data.length, startIndex, amount);
+           
+           if(compResponse.indicator == 0) return;
 
-           let title = data[i].title;
-           titls.push(title);
-       } 
-    
-       return titls;
-    }
+           startIndex = compResponse.startIndex;
+           amount     = compResponse.amount;
 
+            for(let i = startIndex; i < amount; i ++){
+
+                let title = data[i].title;           
+                titls.push(title);
+            } 
+            
+            return titls;
+        }
+
+   }
 
      getPageIdsAndTitles = (titles: string[]): Observable <any> => {
         
@@ -77,7 +89,7 @@ export class DataServices {
         
         for(let i in titles){
                         
-            let descriptionsAndUrls = this.http.get(this.wikiApis.descriptionsAndUrls_Api[0] + titles[i] + this.wikiApis.descriptionsAndUrls_Api[1]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
+            let descriptionsAndUrls = this.http.get(this.wikiApis.descriptionsAndUrls_Api + titles[i]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
             observables.push(descriptionsAndUrls);
    
         }
@@ -109,7 +121,7 @@ export class DataServices {
 
         for(let i in pageIds){
 
-            let media = this.http.get(this.wikiApis.media_Api[0] + pageIds[i] + this.wikiApis.media_Api[1]).map(this.extrctMedia(array, parseInt(i))).catch(this.handleError);
+            let media = this.http.get(this.wikiApis.media_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i))).catch(this.handleError);
             observables.push(media);
 
         }
@@ -227,6 +239,71 @@ export class DataServices {
     }
 
 
+    analyzeData = (array: Array <any>): Observable <any> => {
+         
+         let volumes: Observable <any>[] = [];
+         
+         let titles             = array.map(function(object) {return object['title']}); 
+         let pageIds            = array.map(function(object) {return object['pageId']});
+         
+         let descriptions       = array.map(function(object) {return object['description']});
+         let urls               = array.map(function(object) {return object['url']});
+         
+         let contents           = array.map(function(object) {return object['content']});
+         
+         let images             = array.map(function(object) {return object['images']});
+
+         for(let i in titles){
+
+             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + i, pageIds[i]));
+             volumes.push(volume);
+
+         }
+
+         return Observable.forkJoin(volumes);
+     }
+
+
+     createVolume(title: string, description: string, content: string, images: string[], url: string, id: string, pageId: string) {
+
+          return function(): Volume {
+            
+            return new Volume(title, description, content, images, url, id, pageId); 
+
+        }
+
+     }
+
+
+      rangeCompiler(maxLength, startIndex, amount): Object{
+
+          let indicator: number = 1;
+
+          if(startIndex > maxLength){
+              
+              console.log('Error: start index out of range.');
+              indicator = 0;
+          }
+
+          if(amount > maxLength){
+              
+              console.log('Note: range fixed.');
+              amount = maxLength;
+              indicator = 1;
+          }
+
+
+          return {
+
+              indicator:    indicator,
+              startIndex:   startIndex,
+              amount:       amount
+
+          };
+
+     }
+
+
     private handleError(error: any): Promise<any> {
         
         console.error('An error occurred', error); // for demo purposes only
@@ -241,51 +318,3 @@ export class DataServices {
 
 
 
-/*
-
-
-extrctMedia(array: Object[], index: number){
-        
-        return function(response: Response): Object {
-
-            let data               = []; 
-            let imgArray: string[] = [];
-            
-            let innerIndex:         string = '-1';
-            let indexToNum:         number = 0;
-
-            let finalObj = {
-
-                description:     array[index]['description'],
-                url:             array[index]['url'],
-                pageId:          array[index]['pageId'],
-                title:           array[index]['title'],
-                content:         array[index]['content'],
-                images:          imgArray
-
-            };
-
-            try{
-                data = response.json().query.pages;   
-            } catch(error){ return finalObj; }
-
-            for(let i in data){
-
-                try{
-                    let imgUrl = data[innerIndex].imageinfo[0].url;
-                    imgArray.push(imgUrl);
-                } catch(error){ }
-
-                indexToNum = parseInt(innerIndex);
-                indexToNum --;
-                innerIndex = indexToNum.toString();
-            }
-            
-            return finalObj;
-        }
-   
-    }
-
-
-
-*/
