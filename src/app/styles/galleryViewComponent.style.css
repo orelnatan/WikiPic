@@ -1,0 +1,34 @@
+
+#mainWrapper{
+ 
+   display: flex;
+      
+   width: 100%;
+   height: 100%;
+
+}
+
+
+#galleryMonitor{
+
+    background-color: transparent;
+
+    display: flex;
+      
+    width: 100%;
+    height: 100%;
+
+}
+
+
+.imgElement{
+
+   width: 100%;
+   height: 100%;
+
+   background-size: 100% 100%;
+   background-repeat: no-repeat;
+
+   object-fit: cover;
+
+}

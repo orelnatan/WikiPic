@@ -5,7 +5,7 @@
 
         <div id = 'volumeDiv'  *ngFor = 'let volume of volumesList' >
 
-            {{volume.title}}
+            <volume-entry  [setVolumeEntry] = 'volume' >  </volume-entry>
 
         </div>
 

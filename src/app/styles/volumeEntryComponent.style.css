@@ -1,0 +1,35 @@
+
+#mainWrapper{
+
+    background-color: transparent;
+
+    display: flex;
+    
+    margin: 10px;
+    
+    width: 297.156px;
+    height: 164.875px;
+
+    border-style: solid;
+    border-width: medium;
+    border-color: white;
+
+    transition-duration: 1s;
+
+}
+
+
+#mainWrapper:hover{
+
+    width: 325.156px;
+    height: 264.875px;
+
+}
+
+
+.galleryComponent{
+
+    width: 100%;
+    height: 100%;
+
+}

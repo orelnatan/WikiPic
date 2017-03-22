@@ -46,9 +46,9 @@ export class DataServices {
 
         return function (response: Response): string[] {
         
-            let data = response.json().query.search;
-            let titls:   string[] = [];
-
+           let data = response.json().query.search;
+           let titls:   string[] = [];
+           
            let compResponse = classRef.rangeCompiler(data.length, startIndex, amount);
            
            if(compResponse.indicator == 0) return;
@@ -200,8 +200,9 @@ export class DataServices {
             let data               = []; 
             let imgArray: string[] = [];
             let keys:     string[] = [];
-
-            let emptyImgUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2000px-No_image_available.svg.png';
+            
+            //http://www.freeiconspng.com/uploads/no-image-icon-13.png
+            //let emptyImgUrl = 'https://cduperth.s3.amazonaws.com/product_images/no-image.png';
 
             let finalObj = {
 
@@ -217,7 +218,7 @@ export class DataServices {
             try{
                 data = response.json().query.pages;   
             } catch(error){ 
-                imgArray.push(emptyImgUrl);
+                imgArray.push('');
                 return finalObj;
              }
 
@@ -225,13 +226,15 @@ export class DataServices {
             
             for(let i in keys){
 
-                let imgUrl = data[keys[i]].imageinfo[0].url;                
-                
-                if(imgUrl.split(".")[3] != 'svg'){ imgArray.push(imgUrl); } 
+                try{
+                    let imgUrl = data[keys[i]].imageinfo[0].url;                
+                    
+                    if(imgUrl.split(".")[3] != 'svg'){ imgArray.push(imgUrl); } 
+                } catch(error){}
 
             }
 
-            if(imgArray.length == 0){ imgArray.push(emptyImgUrl); }
+            if(imgArray.length == 0){ imgArray.push(''); }
 
             return finalObj;
         }
@@ -256,7 +259,9 @@ export class DataServices {
          for(let i in titles){
 
              let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + i, pageIds[i]));
-             volumes.push(volume);
+             
+             if(images[i][0] != '')
+                volumes.push(volume);
 
          }
 
