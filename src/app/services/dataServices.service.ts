@@ -1,5 +1,5 @@
 import    { Injectable }        from        '@angular/core';
-import    { Http , Response }   from        '@angular/http';
+import    { Http , Response, Jsonp }   from        '@angular/http';
 import    { Volume }            from        '../classes/volume.class';
 import    { Observable }        from        'rxjs/Rx';
 import    { FormControl }       from        '@angular/forms';
@@ -21,7 +21,7 @@ export class DataServices {
     };
 
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private jsonp: Jsonp) {
         
         
     }
@@ -32,7 +32,7 @@ export class DataServices {
         console.log('Searching...');
         if(keyword == '') return;
         
-        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
+        return this.jsonp.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptionsAndUrls)
