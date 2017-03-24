@@ -1,3 +1,5 @@
+ 
+ 
  analyzeData = (array: Array <any>): Observable <any> => {
     
          let volumes: Observable <any>[] = [];

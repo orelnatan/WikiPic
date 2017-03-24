@@ -24,7 +24,15 @@ export class VolumeEntryClass {
 
      @ViewChild('galleryViewRef') childRef;
 
-     volumeEntry: Volume;
+     volumeEntry:   Volume;
+     mouseEnter:    boolean = false;
+
+     notifications = {
+
+        openInfoBoxIcoUrl:       'https://maxcdn.icons8.com/Color/PNG/48/Arrows/expand2-48.png'
+
+    };
+
 
     constructor(){
 
@@ -38,7 +46,46 @@ export class VolumeEntryClass {
     }
 
 
+    onMouseEnter(){
+
+        this.childRef.startAnimation()
+        this.mouseEnter = true;
+
+    }
 
 
+    onMouseLeave(){
+
+        this.childRef.abortAnimation();
+        this.mouseEnter = false;
+
+    }
+
+
+    getIntroductionDivStyle(){
+
+      let style = {
+
+          'introductionDivInvisible':        (!this.mouseEnter),
+          'introductionDivVisible':          (this.mouseEnter)
+
+      };  
+
+      return style;
+  }
+
+
+   getGalleryCompStyle(){
+
+       let style = {
+
+           'galleryComponent':                     (true),
+           'galleryComponentOnHover':              (this.mouseEnter)
+
+       };  
+
+       return style;
+
+   }
 
 }

@@ -12,14 +12,17 @@ export class DataServices {
 
     wikiApis = {
 
-        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srwhat=text&srlimit=2000&callback=JSONP_CALLBACK&srsearch=',
-        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&format=json&callback=JSONP_CALLBACK&titles=',
-        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&callback=JSONP_CALLBACK&search=',
-        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&callback=JSONP_CALLBACK&explaintext=&pageids=',
-        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&callback=JSONP_CALLBACK&format=json&pageids='
+        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srwhat=text&srlimit=2000&srsearch=',
+        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=',
+        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=',
+        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&pageids=',
+        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
 
     };
 
+    storge:     string = '';
+    keyword:    string = '';
+    prevKey:    string = '';
 
     constructor(private http: Http, private jsonp: Jsonp) {
         
@@ -30,9 +33,10 @@ export class DataServices {
   getAllVolumesFromServer(keyword: string, startIndex: number, amount: number): Observable <any>{
         
         console.log('Searching...');
-        if(keyword == '') return;
         
-        return this.jsonp.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
+        if(!this.keysCompiler(keyword)) return;
+
+        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptionsAndUrls)
@@ -73,7 +77,7 @@ export class DataServices {
 
         for(let i in titles){
                                 
-            let pageIdsAndUrls = this.jsonp.get(this.wikiApis.pageIdsAndTitles_Api + titles[i]).map(this.extrctPageIdsAndTitles).catch(this.handleError);            
+            let pageIdsAndUrls = this.http.get(this.wikiApis.pageIdsAndTitles_Api + titles[i]).map(this.extrctPageIdsAndTitles).catch(this.handleError);            
             observables.push(pageIdsAndUrls);
    
         }
@@ -89,7 +93,7 @@ export class DataServices {
         
         for(let i in titles){
                         
-            let descriptionsAndUrls = this.jsonp.get(this.wikiApis.descriptionsAndUrls_Api + titles[i]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
+            let descriptionsAndUrls = this.http.get(this.wikiApis.descriptionsAndUrls_Api + titles[i]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
             observables.push(descriptionsAndUrls);
    
         }
@@ -105,7 +109,7 @@ export class DataServices {
         
         for(let i in pageIds){
                         
-            let contents = this.jsonp.get(this.wikiApis.contents_Api + pageIds[i]).map(this.extrctContents(array, parseInt(i))).catch(this.handleError);            
+            let contents = this.http.get(this.wikiApis.contents_Api + pageIds[i]).map(this.extrctContents(array, parseInt(i))).catch(this.handleError);            
             observables.push(contents);
    
         }
@@ -121,7 +125,7 @@ export class DataServices {
 
         for(let i in pageIds){
 
-            let media = this.jsonp.get(this.wikiApis.media_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i))).catch(this.handleError);
+            let media = this.http.get(this.wikiApis.media_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i), this)).catch(this.handleError);
             observables.push(media);
 
         }
@@ -193,7 +197,7 @@ export class DataServices {
     }
 
 
-    extrctMedia(array: Object[], index: number){
+    extrctMedia(array: Object[], index: number, classRef: any){
         
         return function(response: Response): Object {
 
@@ -229,7 +233,7 @@ export class DataServices {
                 try{
                     let imgUrl = data[keys[i]].imageinfo[0].url;                
                     
-                    if(imgUrl.split(".")[3] != 'svg'){ imgArray.push(imgUrl); } 
+                    if(!classRef.formatCompiler(imgUrl)) { imgArray.push(imgUrl); } 
                 } catch(error){}
 
             }
@@ -255,13 +259,16 @@ export class DataServices {
          let contents           = array.map(function(object) {return object['content']});
          
          let images             = array.map(function(object) {return object['images']});
-
+         
          for(let i in titles){
 
-             let volume = this.jsonp.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + i, pageIds[i]));
+             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + i, pageIds[i]));
              
-             if(images[i][0] != '')
-                volumes.push(volume);
+              if(images[i][0] != '' && !this.storge.includes(titles[i])){
+                
+                  volumes.push(volume);
+                  this.storge += titles[i];
+              }
 
          }
 
@@ -297,7 +304,6 @@ export class DataServices {
               indicator = 1;
           }
 
-
           return {
 
               indicator:    indicator,
@@ -305,7 +311,31 @@ export class DataServices {
               amount:       amount
 
           };
+     }
 
+
+     keysCompiler(keyword: string): number {
+
+        if(keyword == '') return 0;        
+        this.keyword = keyword;
+        
+        if(this.keyword != this.prevKey) this.storge = '';
+        this.prevKey = this.keyword;
+
+        return 1;
+     }
+
+
+     formatCompiler(imgUrl: string): boolean{
+
+         let forbiddenFormats = ['webm', 'tif', 'ogg', 'svg'];
+
+         for(let i in forbiddenFormats){
+
+             if(imgUrl.split(".")[3] == forbiddenFormats[i]) return true; 
+         }
+
+         return false;
      }
 
 
@@ -323,3 +353,11 @@ export class DataServices {
 
 
 
+/*
+
+if(imgUrl.split(".")[3] != 'svg'  && 
+                       imgUrl.split(".")[3] != 'webm' && 
+                       imgUrl.split(".")[3] != 'tif'  &&
+                       imgUrl.split(".")[3] != 'ogg')  { imgArray.push(imgUrl); } 
+
+*/

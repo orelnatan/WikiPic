@@ -16,21 +16,22 @@ import      { Volume }                                          from      './cla
 export class VolumesListClass {
 
     @Input() set setVolumesList(list: Volume[]){
-
-        this.volumesList = list;
         
-        this.startIndex = this.volumesList.length;
+        this.startIndex = list.length;
         this.amount = this.startIndex + 40;
+       
+        this.volumesList = [];
+        this.divideDataToRows(list);
 
         this.lock = false; 
     }
     
     @Output() dataRequestEvent = new EventEmitter();
     
-    volumesList: Volume[] = []; 
-    
-    startIndex: number;
-    amount: number;
+    volumesList: Volume[][] = []; 
+
+    startIndex: number = 0;
+    amount: number = 0;
 
     lock: boolean; 
 
@@ -38,9 +39,34 @@ export class VolumesListClass {
 
     }
 
+
+    divideDataToRows(list: Volume[]){
+        
+        let numberOfRows = Math.ceil(list.length / 5);
+        let rowIndex = 0;
+        let cellIndex = 0;
+
+        while(rowIndex < numberOfRows){
+
+            let row: Volume[] = [];
+
+            for(let i = 0; i < 5 && cellIndex < list.length; i ++){
+
+                row.push(list[cellIndex]);
+                cellIndex ++;
+            }
+
+            this.volumesList.push(row);
+            rowIndex ++
+
+        }
+        
+    }
+
+
     onScroll(event){
        
-         if(this.culcPercent() > 75 && !this.lock){
+         if(this.culcPercent() > 90 && !this.lock){
 
               this.sendDataRequest();
               this.lock = true;
@@ -71,7 +97,6 @@ export class VolumesListClass {
 
         };
 
-
         this.dataRequestEvent.emit(eventData);
 
     }
@@ -81,3 +106,8 @@ export class VolumesListClass {
     
 
 
+/*
+
+ console.log('startIndex: ' + this.startIndex + ' amount: ' + this.amount)
+
+*/
