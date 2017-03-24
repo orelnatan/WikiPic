@@ -12,11 +12,11 @@ export class DataServices {
 
     wikiApis = {
 
-        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&callback=JSONP_CALLBACK&srwhat=text&srlimit=2000&srsearch=',
-        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&callback=JSONP_CALLBACK&titles=',
-        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&callback=JSONP_CALLBACK&search=',
-        contents_Api:                   'https://en.wikipedia.org/w/api.php?callback=JSONP_CALLBACK&action=query&prop=extracts&explaintext=&pageids=',
-        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&callback=JSONP_CALLBACK&pageids='
+        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&callback=jsonp_1462667223891_5118&srwhat=text&srlimit=2000&srsearch=',
+        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&callback=jsonp_1462667223891_5118&titles=',
+        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&callback=jsonp_1462667223891_5118&search=',
+        contents_Api:                   'https://en.wikipedia.org/w/api.php?callback=jsonp_1462667223891_5118&action=query&prop=extracts&explaintext=&pageids=',
+        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&callback=jsonp_1462667223891_5118&pageids='
 
     };
 
