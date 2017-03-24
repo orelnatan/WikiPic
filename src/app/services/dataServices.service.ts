@@ -12,11 +12,11 @@ export class DataServices {
 
     wikiApis = {
 
-        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&callback=jsonp_1462667223891_5118&srwhat=text&srlimit=2000&srsearch=',
-        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&callback=jsonp_1462667223891_5118&titles=',
-        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&callback=jsonp_1462667223891_5118&search=',
-        contents_Api:                   'https://en.wikipedia.org/w/api.php?callback=jsonp_1462667223891_5118&action=query&prop=extracts&explaintext=&pageids=',
-        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&callback=jsonp_1462667223891_5118&pageids='
+        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&callback=JSONP_CALLBACK&srwhat=text&srlimit=2000&srsearch=',
+        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&callback=JSONP_CALLBACK&titles=',
+        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&callback=JSONP_CALLBACK&search=',
+        contents_Api:                   'https://en.wikipedia.org/w/api.php?callback=JSONP_CALLBACK&action=query&prop=extracts&explaintext=&pageids=',
+        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&callback=JSONP_CALLBACK&pageids='
 
     };
 
@@ -36,7 +36,7 @@ export class DataServices {
         
         if(!this.keysCompiler(keyword)) return;
 
-        return this.jsonp.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
+        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptionsAndUrls)
@@ -77,7 +77,7 @@ export class DataServices {
 
         for(let i in titles){
                                 
-            let pageIdsAndUrls = this.jsonp.get(this.wikiApis.pageIdsAndTitles_Api + titles[i]).map(this.extrctPageIdsAndTitles).catch(this.handleError);            
+            let pageIdsAndUrls = this.http.get(this.wikiApis.pageIdsAndTitles_Api + titles[i]).map(this.extrctPageIdsAndTitles).catch(this.handleError);            
             observables.push(pageIdsAndUrls);
    
         }
@@ -93,7 +93,7 @@ export class DataServices {
         
         for(let i in titles){
                         
-            let descriptionsAndUrls = this.jsonp.get(this.wikiApis.descriptionsAndUrls_Api + titles[i]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
+            let descriptionsAndUrls = this.http.get(this.wikiApis.descriptionsAndUrls_Api + titles[i]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
             observables.push(descriptionsAndUrls);
    
         }
@@ -109,7 +109,7 @@ export class DataServices {
         
         for(let i in pageIds){
                         
-            let contents = this.jsonp.get(this.wikiApis.contents_Api + pageIds[i]).map(this.extrctContents(array, parseInt(i))).catch(this.handleError);            
+            let contents = this.http.get(this.wikiApis.contents_Api + pageIds[i]).map(this.extrctContents(array, parseInt(i))).catch(this.handleError);            
             observables.push(contents);
    
         }
@@ -125,7 +125,7 @@ export class DataServices {
 
         for(let i in pageIds){
 
-            let media = this.jsonp.get(this.wikiApis.media_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i), this)).catch(this.handleError);
+            let media = this.http.get(this.wikiApis.media_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i), this)).catch(this.handleError);
             observables.push(media);
 
         }
@@ -262,7 +262,7 @@ export class DataServices {
          
          for(let i in titles){
 
-             let volume = this.jsonp.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + i, pageIds[i]));
+             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + i, pageIds[i]));
              
               if(images[i][0] != '' && !this.storge.includes(titles[i])){
                 
