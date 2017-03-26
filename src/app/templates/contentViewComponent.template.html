@@ -1,0 +1,33 @@
+
+<div  [ngClass] = 'getStyle()' (click)  = 'print()' >  
+
+    <div id = 'contentWrapper' >
+
+        <div id = 'headerDiv' >
+
+            {{volumeEntry.title}}
+
+        </div>
+
+        <div id = 'contentDiv' > 
+
+            {{volumeEntry.content}}
+
+        </div>
+
+        <div id = 'toolsDiv' > 
+
+            <div id = 'buttonDiv' >  <button id = 'closeInfoBox'  (click) = 'sendCloseContentBoxEvent()'   [ngStyle] = "{'background-image': 'url(' + notifications.closeInfoBoxIcoUrl + ')'}" > </button>    </div>
+
+        </div>
+
+    </div>
+
+    <div id = 'galleryWrapper' > 
+
+        <gallery-view  id = 'galleryComponent'    [setGallery] = 'volumeEntry.images'   #galleryViewRef > </gallery-view>
+
+    </div>
+
+
+</div>
