@@ -1,30 +1,34 @@
 
-.mainWrapper {
+::-webkit-scrollbar {
+    
+    height:0px;
+    width: 0px;
+}
+
+
+#mainWrapper {
 
     background-color: transparent;
 
     display: flex;
     flex-direction: row;
-
+    
     margin: 10px;
     
     width: 297.156px;
     height: 164.875px;
 
-    border-style: solid;
-    border-width: medium;
-    border-color: white;
-
-    transition-duration: 1s;
-
+    border-style: none;
+    
+    transition: 1s;
 }
 
 
-.mainWrapper:hover {
+#mainWrapper:hover{
 
-   width: 397.156px;
-   height: 264.875px;
-
+    width: 397.156px;
+    height: 264.875px;
+    
 }
 
 
@@ -36,9 +40,9 @@
 }
 
 
-.galleryComponentOnHover{
+.galleryComponent:hover {
 
-    opacity: 0.5;
+   
 
 }
 
@@ -50,27 +54,25 @@
     display: flex;
     flex-direction: column;
 
-    margin-top: 30px;
-    margin-left: 10px;
+    width: 397.156px;
+    height: 264.875px;
 
-    opacity: 1;
-    animation: fadeIn 2s linear;
+    padding-top: 150px;
+    padding-left: 10px;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    animation: fadeIn 1s linear;
 
 }
 
-
-@keyframes fadeIn {
-   
-   0% {opacity: 0;}
-   100% {opacity: 1;}
-
-} 
 
 .introductionDivInvisible {
 
     display: none;
 
 }
+
 
 #titleDiv {
 
@@ -87,14 +89,14 @@
 #descDiv {
 
    width: 280px;
-   height: 140px;
+   height: 40px;
 
    font-weight: 600; 
    color: white;
 
    margin-top: 10px;
 
-   overflow: hidden;
+   overflow: scroll;
 
 }
 
@@ -102,7 +104,7 @@
 #buttonDiv{
 
     margin-top: 10px;
-    margin-left: 50%;
+    margin-left: 38%;
 }
 
 
@@ -121,3 +123,11 @@
     border-style: none;
 
 }
+
+
+@keyframes fadeIn {
+   
+   0% {opacity: 0;}
+   100% {opacity: 1;}
+
+} 

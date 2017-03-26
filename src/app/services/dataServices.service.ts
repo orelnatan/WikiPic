@@ -12,17 +12,20 @@ export class DataServices {
 
     wikiApis = {
 
-        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&list=search&callback=JSONP_CALLBACK&srwhat=text&srlimit=2000&srsearch=',
-        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&callback=JSONP_CALLBACK&titles=',
-        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&callback=JSONP_CALLBACK&search=',
-        contents_Api:                   'https://en.wikipedia.org/w/api.php?callback=JSONP_CALLBACK&action=query&prop=extracts&explaintext=&pageids=',
-        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&callback=JSONP_CALLBACK&pageids='
+        allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&origin=*&list=search&format=json&srwhat=text&srlimit=2000&srsearch=',
+        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=',
+        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=',
+        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&pageids=',
+        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
 
     };
+
 
     storge:     string = '';
     keyword:    string = '';
     prevKey:    string = '';
+
+    index:      number = 0;
 
     constructor(private http: Http, private jsonp: Jsonp) {
         
@@ -36,20 +39,20 @@ export class DataServices {
         
         if(!this.keysCompiler(keyword)) return;
 
-        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
+        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this));
 
-        .flatMap(this.getPageIdsAndTitles)
-        .flatMap(this.getDescriptionsAndUrls)
-        .flatMap(this.getContents)
-        .flatMap(this.getMedia)
-        .flatMap(this.analyzeData);
+       // .flatMap(this.getPageIdsAndTitles)
+      //  .flatMap(this.getDescriptionsAndUrls)
+      //  .flatMap(this.getContents)
+      //  .flatMap(this.getMedia)
+      //  .flatMap(this.analyzeData);
              
     }
     
    getAllTitles(startIndex: number, amount: number, classRef: any) {
 
         return function (response: Response): string[] {
-        
+            console.log(response);
            let data = response.json().query.search;
            let titls:   string[] = [];
            
@@ -262,10 +265,11 @@ export class DataServices {
          
          for(let i in titles){
 
-             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + i, pageIds[i]));
+             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + this.index, pageIds[i]));
              
               if(images[i][0] != '' && !this.storge.includes(titles[i])){
                 
+                  this.index ++;
                   volumes.push(volume);
                   this.storge += titles[i];
               }
@@ -319,7 +323,11 @@ export class DataServices {
         if(keyword == '') return 0;        
         this.keyword = keyword;
         
-        if(this.keyword != this.prevKey) this.storge = '';
+        if(this.keyword != this.prevKey){ 
+            this.storge = ''; 
+            this.index = 0;
+        }
+
         this.prevKey = this.keyword;
 
         return 1;

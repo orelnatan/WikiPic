@@ -13,15 +13,15 @@ import      { Volume }                    from      './classes/volume.class';
 })
 
 
-export class galleryViewClass {
+export class GalleryViewClass {
 
      @Input() set setGallery(gallery: string[]){
 
          this.gallery = gallery;
          this.singleImg = this.gallery[0];
-
      }
 
+    
      gallery:   string[] = [];
      singleImg: string;
 

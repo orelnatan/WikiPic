@@ -1,6 +1,6 @@
 
-import      { Component, Input, ViewChild }          from      '@angular/core';
-import      { Volume }                               from      './classes/volume.class';
+import      { Component, Input, Output, EventEmitter, ViewChild }          from      '@angular/core';
+import      { Volume }                                                     from      './classes/volume.class';
 
 
 @Component({
@@ -22,6 +22,8 @@ export class VolumeEntryClass {
 
      }
 
+     @Output() contentBoxRequestEvent = new EventEmitter();
+
      @ViewChild('galleryViewRef') childRef;
 
      volumeEntry:   Volume;
@@ -39,11 +41,7 @@ export class VolumeEntryClass {
     }
 
 
-    print(){
-
-        
-
-    }
+    print(){  }
 
 
     onMouseEnter(){
@@ -62,13 +60,20 @@ export class VolumeEntryClass {
     }
 
 
+    sendContentBoxRequestEvent(){
+        
+        this.contentBoxRequestEvent.emit(this.volumeEntry.volId);
+
+    }
+
+
     getIntroductionDivStyle(){
 
       let style = {
 
           'introductionDivInvisible':        (!this.mouseEnter),
           'introductionDivVisible':          (this.mouseEnter)
-
+       
       };  
 
       return style;

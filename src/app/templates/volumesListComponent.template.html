@@ -3,28 +3,45 @@
 
     <div id = 'listWrapper' >
 
-        <div id = 'rowDiv'  *ngFor = 'let volumesRow of volumesList' >
+        <div  class = 'rowDiv'  [attr.id] = 'i'  *ngFor = 'let i = index; let volumesRow of volumesList'  #rowRef   [style.height] = "200 + 'px'" >
 
-            <div id = 'volumeDiv'  *ngFor = 'let volume of volumesRow' >
-
-                 <volume-entry  [setVolumeEntry] = 'volume' >  </volume-entry>
+            <div id = 'rowVolumesDiv'>
             
+                <div id = 'volumeDiv'  *ngFor = 'let volume of volumesRow' >
+
+                    <volume-entry  [setVolumeEntry] = 'volume'  (contentBoxRequestEvent) = 'getVolumeById($event)'  >  </volume-entry>
+                
+                </div>
+
             </div>
+    
+            <div  id = 'contentViewDiv' >
+                
+                <content-view   [setVolumeEntry] = 'volumeToShow'   [rowReference] = 'rowRef'   [selectedRow] = 'openRowId'  (closeContentBoxEvent) = 'closeContentBox()' >     </content-view>
+
+            </div>
+             
 
         </div>
 
+        
+     
+
 
     </div>
-
-
-
 
 </div>
 
 
 
-<!-- <div id = 'volumeDiv'  *ngFor = 'let volume of volumesList' >
+<!-- 
 
-            <volume-entry  [setVolumeEntry] = 'volume' >  </volume-entry>
+[style.top] = 'location.Y + "px"'  [style.left] = 'location.X + "px"'
 
-        </div> -->
+<div [ngClass] = 'getContentCompDivStyle()'   id = 'i'  (click) = 'print(i)'  >   
+        
+                     <content-view  [setVolumeEntry] = 'volumeToShow' >      </content-view>
+
+            </div>   
+
+         -->

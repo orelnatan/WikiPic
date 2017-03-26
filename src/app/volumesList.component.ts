@@ -18,25 +18,46 @@ export class VolumesListClass {
     @Input() set setVolumesList(list: Volume[]){
         
         this.startIndex = list.length;
-        this.amount = this.startIndex + 40;
+        this.amount = this.startIndex + 20;
        
         this.volumesList = [];
         this.divideDataToRows(list);
+
+        this.closeContentBox();
 
         this.lock = false; 
     }
     
     @Output() dataRequestEvent = new EventEmitter();
     
-    volumesList: Volume[][] = []; 
+    volumesList:    Volume[][] = []; 
+    volumeToShow:   Volume = new Volume('', '', '', [''], '', '', '');
+    prevVolume:     Volume;
 
-    startIndex: number = 0;
-    amount: number = 0;
+    startIndex:     number = 0;
+    amount:         number = 0;
+    openRowId:      number = -1;
 
-    lock: boolean; 
+    lock:           boolean; 
+ 
 
     constructor(){
 
+    }
+
+
+    print(ref){
+        console.log(ref);
+    }
+
+
+    newList(newVolume: Volume){
+
+        if(this.prevVolume != newVolume) return 1;
+
+        this.prevVolume = newVolume;
+        console.log('0')
+        return 0;
     }
 
 
@@ -102,12 +123,35 @@ export class VolumesListClass {
     }
 
 
+    getVolumeById(event){
+
+       let volId = event;
+        
+       for(let row in this.volumesList){
+
+           for(let cell in this.volumesList[row]){
+
+               if(this.volumesList[row][cell].volId == volId){
+
+                   this.volumeToShow = this.volumesList[row][cell];
+                   this.openRowId = parseInt(row);
+                   return;
+               }
+
+           }
+       } 
+        
+    }
+
+
+    closeContentBox(){
+
+        this.openRowId = -1;
+
+    }
+
+
 }
     
 
 
-/*
-
- console.log('startIndex: ' + this.startIndex + ' amount: ' + this.amount)
-
-*/

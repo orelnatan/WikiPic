@@ -6,12 +6,13 @@ import    { ReactiveFormsModule }          from              '@angular/forms';
 import    { AppRootClass }                 from              './appRoot.component';
 import    { VolumesListClass }             from              './volumesList.component';
 import    { VolumeEntryClass }             from              './volumeEntry.component'; 
-import    { galleryViewClass }             from              './galleryView.component'; 
+import    { GalleryViewClass }             from              './galleryView.component'; 
+import    { ContentViewClass }             from              './contentView.component';
 
 
 @NgModule({
   
-  declarations: [ AppRootClass, VolumesListClass, VolumeEntryClass, galleryViewClass ],
+  declarations: [ AppRootClass, VolumesListClass, VolumeEntryClass, GalleryViewClass, ContentViewClass ],
   
   imports: [ BrowserModule, HttpModule, JsonpModule, ReactiveFormsModule ],
   
