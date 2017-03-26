@@ -13,10 +13,10 @@ export class DataServices {
     wikiApis = {
 
         allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&origin=*&list=search&format=json&srwhat=text&srlimit=2000&srsearch=',
-        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&format=json&titles=',
-        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=',
-        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&pageids=',
-        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
+        pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&origin=*&format=json&titles=',
+        descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&format=json&search=',
+        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts&explaintext=&pageids=',
+        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&origin=*&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
 
     };
 
@@ -39,13 +39,13 @@ export class DataServices {
         
         if(!this.keysCompiler(keyword)) return;
 
-        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this));
+        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
 
-       // .flatMap(this.getPageIdsAndTitles)
-      //  .flatMap(this.getDescriptionsAndUrls)
-      //  .flatMap(this.getContents)
-      //  .flatMap(this.getMedia)
-      //  .flatMap(this.analyzeData);
+        .flatMap(this.getPageIdsAndTitles)
+        .flatMap(this.getDescriptionsAndUrls)
+        .flatMap(this.getContents)
+        .flatMap(this.getMedia)
+        .flatMap(this.analyzeData);
              
     }
     
