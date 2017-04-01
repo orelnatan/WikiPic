@@ -1,4 +1,4 @@
-
+import      { ContentViewClass }                                           from      './contentView.component';
 import      { Component, Input, Output, EventEmitter, ViewChild }          from      '@angular/core';
 import      { Volume }                                                     from      './classes/volume.class';
 
@@ -19,15 +19,24 @@ export class VolumeEntryClass {
      @Input() set setVolumeEntry(volume: Volume){
 
          this.volumeEntry = volume;
+     };
 
-     }
+     
+     @Input() rowReference:   any;
+     @Input() selectedRow:    number = -1;
 
      @Output() contentBoxRequestEvent = new EventEmitter();
+     @Output() hoverRequestEvent      = new EventEmitter();
 
      @ViewChild('galleryViewRef') childRef;
 
-     volumeEntry:   Volume;
-     mouseEnter:    boolean = false;
+     volumeEntry:           Volume;
+     
+     mouseEnter:            boolean = false;
+     isHover:               boolean = false;
+     contentDivOnHover:     boolean = false;
+
+     title:                 string;
 
      notifications = {
 
@@ -37,17 +46,30 @@ export class VolumeEntryClass {
 
 
     constructor(){
-
+           
     }
 
 
-    print(){  }
+    print(){   }
+
+
+    rowIsLock(): boolean {
+
+        if(this.rowReference.id != this.selectedRow) return false;
+        
+        return true;
+    }
 
 
     onMouseEnter(){
-
+        
         this.childRef.startAnimation()
         this.mouseEnter = true;
+
+        if(this.rowIsLock()){
+            
+            this.sendContentBoxRequestEvent();
+        } 
 
     }
 
@@ -56,41 +78,78 @@ export class VolumeEntryClass {
 
         this.childRef.abortAnimation();
         this.mouseEnter = false;
-
+        
     }
 
 
     sendContentBoxRequestEvent(){
         
-        this.contentBoxRequestEvent.emit(this.volumeEntry.volId);
+        if(!this.childRef.loadingTime)
+            this.hoverRequestEvent.emit(this);
 
+        if(!this.childRef.loadingTime)
+            this.contentBoxRequestEvent.emit(this.volumeEntry.volId);
+            
+    }
+
+
+    getMainWrapperStyle(){
+
+        let style = {
+ 
+           'mainWrapperUnHover':              (true),
+           'mainWrapperOnHover':              (this.mouseEnter  &&  !this.rowIsLock() && !this.childRef.loadingTime),
+           'mainWrapperDark':                 (this.rowIsLock()),
+           'mainWrapperFramed':               (this.isHover && !this.childRef.loadingTime)
+    
+       };  
+
+       return style;
     }
 
 
     getIntroductionDivStyle(){
 
-      let style = {
-
-          'introductionDivInvisible':        (!this.mouseEnter),
-          'introductionDivVisible':          (this.mouseEnter)
-       
-      };  
-
-      return style;
-  }
-
-
-   getGalleryCompStyle(){
-
        let style = {
-
-           'galleryComponent':                     (true),
-           'galleryComponentOnHover':              (this.mouseEnter)
-
+ 
+           'introductionDivInvisible':        (this.childRef.loadingTime || !this.mouseEnter || this.rowIsLock()),
+           'introductionDivVisible':          (this.mouseEnter  && !this.rowIsLock())
+    
        };  
 
        return style;
-
    }
 
+
+
+
 }
+
+
+
+
+/*
+
+this.contentDiv = this.rowReference.
+                        children.contentViewDiv.
+                        children.contentViewComp.
+                        children.mainWrapper.
+                        children.contentWrapper.
+                        children.headerDiv;
+
+
+                         this.contentDiv = this.rowReference.children.contentViewDiv;
+                
+         this.renderer.listen(this.contentDiv, 'mouseenter', (event) => {
+                
+                this.isHover = true; 
+         });
+
+         this.renderer.listen(this.contentDiv, 'mouseleave', (event) => {
+                
+               
+         });
+
+
+
+*/

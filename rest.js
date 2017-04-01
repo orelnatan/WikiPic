@@ -34,3 +34,32 @@
         }
 
      }
+	 
+	 
+	 
+	 
+	 /*
+
+this.contentDiv = this.rowReference.
+                        children.contentViewDiv.
+                        children.contentViewComp.
+                        children.mainWrapper.
+                        children.contentWrapper.
+                        children.headerDiv;
+
+
+                         this.contentDiv = this.rowReference.children.contentViewDiv;
+                
+         this.renderer.listen(this.contentDiv, 'mouseenter', (event) => {
+                
+                this.isHover = true; 
+         });
+
+         this.renderer.listen(this.contentDiv, 'mouseleave', (event) => {
+                
+               
+         });
+
+
+
+*/

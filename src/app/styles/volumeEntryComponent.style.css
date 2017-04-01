@@ -6,7 +6,7 @@
 }
 
 
-#mainWrapper {
+.mainWrapperUnHover {
 
     background-color: transparent;
 
@@ -24,7 +24,7 @@
 }
 
 
-#mainWrapper:hover{
+.mainWrapperOnHover {
 
     width: 397.156px;
     height: 264.875px;
@@ -32,17 +32,29 @@
 }
 
 
-.galleryComponent {
+.mainWrapperDark {
 
-    width: 100%;
-    height: 100%;
+    opacity: 0.5;
+
+    transition: 1s;
+}
+
+
+.mainWrapperFramed {
+
+    opacity: 1;
+
+    border-style: solid;
+    border-color: white;
+    border-width: medium;
 
 }
 
 
-.galleryComponent:hover {
+.galleryComponent {
 
-   
+    width: 100%;
+    height: 100%;
 
 }
 
@@ -57,12 +69,12 @@
     width: 397.156px;
     height: 264.875px;
 
-    padding-top: 150px;
+    padding-top: 110px;
     padding-left: 10px;
 
     background: rgba(0, 0, 0, 0.5);
 
-    animation: fadeIn 1s linear;
+    animation: fadeIn 2s linear;
 
 }
 
@@ -81,22 +93,26 @@
    color: white;
    font-weight: 900;
 
-   overflow: hidden;
 
 }
 
 
 #descDiv {
 
-   width: 280px;
-   height: 40px;
+    display: -webkit-box;
+    
+    width: 350px;
+    height: 58px;
+    
+    font-weight: 600;
+    color: white;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 
-   font-weight: 600; 
-   color: white;
+     margin-top: 10px;
 
-   margin-top: 10px;
-
-   overflow: scroll;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
 }
 

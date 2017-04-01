@@ -2,7 +2,11 @@
 <div id = 'mainWrapper'  >
 
 
-    <div id = 'galleryMonitor' > <img  class = 'imgElement'  [src] = 'singleImg'  />   </div>
+    <div  [ngClass] = "{'noneClass': loadingTime, 'galleryMonitor': !loadingTime}"  > <img  class = 'imgElement'  [src] = 'singleImg'  (load) = "imgLoaded()" />   </div>
 
+    <div  [ngClass] = "{'noneClass': !loadingTime, 'loaderDivDisplay': loadingTime}"  >   <div id = 'loader' >  </div>    </div>
 
 </div>
+
+
+

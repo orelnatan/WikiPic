@@ -1,10 +1,10 @@
-import    { Injectable }        from        '@angular/core';
-import    { Http , Response, Jsonp }   from        '@angular/http';
-import    { Volume }            from        '../classes/volume.class';
-import    { Observable }        from        'rxjs/Rx';
-import    { FormControl }       from        '@angular/forms';
-
-import                                      'rxjs/add/operator/mergeMap';
+import    { Injectable }                     from        '@angular/core';
+import    { Http , Response, Jsonp }         from        '@angular/http';
+import    { Volume }                         from        '../classes/volume.class';
+import    { Observable }                     from        'rxjs/Rx';
+import    { FormControl }                    from        '@angular/forms';
+import    { Subscription }                   from        'rxjs/Subscription';
+import                                                   'rxjs/add/operator/mergeMap';
 
 
 @Injectable()
@@ -21,54 +21,48 @@ export class DataServices {
     };
 
 
-    storge:     string = '';
+    forbiddenFormats = ['webm', 'tif', 'ogg', 'svg'];
+    
     keyword:    string = '';
     prevKey:    string = '';
 
     index:      number = 0;
 
-    constructor(private http: Http, private jsonp: Jsonp) {
+    constructor(private http: Http) {
         
         
     }
 
 
-  getAllVolumesFromServer(keyword: string, startIndex: number, amount: number): Observable <any>{
+  getAllVolumesFromServer(keyword: string): Observable <any>{
         
         console.log('Searching...');
         
-        if(!this.keysCompiler(keyword)) return;
-
-        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(startIndex, amount, this))
+        if(!this.resetParams(keyword)) return;
+       
+        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles())
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptionsAndUrls)
         .flatMap(this.getContents)
         .flatMap(this.getMedia)
         .flatMap(this.analyzeData);
-             
+     
     }
     
-   getAllTitles(startIndex: number, amount: number, classRef: any) {
+   getAllTitles() {
 
         return function (response: Response): string[] {
-            console.log(response);
+            
            let data = response.json().query.search;
            let titls:   string[] = [];
            
-           let compResponse = classRef.rangeCompiler(data.length, startIndex, amount);
-           
-           if(compResponse.indicator == 0) return;
-
-           startIndex = compResponse.startIndex;
-           amount     = compResponse.amount;
-
-            for(let i = startIndex; i < amount; i ++){
+            for(let i in data){                         // for(let i in data){ 
 
                 let title = data[i].title;           
                 titls.push(title);
             } 
-            
+
             return titls;
         }
 
@@ -236,7 +230,7 @@ export class DataServices {
                 try{
                     let imgUrl = data[keys[i]].imageinfo[0].url;                
                     
-                    if(!classRef.formatCompiler(imgUrl)) { imgArray.push(imgUrl); } 
+                    if(!classRef.formatIsValid(imgUrl)) { imgArray.push(imgUrl); } 
                 } catch(error){}
 
             }
@@ -251,8 +245,8 @@ export class DataServices {
 
     analyzeData = (array: Array <any>): Observable <any> => {
          
-         let volumes: Observable <any>[] = [];
-         
+         let volumes:       Observable <any>[] = [];
+
          let titles             = array.map(function(object) {return object['title']}); 
          let pageIds            = array.map(function(object) {return object['pageId']});
          
@@ -267,15 +261,14 @@ export class DataServices {
 
              let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + this.index, pageIds[i]));
              
-              if(images[i][0] != '' && !this.storge.includes(titles[i])){
+              if(images[i][0] != ''){
                 
                   this.index ++;
                   volumes.push(volume);
-                  this.storge += titles[i];
               }
 
          }
-
+         
          return Observable.forkJoin(volumes);
      }
 
@@ -291,40 +284,13 @@ export class DataServices {
      }
 
 
-      rangeCompiler(maxLength, startIndex, amount): Object{
-
-          let indicator: number = 1;
-
-          if(startIndex > maxLength){
-              
-              console.log('Error: start index out of range.');
-              indicator = 0;
-          }
-
-          if(amount > maxLength){
-              
-              console.log('Note: range fixed.');
-              amount = maxLength;
-              indicator = 1;
-          }
-
-          return {
-
-              indicator:    indicator,
-              startIndex:   startIndex,
-              amount:       amount
-
-          };
-     }
-
-
-     keysCompiler(keyword: string): number {
+     resetParams(keyword: string): number {
 
         if(keyword == '') return 0;        
         this.keyword = keyword;
         
         if(this.keyword != this.prevKey){ 
-            this.storge = ''; 
+            
             this.index = 0;
         }
 
@@ -334,13 +300,11 @@ export class DataServices {
      }
 
 
-     formatCompiler(imgUrl: string): boolean{
+     formatIsValid(imgUrl: string): boolean{
 
-         let forbiddenFormats = ['webm', 'tif', 'ogg', 'svg'];
+         for(let i in this.forbiddenFormats){
 
-         for(let i in forbiddenFormats){
-
-             if(imgUrl.split(".")[3] == forbiddenFormats[i]) return true; 
+             if(imgUrl.split(".")[3] == this.forbiddenFormats[i]) return true; 
          }
 
          return false;
@@ -361,11 +325,6 @@ export class DataServices {
 
 
 
-/*
 
-if(imgUrl.split(".")[3] != 'svg'  && 
-                       imgUrl.split(".")[3] != 'webm' && 
-                       imgUrl.split(".")[3] != 'tif'  &&
-                       imgUrl.split(".")[3] != 'ogg')  { imgArray.push(imgUrl); } 
 
-*/
+

@@ -58,3 +58,38 @@
      z-index: 0;
 
 }
+
+
+
+.loaderDivDisplay{
+
+    background-color:transparent;
+	
+    display:flex;
+	flex-direction:row;
+	justify-content:center;
+	
+    margin-top: 2%;
+    margin-bottom: 2%;
+
+}
+
+
+#loader {
+	 
+ 	 border: 0px solid transparent;
+	 border-radius: 50%;
+	 border-top: 5px solid red;
+	 
+     width: 120px;
+	 height: 120px;
+	 
+     animation: spin 0.8s linear infinite;	
+}
+
+
+.noneClass{
+
+    display: none;
+
+}

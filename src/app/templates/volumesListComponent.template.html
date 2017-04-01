@@ -9,7 +9,7 @@
             
                 <div id = 'volumeDiv'  *ngFor = 'let volume of volumesRow' >
 
-                    <volume-entry  [setVolumeEntry] = 'volume'  (contentBoxRequestEvent) = 'getVolumeById($event)'  >  </volume-entry>
+                    <volume-entry  [setVolumeEntry] = 'volume'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'    (hoverRequestEvent) = 'hoverEntry($event)'     (contentBoxRequestEvent) = 'getVolumeById($event)'  >  </volume-entry>
                 
                 </div>
 
@@ -17,18 +17,21 @@
     
             <div  id = 'contentViewDiv' >
                 
-                <content-view   [setVolumeEntry] = 'volumeToShow'   [rowReference] = 'rowRef'   [selectedRow] = 'openRowId'  (closeContentBoxEvent) = 'closeContentBox()' >     </content-view>
+                   <content-view   [setVolumeEntry] = 'volumeToShow'   [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'   (closeContentBoxEvent) = 'closeContentBox()' >     </content-view>
 
             </div>
              
 
         </div>
 
-        
-     
+        <div [ngClass] = "{'noneClass': !loadingTime, 'loaderDivDisplay': loadingTime}"  >   <div id = 'loader' >  </div>    </div>
 
 
     </div>
+
+
+
+
 
 </div>
 

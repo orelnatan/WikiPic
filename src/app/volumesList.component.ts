@@ -1,6 +1,6 @@
-import      { Component, Input, Output, EventEmitter }          from      '@angular/core';
-import      { Volume }                                          from      './classes/volume.class';
-
+import      { Component, Input, Output, EventEmitter }       from      '@angular/core';
+import      { Volume }                                                  from      './classes/volume.class';
+import    { VolumeEntryClass }             from              './volumeEntry.component';
 
 @Component({
 
@@ -17,19 +17,18 @@ export class VolumesListClass {
 
     @Input() set setVolumesList(list: Volume[]){
         
-        this.startIndex = list.length;
+        this.startIndex += list.length;
         this.amount = this.startIndex + 20;
-       
-        this.volumesList = [];
+
         this.divideDataToRows(list);
 
-        this.closeContentBox();
-
-        this.lock = false; 
+        this.lock        = false;
+        this.loadingTime = false;
+               
     }
     
     @Output() dataRequestEvent = new EventEmitter();
-    
+
     volumesList:    Volume[][] = []; 
     volumeToShow:   Volume = new Volume('', '', '', [''], '', '', '');
     prevVolume:     Volume;
@@ -39,7 +38,10 @@ export class VolumesListClass {
     openRowId:      number = -1;
 
     lock:           boolean; 
- 
+    loadingTime:    boolean = false;
+
+    nextHover:      VolumeEntryClass; 
+    prevHover:      VolumeEntryClass;
 
     constructor(){
 
@@ -51,13 +53,12 @@ export class VolumesListClass {
     }
 
 
-    newList(newVolume: Volume){
+    newList(newVolume: Volume): boolean{
 
-        if(this.prevVolume != newVolume) return 1;
+        if(this.prevVolume == newVolume) return false;
 
         this.prevVolume = newVolume;
-        console.log('0')
-        return 0;
+        return true;
     }
 
 
@@ -81,18 +82,19 @@ export class VolumesListClass {
             rowIndex ++
 
         }
-        
+    
     }
 
 
     onScroll(event){
        
-         if(this.culcPercent() > 90 && !this.lock){
+         if(this.culcPercent() > 97 && !this.lock){
 
               this.sendDataRequest();
+              this.loadingTime = true;
               this.lock = true;
-
          }  
+    
     }
 
 
@@ -113,8 +115,7 @@ export class VolumesListClass {
         let eventData = {
 
             startIndex:     this.startIndex,
-            amount:         this.amount,
-            join:           true
+            amount:         this.amount
 
         };
 
@@ -144,9 +145,34 @@ export class VolumesListClass {
     }
 
 
+    resetList(){
+
+         this.volumesList = [];
+         this.startIndex  = 0;
+         this.amount      = 0
+        
+         this.closeContentBox();
+
+    }
+
+
     closeContentBox(){
 
         this.openRowId = -1;
+        
+        try{ this.prevHover.isHover = false; } catch(exp) { };
+
+    }
+
+
+    hoverEntry(ref: VolumeEntryClass){
+
+        try{ this.prevHover.isHover = false; } catch(exp) { };
+
+        this.nextHover = ref;
+        this.nextHover.isHover = true;
+
+        this.prevHover = this.nextHover;        
 
     }
 
@@ -155,3 +181,38 @@ export class VolumesListClass {
     
 
 
+/*
+
+@Input() set setVolumesList(list: Volume[]){
+        
+        this.startIndex = list.length;
+        this.amount = this.startIndex + 40;
+       
+        this.volumesList = [];
+        this.divideDataToRows(list);
+
+        if(this.newList(list[0])) this.closeContentBox();
+
+        this.lock        = false;
+        this.loadingTime = false; 
+    }
+
+processRespone(list: Volume[]): Volume[] {
+        console.log('hiii');
+        let length = list.length;
+
+        if(length % 5 == 0) return list;
+
+        let rest = length % 5;
+        let aptSize = length - rest;
+
+        let newList = list.slice(0, aptSize);
+
+        this.startIndex += newList.length;
+        this.amount = this.startIndex + 40;
+        console.log(this.startIndex);
+        return newList;
+    }
+
+
+*/

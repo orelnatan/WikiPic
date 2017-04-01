@@ -33,8 +33,48 @@
 
 }
 
-#volumesListDiv{
 
+.listDivDisplay{
+
+    display: block;
     margin-top: 40px;
 
+}
+
+
+.loaderDivDisplay{
+
+    background-color:transparent;
+	
+    display:flex;
+	flex-direction:row;
+	justify-content:center;
+	
+    margin-top:10%;
+
+}
+
+
+#loader {
+	 
+ 	 border: 0px solid transparent;
+	 border-radius: 50%;
+	 border-top: 16px solid red;
+	 
+     width: 420px;
+	 height: 420px;
+	 
+     animation: spin 0.8s linear infinite;	
+}
+
+
+.noneClass{
+
+    display: none;
+
+}
+
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }

@@ -26,7 +26,9 @@ export class GalleryViewClass {
      singleImg: string;
 
      imgIndex: number  = 0;
-     clock: any;
+     clock:    any;
+
+     loadingTime:   boolean = true;
 
     constructor(){
 
@@ -45,7 +47,7 @@ export class GalleryViewClass {
 
     startAnimation(){
 
-        this.clock = setTimeout(this.setNextImg , 1000);
+        this.clock = setTimeout(this.setNextImg , 2000);
 
     } 
 
@@ -60,11 +62,14 @@ export class GalleryViewClass {
 
         else this.imgIndex = 0;    
 
-           this.startAnimation();
-
+        this.startAnimation();
     }
 
 
+    imgLoaded(){
+
+        this.loadingTime = false;
+    }
 
 
 }

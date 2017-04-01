@@ -1,7 +1,7 @@
 
-<div id = 'mainWrapper'  (mouseenter) = 'onMouseEnter()'  (mouseleave) = 'onMouseLeave()' >
+<div [ngClass] = 'getMainWrapperStyle()'  (mouseenter) = 'onMouseEnter()'  (mouseleave) = 'onMouseLeave()'  (click) = 'sendContentBoxRequestEvent()' >
 
-        <gallery-view  [ngClass] = 'getGalleryCompStyle()'    [setGallery] = 'volumeEntry.images'  #galleryViewRef > </gallery-view>
+        <gallery-view  class = 'galleryComponent'    [setGallery] = 'volumeEntry.images'   #galleryViewRef > </gallery-view>
 
         <div  [ngClass] = 'getIntroductionDivStyle()' >
 

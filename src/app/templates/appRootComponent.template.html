@@ -4,13 +4,19 @@
 
     <div id = 'userPanelWrapper' >
 
-        <div id = 'searchBoxDiv'> <input  id = 'searchBox'  placeholder = 'Search for anything...'   [formControl] = 'keyword' > </div>
+        <div id = 'searchBoxDiv'> <input  id = 'searchBox'  placeholder = 'Search for anything...'  (keyup) = 'abortHttpRequest()'  [formControl] = 'keyword' > </div>
         
     </div>
 
-    <div id = 'volumesListDiv' >
+    <div [ngClass] = "{'listDivDisplay': !loadingTime, 'noneClass': loadingTime}"  >
 
-        <volumes-list  [setVolumesList] = 'volumes'  (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
+        <volumes-list  [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
+
+    </div>
+
+    <div [ngClass] = "{'noneClass': !loadingTime, 'loaderDivDisplay': loadingTime}" >    
+
+        <div id = 'loader' >    </div>
 
     </div>
 

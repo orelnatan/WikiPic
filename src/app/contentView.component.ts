@@ -32,7 +32,8 @@ export class ContentViewClass {
 
     notifications = {
 
-        closeInfoBoxIcoUrl:     'https://maxcdn.icons8.com/Color/PNG/24/Arrows/collapse2-24.png'
+        closeInfoBoxIcoUrl:     'https://maxcdn.icons8.com/Color/PNG/24/Arrows/collapse2-24.png',
+        openWabIcoUrl:          'https://maxcdn.icons8.com/Color/PNG/24/Logos/internet_explorer-24.png'
 
     }
 
@@ -50,6 +51,14 @@ export class ContentViewClass {
         this.closeContentBoxEvent.emit();
     
     }
+
+
+    openSubjectOnWikiOrg(){
+
+         window.open(this.volumeEntry.url);
+
+    }
+
 
     animationAndRowSizeControl(){
 
