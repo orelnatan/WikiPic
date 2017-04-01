@@ -57,7 +57,7 @@ export class DataServices {
            let data = response.json().query.search;
            let titls:   string[] = [];
            
-            for(let i in data){                         // for(let i in data){ 
+            for(let i = 0; i < 80; i ++){                         // for(let i in data){ 
 
                 let title = data[i].title;           
                 titls.push(title);
