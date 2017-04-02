@@ -18,9 +18,14 @@ export class VolumesListClass {
     @Input() set setVolumesList(list: Volume[]){
         
         this.startIndex += list.length;
-        this.amount = this.startIndex + 20;
+        this.amount = this.startIndex + 10;
 
-        this.divideDataToRows(list);
+        list = this.remnant.concat(list);
+        this.remnant = [];
+        
+        let customizedList = this.fitResponeToTemplate(list);
+
+        this.divideDataToRows(customizedList);
 
         this.lock        = false;
         this.loadingTime = false;
@@ -30,7 +35,8 @@ export class VolumesListClass {
     @Output() dataRequestEvent = new EventEmitter();
 
     volumesList:    Volume[][] = []; 
-    volumeToShow:   Volume = new Volume('', '', '', [''], '', '', '');
+    remnant:        Volume[]   = []
+    volumeToShow:   Volume     = new Volume('', '', '', [''], '', '', '');
     prevVolume:     Volume;
 
     startIndex:     number = 0;
@@ -53,12 +59,19 @@ export class VolumesListClass {
     }
 
 
-    newList(newVolume: Volume): boolean{
+     fitResponeToTemplate(list: Volume[]) {
+       
+        let length = list.length;
 
-        if(this.prevVolume == newVolume) return false;
+        if(length % 5 == 0) return list;
 
-        this.prevVolume = newVolume;
-        return true;
+        let rest = length % 5;
+        let aptSize = length - rest;
+
+        let customizedList = list.slice(0, aptSize);
+        this.remnant = list.slice(aptSize, list.length);
+    
+        return customizedList;
     }
 
 
@@ -83,6 +96,13 @@ export class VolumesListClass {
 
         }
     
+    }
+
+
+    getMore(){
+
+        this.sendDataRequest();
+        this.loadingTime = true;
     }
 
 
@@ -148,11 +168,20 @@ export class VolumesListClass {
     resetList(){
 
          this.volumesList = [];
-         this.startIndex  = 0;
-         this.amount      = 0
-        
+         this.remnant     = [];
+
+         this.resetRange();
+
          this.closeContentBox();
 
+    }
+
+
+    resetRange(){
+
+        this.loadingTime = true
+        this.startIndex  = 0;
+        this.amount      = 0
     }
 
 

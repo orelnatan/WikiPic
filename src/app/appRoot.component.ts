@@ -29,13 +29,11 @@ export class AppRootClass {
     allVolumes: Volume[] = [];
     volumes:    Volume[] = [];
     
-    keyword = new FormControl();
-    
-    loadingTime: boolean = false;
-    
-    httpRequest: Subscription;
-
-    
+    volumeCounter:      number = 0;
+    keyword                    = new FormControl();
+    loadingTime:       boolean = false;
+    httpRequest:       Subscription;
+ 
     constructor(private dataServices: DataServices){
   
         this.keyword.valueChanges.debounceTime(600)
@@ -53,29 +51,24 @@ export class AppRootClass {
     }
 
 
-    getDataFromService(keyword){
+    getDataFromService(keyword: string){
 
         this.httpRequest = this.dataServices.getAllVolumesFromServer(keyword)
         .subscribe((response) => {
          
               this.allVolumes = [];
               this.allVolumes = response;
-               
+
+              this.volumeCounter = 0;
+
               this.loadingTime = false;
+              
               console.log(this.allVolumes);
-              this.sendDataToList(0, 40);
+              this.sendDataToList(0, 10);
               
         });
 
     }
-
-
-    processDataRequest(event){       
-        this.sendDataToList(event.startIndex, event.amount);
-    }
-
-    
-    abortHttpRequest(){ try{this.httpRequest.unsubscribe();} catch(exp) { } }
 
 
     sendDataToList(startIndex: number, amount: number){
@@ -84,15 +77,36 @@ export class AppRootClass {
 
         let response = this.rangeIsValid(this.allVolumes.length, startIndex, amount);
 
-             if(!response['indicator']) return;
+        if(!response['indicator']) return;
         
         amount = response['amount'];
 
-             for(let i = startIndex; i < amount; i ++)
-                this.volumes.push(this.allVolumes[i]);
+        for(let i = startIndex; i < amount; i ++){
+         
+            this.volumes.push(this.allVolumes[i]);
+            this.volumeCounter ++;
+        }
 
        console.log(this.volumes);
     }
+
+
+    processDataRequest(event){       
+        
+        if(this.volumeCounter == this.allVolumes.length){
+
+            console.log('Note: End Of Data!!');
+            this.childRef.resetRange();
+            this.getDataFromService(this.keyword.value);
+            return;
+        }
+
+        
+        this.sendDataToList(event.startIndex, event.amount);
+    }
+
+    
+    abortHttpRequest(){ try{this.httpRequest.unsubscribe();} catch(exp) { } }
 
 
     rangeIsValid(maxLength, startIndex, amount): Object{
@@ -130,25 +144,7 @@ export class AppRootClass {
 
 
 
- getDataFromService(keyword, startIndex: number, amount: number, join: boolean){
-
-         this.dataServices.getAllVolumesFromServer(keyword, startIndex, amount)
-        .subscribe((response) => {
-            
-              if(keyword != this.lastRequest){
-                  return;
-              }
-
-              if(!join) this.volumes = [];
-
-              this.volumes = this.volumes.concat(response);
-              console.log(this.volumes);
-
-              this.loadingTime = false;
-        });
-
-       
-    }
+ 
 
 
 */

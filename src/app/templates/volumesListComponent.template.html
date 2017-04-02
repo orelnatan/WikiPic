@@ -3,7 +3,7 @@
 
     <div id = 'listWrapper' >
 
-        <div  class = 'rowDiv'  [attr.id] = 'i'  *ngFor = 'let i = index; let volumesRow of volumesList'  #rowRef   [style.height] = "200 + 'px'" >
+        <div  class = 'rowDiv'  [attr.id] = 'i'  *ngFor = 'let i = index; let volumesRow of volumesList'  #rowRef   [style.height] = "200 + 'px'"  (click) = 'getMore()' >
 
             <div id = 'rowVolumesDiv'>
             

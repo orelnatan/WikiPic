@@ -23,45 +23,72 @@ export class DataServices {
 
     forbiddenFormats = ['webm', 'tif', 'ogg', 'svg'];
     
-    keyword:    string = '';
-    prevKey:    string = '';
+    keyword:        string = '';
+    prevKey:        string = '';
 
-    index:      number = 0;
+    index:          number = 0;
+    startIndex:     number = 0;
+    amount:         number = 25;
+
+    lock:           boolean;
+
+    headerResponse         = [];
 
     constructor(private http: Http) {
-        
-        
+           
     }
 
 
   getAllVolumesFromServer(keyword: string): Observable <any>{
         
+        if(keyword == '') return; 
+
         console.log('Searching...');
         
-        if(!this.resetParams(keyword)) return;
+        if(this.listIsNew(keyword)){
+
+            this.index          = 0;
+            this.startIndex     = 0;
+            this.amount         = 25;
+            
+            this.lock           = true;
+        }
        
-        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles())
+        return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(this))
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptionsAndUrls)
-        .flatMap(this.getContents)
+        //.flatMap(this.getContents)
         .flatMap(this.getMedia)
         .flatMap(this.analyzeData);
      
     }
     
-   getAllTitles() {
+   getAllTitles(classRef) {
 
         return function (response: Response): string[] {
             
-           let data = response.json().query.search;
-           let titls:   string[] = [];
-           
-            for(let i = 0; i < 80; i ++){                         // for(let i in data){ 
+           if(classRef.lock){
+              classRef.headerResponse = response.json().query.search;
+            }
 
-                let title = data[i].title;           
+           classRef.lock = false;  
+           let titls:   string[] = [];
+              
+           let reply = classRef.rangeIsValid(classRef.headerResponse.length, classRef.startIndex, classRef.amount);
+
+           if(!reply['indicator']) return;
+        
+            classRef.amount = reply['amount'];
+
+            for(let i = classRef.startIndex; i < classRef.amount; i ++){                         // for(let i in data){ 
+
+                let title = classRef.headerResponse[i].title;           
                 titls.push(title);
             } 
+            
+            classRef.startIndex += titls.length;
+            classRef.amount = classRef.startIndex + 45;
 
             return titls;
         }
@@ -160,14 +187,14 @@ export class DataServices {
             let data             = response.json();
             
             let description     = data[2][0];
-            let url             = data[3][0];
+            //let url             = data[3][0];
             
             return {
 
                 pageId:          array[index]['pageId'],
                 title:           array[index]['title'],
-                description:     description,
-                url:             url
+                description:     description
+                //url:             url
                 
             };
         }
@@ -259,14 +286,13 @@ export class DataServices {
          
          for(let i in titles){
 
-             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], contents[i], images[i], urls[i], 'vol' + this.index, pageIds[i]));
+             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], ' ', images[i], ' ', 'vol' + this.index, pageIds[i]));
              
               if(images[i][0] != ''){
                 
                   this.index ++;
                   volumes.push(volume);
               }
-
          }
          
          return Observable.forkJoin(volumes);
@@ -284,19 +310,16 @@ export class DataServices {
      }
 
 
-     resetParams(keyword: string): number {
-
-        if(keyword == '') return 0;        
+     listIsNew(keyword: string): boolean {
+       
         this.keyword = keyword;
         
-        if(this.keyword != this.prevKey){ 
-            
-            this.index = 0;
+        if(this.keyword == this.prevKey){ 
+            return false;
         }
 
         this.prevKey = this.keyword;
-
-        return 1;
+        return true;
      }
 
 
@@ -309,6 +332,35 @@ export class DataServices {
 
          return false;
      }
+
+
+     rangeIsValid(maxLength, startIndex, amount): Object{
+
+          let indicator: boolean = true;
+
+          if(startIndex > maxLength){
+              
+              console.log('Error: start index out of range.');
+              indicator = false;
+          }
+
+          if(amount > maxLength){
+              
+              console.log('Note: range fixed.');
+              amount = maxLength;
+              indicator = true;
+          }
+
+          return {
+
+              indicator:    indicator,
+              startIndex:   startIndex,
+              amount:       amount
+
+          };
+     }
+
+
 
 
     private handleError(error: any): Promise<any> {

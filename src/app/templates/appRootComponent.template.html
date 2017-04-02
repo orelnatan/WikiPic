@@ -8,7 +8,7 @@
         
     </div>
 
-    <div [ngClass] = "{'listDivDisplay': !loadingTime, 'noneClass': loadingTime}"  >
+    <div  class = 'listDivDisplay'  [ngClass] = "{'noneClass': loadingTime}"  >
 
         <volumes-list  [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
 
