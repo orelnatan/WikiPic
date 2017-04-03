@@ -21,24 +21,21 @@
     background-color: transparent;
 
     display: flex;
-
-    width: 1570px;
+ 
     height: 500px;
-    
+    width: 1570px;
+
     margin-left: 10px;
 
     z-index: 0;
-
     opacity: 1;
-    animation: fadeIn 4s linear;    
-
+ 
 }
 
 
 .mainWrapperInvisible{
 
     display: none;
-
 }
 
 
@@ -166,6 +163,12 @@
 
 }
 
+
+.noneClass {
+
+    display: none;
+
+}
 
 
 @keyframes fadeIn {

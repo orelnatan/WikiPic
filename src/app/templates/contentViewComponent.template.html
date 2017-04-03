@@ -1,17 +1,17 @@
 
-<div  [ngClass] = 'getStyle()' (click)  = 'print()' >  
+<div  class = 'mainWrapperVisible' [ngClass] = 'getStyle()' (click)  = 'print()' >  
 
     <div id = 'contentWrapper' >
 
-        <div id = 'headerDiv' >
+        <div id = 'headerDiv'  >
 
             {{volumeEntry.title}}
 
         </div>
 
-        <div id = 'contentDiv' > 
+        <div id = 'contentDiv'  > 
 
-            <div id = 'textWrapper'>
+            <div id = 'textWrapper' >
 
                 {{volumeEntry.content}}
 
@@ -19,7 +19,7 @@
 
         </div>
 
-        <div id = 'toolsDiv' > 
+        <div id = 'toolsDiv'  > 
 
             <div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'sendCloseContentBoxEvent()'   [ngStyle] = "{'background-image': 'url(' + notifications.closeInfoBoxIcoUrl + ')'}" > </button>    </div>
             <div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'openSubjectOnWikiOrg()'       [ngStyle] = "{'background-image': 'url(' + notifications.openWabIcoUrl + ')'}" >      </button>    </div>
@@ -28,7 +28,7 @@
 
     </div>
 
-    <div id = 'galleryWrapper' > 
+    <div id = 'galleryWrapper'  > 
 
         <div id = 'fadeDiv'> </div>
         <gallery-view  id = 'galleryComponent'    [setGallery] = 'volumeEntry.images'   #galleryViewRef > </gallery-view>

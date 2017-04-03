@@ -97,7 +97,6 @@ export class VolumeEntryClass {
 
         let style = {
  
-           'mainWrapperUnHover':              (true),
            'mainWrapperOnHover':              (this.mouseEnter  &&  !this.rowIsLock() && !this.childRef.loadingTime),
            'mainWrapperDark':                 (this.rowIsLock()),
            'mainWrapperFramed':               (this.isHover && !this.childRef.loadingTime)

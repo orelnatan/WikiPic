@@ -57,8 +57,7 @@ export class DataServices {
         return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(this))
 
         .flatMap(this.getPageIdsAndTitles)
-        .flatMap(this.getDescriptionsAndUrls)
-        //.flatMap(this.getContents)
+        .flatMap(this.getDescriptions)
         .flatMap(this.getMedia)
         .flatMap(this.analyzeData);
      
@@ -110,31 +109,15 @@ export class DataServices {
     }
 
     
-    getDescriptionsAndUrls = (array: Object[]): Observable <any> => {
+    getDescriptions = (array: Object[]): Observable <any> => {
         
         let observables: Observable <any>[] = [];
         let titles = array.map(function(object) {return object['title']});
         
         for(let i in titles){
                         
-            let descriptionsAndUrls = this.http.get(this.wikiApis.descriptionsAndUrls_Api + titles[i]).map(this.extrctDescriptionsAndUrls(array, parseInt(i))).catch(this.handleError);            
+            let descriptionsAndUrls = this.http.get(this.wikiApis.descriptionsAndUrls_Api + titles[i]).map(this.extrctDescriptions(array, parseInt(i))).catch(this.handleError);            
             observables.push(descriptionsAndUrls);
-   
-        }
-        
-        return Observable.forkJoin(observables);
-    }
-
-
-    getContents = (array: Object[]): Observable <any> => {
-        
-        let observables: Observable <any>[] = [];
-        let pageIds = array.map(function(object) {return object['pageId']});
-        
-        for(let i in pageIds){
-                        
-            let contents = this.http.get(this.wikiApis.contents_Api + pageIds[i]).map(this.extrctContents(array, parseInt(i))).catch(this.handleError);            
-            observables.push(contents);
    
         }
         
@@ -180,46 +163,24 @@ export class DataServices {
     }
 
 
-    extrctDescriptionsAndUrls(array: Object[], index: number){
+    extrctDescriptions(array: Object[], index: number){
         
         return function(response: Response): Object {
 
             let data             = response.json();
             
             let description     = data[2][0];
-            //let url             = data[3][0];
             
             return {
 
                 pageId:          array[index]['pageId'],
                 title:           array[index]['title'],
-                description:     description
-                //url:             url
-                
+                description:     description         
             };
         }
 
     }
     
-
-    extrctContents(array: Object[], index: number){    
-
-        return function(response: Response): Object {
-            
-            let data = response.json();   
-            
-            return {
-
-                description:     array[index]['description'],
-                url:             array[index]['url'],
-                pageId:          array[index]['pageId'],
-                title:           array[index]['title'],
-                content:         data.query.pages[array[index]['pageId']].extract
-                
-            };  
-        }
-    }
-
 
     extrctMedia(array: Object[], index: number, classRef: any){
         
@@ -270,6 +231,25 @@ export class DataServices {
     }
 
 
+     getContent(pageId: number){
+                            
+         return this.http.get(this.wikiApis.contents_Api + pageId).map(this.extrctContent(pageId)).catch(this.handleError);            
+         
+    }
+
+
+    extrctContent(pageId: number){    
+
+        return function(response: Response) {
+            
+            let data        = response.json();   
+            let content     = data.query.pages[pageId].extract
+            
+            return content;
+        }
+    }
+
+
     analyzeData = (array: Array <any>): Observable <any> => {
          
          let volumes:       Observable <any>[] = [];
@@ -278,7 +258,6 @@ export class DataServices {
          let pageIds            = array.map(function(object) {return object['pageId']});
          
          let descriptions       = array.map(function(object) {return object['description']});
-         let urls               = array.map(function(object) {return object['url']});
          
          let contents           = array.map(function(object) {return object['content']});
          

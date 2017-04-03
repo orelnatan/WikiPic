@@ -3,7 +3,7 @@
 
     <div id = 'listWrapper' >
 
-        <div  class = 'rowDiv'  [attr.id] = 'i'  *ngFor = 'let i = index; let volumesRow of volumesList'  #rowRef   [style.height] = "200 + 'px'"  (click) = 'getMore()' >
+        <div  class = 'rowDiv'  [attr.id] = 'i'  *ngFor = 'let i = index; let volumesRow of volumesList'  #rowRef   [style.height] = "200 + 'px'"  >
 
             <div id = 'rowVolumesDiv'>
             
@@ -17,14 +17,16 @@
     
             <div  id = 'contentViewDiv' >
                 
-                   <content-view   [setVolumeEntry] = 'volumeToShow'   [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'   (closeContentBoxEvent) = 'closeContentBox()' >     </content-view>
+                   <content-view   [setVolumeEntry] = 'volumeToShow'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'   (closeContentBoxEvent) = 'closeContentBox()' >     </content-view>
 
             </div>
              
 
         </div>
 
-        <div [ngClass] = "{'noneClass': !loadingTime, 'loaderDivDisplay': loadingTime}"  >   <div id = 'loader' >  </div>    </div>
+        <div class = 'loaderDivDisplay' [ngClass] = "{'noneClass': !loadingTime}"  >   <div id = 'loader' >  </div>    </div>
+
+        <div class = 'showMorDiv'  [ngClass] = "{'noneClass': !isVisible}"  (click) = 'loadMor()'  > Show more...   </div>
 
 
     </div>

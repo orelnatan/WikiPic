@@ -1,6 +1,6 @@
 import      { Component, Input, Output, EventEmitter, ViewChild  }          from      '@angular/core';
 import      { Volume }                                                      from      './classes/volume.class';
-
+import      { DataServices }                                                from        './services/dataServices.service';
 
 @Component({
 
@@ -8,7 +8,7 @@ import      { Volume }                                                      from
   templateUrl: './templates/contentViewComponent.template.html',
   styleUrls:  ['./styles/contentViewComponent.style.css'],
  
-  
+  providers:  [ DataServices ],
 
 })
 
@@ -18,6 +18,13 @@ export class ContentViewClass {
    @Input() set setVolumeEntry(volume: Volume){
 
        this.volumeEntry = volume;
+
+       try{
+            if(this.rowReference.id == this.selectedRow){
+                this.getSubjectContentFromService();
+            }
+       }catch(exp){ }
+
     }
 
     @Input() rowReference:   any;
@@ -28,6 +35,7 @@ export class ContentViewClass {
     @ViewChild('galleryViewRef') childRef;
 
     volumeEntry:    Volume;
+    isNone:         boolean = false;
     lock:           boolean = false;
 
     notifications = {
@@ -37,12 +45,24 @@ export class ContentViewClass {
 
     }
 
-    constructor(){
+    constructor(private dataServices: DataServices){
 
     }
 
     print(){
        
+    }
+
+
+    getSubjectContentFromService(){
+        
+         this.dataServices.getContent(parseInt(this.volumeEntry.pageId))
+        .subscribe((response) => {
+
+            this.volumeEntry['content'] = response;
+
+        });
+
     }
 
 
@@ -60,10 +80,12 @@ export class ContentViewClass {
     }
 
 
-    animationAndRowSizeControl(){
+    rowOpened(){
 
         if(this.rowReference.id == this.selectedRow && !this.lock){
-          
+           
+           this.getSubjectContentFromService();
+
            this.rowReference.style.height = 700 + 'px';
            this.childRef.startAnimation();
            
@@ -75,6 +97,7 @@ export class ContentViewClass {
            this.rowReference.style.height = 200 + 'px'; 
            this.childRef.abortAnimation();
            
+           this.isNone = true;
            this.lock = false;
         }
 
@@ -85,12 +108,11 @@ export class ContentViewClass {
 
         let style = {
            
-           'mainWrapperInvisible':               (this.rowReference.id != this.selectedRow),
-           'mainWrapperVisible':                 (this.rowReference.id == this.selectedRow)  
-          
+           'mainWrapperInvisible':               (this.rowReference.id != this.selectedRow)
+            
        };  
 
-       this.animationAndRowSizeControl();
+       this.rowOpened();
 
        return style;
     }

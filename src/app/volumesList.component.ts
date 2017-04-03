@@ -45,6 +45,7 @@ export class VolumesListClass {
 
     lock:           boolean; 
     loadingTime:    boolean = false;
+    isVisible:      boolean = false;
 
     nextHover:      VolumeEntryClass; 
     prevHover:      VolumeEntryClass;
@@ -96,13 +97,31 @@ export class VolumesListClass {
 
         }
     
+        if((this.volumesList.length > 0) && (!this.hasScroll(document.body, 'vertical'))) {this.isVisible = true;}
+        else{this.isVisible = false;}
     }
 
 
-    getMore(){
+    hasScroll(el, direction) {
+        
+        direction = (direction === 'vertical') ? 'scrollTop' : 'scrollLeft';
+        var result = !! el[direction];
 
-        this.sendDataRequest();
-        this.loadingTime = true;
+        if (!result) {
+            el[direction] = 1;
+            result = !!el[direction];
+            el[direction] = 0;
+        }
+        console.log(result);
+    
+        return result;
+    }
+
+ 
+    loadMor(){
+
+         this.isVisible = false;
+         this.requestMorData();
     }
 
 
@@ -110,11 +129,18 @@ export class VolumesListClass {
        
          if(this.culcPercent() > 97 && !this.lock){
 
-              this.sendDataRequest();
-              this.loadingTime = true;
-              this.lock = true;
+              this.requestMorData();
          }  
     
+    }
+
+
+    requestMorData(){
+
+        this.sendDataRequest();
+        this.loadingTime = true;
+        this.lock = true;
+
     }
 
 

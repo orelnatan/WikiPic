@@ -60,7 +60,6 @@
 }
 
 
-
 .loaderDivDisplay{
 
     background-color:transparent;
@@ -85,6 +84,19 @@
 	 height: 120px;
 	 
      animation: spin 0.8s linear infinite;	
+}
+
+
+.showMorDiv {
+
+    color: blue;
+
+    font-size: 14px;
+
+    text-align: center;
+
+    cursor: pointer;
+
 }
 
 
