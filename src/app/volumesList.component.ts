@@ -97,27 +97,11 @@ export class VolumesListClass {
 
         }
     
-        if((this.volumesList.length > 0) && (!this.hasScroll(document.body, 'vertical'))) {this.isVisible = true;}
+        if((this.volumesList.length > 0) && (this.culcPercent() == 0)) {this.isVisible = true;}
         else{this.isVisible = false;}
     }
 
 
-    hasScroll(el, direction) {
-        
-        direction = (direction === 'vertical') ? 'scrollTop' : 'scrollLeft';
-        var result = !! el[direction];
-
-        if (!result) {
-            el[direction] = 1;
-            result = !!el[direction];
-            el[direction] = 0;
-        }
-        console.log(result);
-    
-        return result;
-    }
-
- 
     loadMor(){
 
          this.isVisible = false;

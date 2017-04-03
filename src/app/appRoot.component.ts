@@ -31,7 +31,9 @@ export class AppRootClass {
     
     volumeCounter:      number = 0;
     keyword                    = new FormControl();
+   
     loadingTime:       boolean = false;
+
     httpRequest:       Subscription;
  
     constructor(private dataServices: DataServices){
