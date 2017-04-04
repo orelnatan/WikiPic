@@ -11,6 +11,7 @@ import      { Subscription }                from        'rxjs/Subscription';
   selector: 'app-root',
   templateUrl: './templates/appRootComponent.template.html',
   styleUrls:  ['./styles/appRootComponent.style.css'],
+  
   providers:  [ DataServices ],
 
 })
@@ -31,9 +32,7 @@ export class AppRootClass {
     
     volumeCounter:      number = 0;
     keyword                    = new FormControl();
-   
     loadingTime:       boolean = false;
-
     httpRequest:       Subscription;
  
     constructor(private dataServices: DataServices){

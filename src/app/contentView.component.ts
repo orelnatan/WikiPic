@@ -22,6 +22,7 @@ export class ContentViewClass {
        try{
             if(this.rowReference.id == this.selectedRow){
                 this.getSubjectContentFromService();
+                this.getSubjectGalleryFromService();
             }
        }catch(exp){ }
 
@@ -59,7 +60,19 @@ export class ContentViewClass {
          this.dataServices.getContent(parseInt(this.volumeEntry.pageId))
         .subscribe((response) => {
 
-            this.volumeEntry['content'] = response;
+            this.volumeEntry['content'] = response['content'];
+
+        });
+
+    }
+
+
+    getSubjectGalleryFromService(){
+
+        this.dataServices.getGallery(parseInt(this.volumeEntry.pageId))
+        .subscribe((response) => {
+
+            this.volumeEntry['images'] = this.volumeEntry['images'].concat(response);
 
         });
 
@@ -85,6 +98,7 @@ export class ContentViewClass {
         if(this.rowReference.id == this.selectedRow && !this.lock){
            
            this.getSubjectContentFromService();
+           this.getSubjectGalleryFromService();
 
            this.rowReference.style.height = 700 + 'px';
            this.childRef.startAnimation();

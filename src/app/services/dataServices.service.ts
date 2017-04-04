@@ -16,7 +16,8 @@ export class DataServices {
         pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&origin=*&format=json&titles=',
         descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&format=json&search=',
         contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts&explaintext=&pageids=',
-        media_Api:                      'https://en.wikipedia.org/w/api.php?action=query&origin=*&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
+        mainImg_Api:                    'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=800&origin=*&titles=',
+        gallery_Api:                    'https://en.wikipedia.org/w/api.php?action=query&origin=*&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
 
     };
 
@@ -58,9 +59,9 @@ export class DataServices {
 
         .flatMap(this.getPageIdsAndTitles)
         .flatMap(this.getDescriptions)
-        .flatMap(this.getMedia)
+        .flatMap(this.getMainImg)
         .flatMap(this.analyzeData);
-     
+
     }
     
    getAllTitles(classRef) {
@@ -125,6 +126,23 @@ export class DataServices {
     }
 
 
+    getMainImg = (array: Object[]): Observable <any> => {
+
+        let observables: Observable <any>[] = [];
+        let titles = array.map(function(object) {return object['title']});
+
+        for(let i in titles){
+                        
+           let mainImg = this.http.get(this.wikiApis.mainImg_Api + titles[i]).map(this.extrctMainImg(array, parseInt(i))).catch(this.handleError);            
+           observables.push(mainImg);
+   
+        }
+        
+        return Observable.forkJoin(observables);
+    }
+
+
+
     getMedia = (array: Object[]): Observable <any> => {
         
         let observables: Observable <any>[] = [];
@@ -132,7 +150,7 @@ export class DataServices {
 
         for(let i in pageIds){
 
-            let media = this.http.get(this.wikiApis.media_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i), this)).catch(this.handleError);
+            let media = this.http.get(this.wikiApis.gallery_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i), this)).catch(this.handleError);
             observables.push(media);
 
         }
@@ -181,6 +199,30 @@ export class DataServices {
 
     }
     
+
+    extrctMainImg(array: Object[], index: number){
+
+         return function(response: Response) {
+
+             let data = response.json().query.pages;
+             let mainImg = '';
+             
+             try{
+                mainImg = data[array[index]['pageId']].thumbnail['source'];           
+             }catch(exp){mainImg = '';}
+
+             return {
+
+                pageId:          array[index]['pageId'],
+                title:           array[index]['title'],
+                description:     array[index]['description'],
+                mainImg:         mainImg        
+            };
+
+         }
+
+    }
+
 
     extrctMedia(array: Object[], index: number, classRef: any){
         
@@ -231,58 +273,137 @@ export class DataServices {
     }
 
 
-     getContent(pageId: number){
+    getGallery(pageId: number){
+
+        return this.http.get(this.wikiApis.gallery_Api + pageId).map(this.extrctGallery(pageId, this)).catch(this.handleError);
+
+    }
+
+
+    extrctGallery(pageId: number, classRef){
+
+        return function(response: Response) {
+
+            let data               = []; 
+            let imgArray: string[] = [];
+            let keys:     string[] = [];
+
+            try{
+                data = response.json().query.pages;   
+            } catch(error){ 
+                imgArray.push('');
+                return imgArray;
+            }
+
+            for(let key in data) { keys.push(key.toString()); }
+
+            for(let i in keys){
+
+                try{
+                    let imgUrl = data[keys[i]].imageinfo[0].url;                
+                    
+                    if(!classRef.formatIsValid(imgUrl)) { imgArray.push(imgUrl); } 
+                } catch(error){}
+            }
+
+             if(imgArray.length == 0){ imgArray.push(''); }
+
+            return imgArray;
+        }
+
+    }
+
+
+    getContent(pageId: number){
                             
-         return this.http.get(this.wikiApis.contents_Api + pageId).map(this.extrctContent(pageId)).catch(this.handleError);            
+         return this.http.get(this.wikiApis.contents_Api + pageId).map(this.extrctContent(pageId,this)).catch(this.handleError);            
          
     }
 
 
-    extrctContent(pageId: number){    
+    extrctContent(pageId: number, classRef){    
 
         return function(response: Response) {
             
             let data        = response.json();   
             let content     = data.query.pages[pageId].extract
             
-            return content;
+            //classRef.analyzeContent(content);
+
+            return {
+
+                content:    content
+            };
+
         }
     }
 
 
+    analyzeContent(content: string){
+
+        let contentObject = {};
+
+        let index:          number;
+        let generale:       string;
+        let contentLeft:    string;
+
+        index = content.search(/==/i);
+        generale = content.slice(0, index);
+
+        contentObject['generale'] = generale;
+
+        contentLeft = content.slice(index + 3, content.length);
+
+      //  while(index < content.length){
+
+            index = contentLeft.search(/==/i);
+            let title = contentLeft.slice(0, contentLeft.search(/==/i));
+
+             contentObject['title'] = title;
+
+            contentLeft = contentLeft.slice(index + 3, content.length);
+            let text = contentLeft.slice(0, contentLeft.search(/==/i));
+
+           
+
+            console.log(contentObject);
+            
+       // }
+
+    }
+
+
     analyzeData = (array: Array <any>): Observable <any> => {
-         
+        
          let volumes:       Observable <any>[] = [];
 
          let titles             = array.map(function(object) {return object['title']}); 
-         let pageIds            = array.map(function(object) {return object['pageId']});
-         
+         let pageIds            = array.map(function(object) {return object['pageId']});        
          let descriptions       = array.map(function(object) {return object['description']});
-         
-         let contents           = array.map(function(object) {return object['content']});
-         
-         let images             = array.map(function(object) {return object['images']});
+         let mainImgs           = array.map(function(object) {return object['mainImg']});
          
          for(let i in titles){
 
-             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], ' ', images[i], ' ', 'vol' + this.index, pageIds[i]));
+             let volume = this.http.get('').map(this.createVolume(titles[i], descriptions[i], {}, [], mainImgs[i], ' ', 'vol' + this.index, pageIds[i]));
              
-              if(images[i][0] != ''){
+              if(mainImgs[i] != ''){
                 
                   this.index ++;
                   volumes.push(volume);
               }
+
          }
          
          return Observable.forkJoin(volumes);
      }
 
 
-     createVolume(title: string, description: string, content: string, images: string[], url: string, id: string, pageId: string) {
+     createVolume(title: string, description: string, content: {}, images: string[], mainImg: string, url: string, id: string, pageId: string) {
 
           return function(): Volume {
             
-            return new Volume(title, description, content, images, url, id, pageId); 
+            images.push(mainImg);
+            return new Volume(title, description, content, images, mainImg, url, id, pageId); 
 
         }
 

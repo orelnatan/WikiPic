@@ -25,7 +25,7 @@ export class VolumeEntryClass {
      @Input() rowReference:   any;
      @Input() selectedRow:    number = -1;
 
-     @Output() contentBoxRequestEvent = new EventEmitter();
+     @Output() openContentBoxEvent = new EventEmitter();
      @Output() hoverRequestEvent      = new EventEmitter();
 
      @ViewChild('galleryViewRef') childRef;
@@ -63,12 +63,11 @@ export class VolumeEntryClass {
 
     onMouseEnter(){
         
-        this.childRef.startAnimation()
         this.mouseEnter = true;
 
         if(this.rowIsLock()){
             
-            this.sendContentBoxRequestEvent();
+            this.sendOpenContentBoxEvent();
         } 
 
     }
@@ -76,19 +75,18 @@ export class VolumeEntryClass {
 
     onMouseLeave(){
 
-        this.childRef.abortAnimation();
         this.mouseEnter = false;
         
     }
 
 
-    sendContentBoxRequestEvent(){
+    sendOpenContentBoxEvent(){
         
         if(!this.childRef.loadingTime)
             this.hoverRequestEvent.emit(this);
 
         if(!this.childRef.loadingTime)
-            this.contentBoxRequestEvent.emit(this.volumeEntry.volId);
+            this.openContentBoxEvent.emit(this.volumeEntry.volId);
             
     }
 

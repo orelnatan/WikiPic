@@ -36,7 +36,7 @@ export class VolumesListClass {
 
     volumesList:    Volume[][] = []; 
     remnant:        Volume[]   = []
-    volumeToShow:   Volume     = new Volume('', '', '', [''], '', '', '');
+    volumeToShow:   Volume     = new Volume('', '', {}, [''],'', '', '', '');
     prevVolume:     Volume;
 
     startIndex:     number = 0;

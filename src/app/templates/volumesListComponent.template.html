@@ -9,7 +9,7 @@
             
                 <div id = 'volumeDiv'  *ngFor = 'let volume of volumesRow' >
 
-                    <volume-entry  [setVolumeEntry] = 'volume'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'    (hoverRequestEvent) = 'hoverEntry($event)'     (contentBoxRequestEvent) = 'getVolumeById($event)'  >  </volume-entry>
+                    <volume-entry  [setVolumeEntry] = 'volume'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'    (hoverRequestEvent) = 'hoverEntry($event)'     (openContentBoxEvent) = 'getVolumeById($event)'  >  </volume-entry>
                 
                 </div>
 
@@ -25,7 +25,8 @@
         </div>
 
         <div class = 'loaderDivDisplay' [ngClass] = "{'noneClass': !loadingTime}"  >   <div id = 'loader' >  </div>    </div>
-        <div>  <div  class = 'showMorDiv'  [ngClass] = "{'noneClass': !isVisible}"    (click) = 'loadMor()'  > Show more...   </div>  </div>
+        
+        <div  class = 'showMorDiv'  [ngClass] = "{'noneClass': !isVisible}"    (click) = 'loadMor()'  > Show more...   </div>  
 
     </div>
 

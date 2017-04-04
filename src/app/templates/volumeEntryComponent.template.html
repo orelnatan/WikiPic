@@ -1,5 +1,5 @@
 
-<div class = 'mainWrapperUnHover' [ngClass] = 'getMainWrapperStyle()'  (mouseenter) = 'onMouseEnter()'  (mouseleave) = 'onMouseLeave()'  (click) = 'sendContentBoxRequestEvent()' >
+<div class = 'mainWrapperUnHover' [ngClass] = 'getMainWrapperStyle()'  (mouseenter) = 'onMouseEnter()'  (mouseleave) = 'onMouseLeave()'  (click) = 'sendOpenContentBoxEvent()' >
 
         <gallery-view  class = 'galleryComponent'    [setGallery] = 'volumeEntry.images'   #galleryViewRef > </gallery-view>
 
@@ -8,7 +8,7 @@
             <div id = 'titleDiv'>  {{volumeEntry.title}}              </div>
             <div id = 'descDiv' >  {{volumeEntry.description}}        </div>
 
-            <div id = 'buttonDiv' >  <button id = 'openInfoBox'   (click) = 'sendContentBoxRequestEvent()'     [ngStyle] = "{'background-image': 'url(' + notifications.openInfoBoxIcoUrl + ')'}"  >   </button>     </div>
+            <div id = 'buttonDiv' >  <button id = 'openInfoBox'   (click) = 'sendOpenContentBoxEvent()'     [ngStyle] = "{'background-image': 'url(' + notifications.openInfoBoxIcoUrl + ')'}"  >   </button>     </div>
 
         </div>
 
