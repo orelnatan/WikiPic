@@ -104,6 +104,9 @@
 
     position: absolute;
     
+    display: flex;
+    flex-direction: column;
+    
     width: 700px;
     height: 390px;
 
@@ -116,6 +119,30 @@
     padding-right: 10px;
 
     z-index: 10;
+
+}
+
+
+#paragDiv{
+
+    margin-bottom: 15px;
+
+}
+
+
+#titleDiv{
+
+    font-size: 25px;
+    font-weight: 800;
+    color: white;
+
+    margin-bottom: 10px;
+}
+
+
+#textDiv{
+
+
 
 }
 

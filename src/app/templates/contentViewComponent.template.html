@@ -13,7 +13,12 @@
 
             <div id = 'textWrapper' >
 
-                {{volumeEntry.content}}
+                <div id = 'paragDiv'  *ngFor = 'let i = index; let title of titles' > 
+
+                    <div id = 'titleDiv' > {{title}} </div>
+                    <div id = 'textDiv' >  {{paragraphs[i]}} </div>
+
+                </div>
 
             </div>
 

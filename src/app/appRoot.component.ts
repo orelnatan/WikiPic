@@ -30,6 +30,8 @@ export class AppRootClass {
     allVolumes: Volume[] = [];
     volumes:    Volume[] = [];
     
+    text = '';
+
     volumeCounter:      number = 0;
     keyword                    = new FormControl();
     loadingTime:       boolean = false;
@@ -109,8 +111,10 @@ export class AppRootClass {
     
     abortHttpRequest(){ try{this.httpRequest.unsubscribe();} catch(exp) { } }
 
-
+    
     rangeIsValid(maxLength, startIndex, amount): Object{
+
+
 
           let indicator: boolean = true;
 
@@ -137,7 +141,11 @@ export class AppRootClass {
      }
 
 
+
+
 }
+
+
 
 
 

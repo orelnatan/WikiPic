@@ -328,49 +328,98 @@ export class DataServices {
             let data        = response.json();   
             let content     = data.query.pages[pageId].extract
             
-            //classRef.analyzeContent(content);
-
-            return {
-
-                content:    content
-            };
-
+            return classRef.analyzeContent(content);
         }
     }
 
 
     analyzeContent(content: string){
 
-        let contentObject = {};
+        let length = content.length;
+        
+        let titles:         string[] = ['General'];
+        let contents:       string[] = [];
+        
+        let backIndex  = 0;
+        let frontIndex = 0;
 
-        let index:          number;
-        let generale:       string;
-        let contentLeft:    string;
+        while(frontIndex < length){
 
-        index = content.search(/==/i);
-        generale = content.slice(0, index);
+            if(content[frontIndex] != '='){
 
-        contentObject['generale'] = generale;
+                frontIndex ++;
+            }
 
-        contentLeft = content.slice(index + 3, content.length);
+            else if(content[frontIndex] == '='){
 
-      //  while(index < content.length){
+                let text = content.slice(backIndex, frontIndex);
+                contents.push(text);
 
-            index = contentLeft.search(/==/i);
-            let title = contentLeft.slice(0, contentLeft.search(/==/i));
+                while(content[frontIndex] == '=' && frontIndex < length){
+                    frontIndex ++;
+                }
 
-             contentObject['title'] = title;
 
-            contentLeft = contentLeft.slice(index + 3, content.length);
-            let text = contentLeft.slice(0, contentLeft.search(/==/i));
+                let title = '';
+                while(content[frontIndex] != '=' && frontIndex < length){
+                    
+                    title += content[frontIndex];
+                    frontIndex ++;
+                }
+                titles.push(title);
 
-           
 
-            console.log(contentObject);
-            
-       // }
+                while(content[frontIndex] == '=' && frontIndex < length){
+                    frontIndex ++;
+                }
 
+                backIndex = frontIndex;
+            }
+
+        }
+
+      
+        let newArrays = this.dropEmptyTitles(titles, contents);
+
+        titles   = newArrays['titles'];
+        contents = newArrays['contents'];
+        
+        let info = {
+
+            titles:     titles,
+            contents:   contents
+
+        };
+
+        console.log(info);
+        return info; 
     }
+
+
+    dropEmptyTitles(titles: string[], contents: string[]):Object {
+
+        let newContents: string[] = [];
+        let newTitles:   string[] = [];
+
+        for(let i in contents){
+
+            if(contents[i].length != 3){
+
+                newContents.push(contents[i]);
+                newTitles.push(titles[i]);
+            }
+        }
+        
+       let newArrays = {
+
+           titles:      newTitles,
+           contents:    newContents
+       };
+
+
+       return newArrays;
+    }
+
 
 
     analyzeData = (array: Array <any>): Observable <any> => {

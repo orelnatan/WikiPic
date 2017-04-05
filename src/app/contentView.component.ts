@@ -39,6 +39,10 @@ export class ContentViewClass {
     isNone:         boolean = false;
     lock:           boolean = false;
 
+    titles:         string[] = [];
+    paragraphs:     string[] = [];
+
+
     notifications = {
 
         closeInfoBoxIcoUrl:     'https://maxcdn.icons8.com/Color/PNG/24/Arrows/collapse2-24.png',
@@ -60,7 +64,10 @@ export class ContentViewClass {
          this.dataServices.getContent(parseInt(this.volumeEntry.pageId))
         .subscribe((response) => {
 
-            this.volumeEntry['content'] = response['content'];
+            this.volumeEntry.content = response;
+
+            this.titles = this.volumeEntry.content['titles'];
+            this.paragraphs = this.volumeEntry.content['contents'];
 
         });
 
@@ -72,7 +79,7 @@ export class ContentViewClass {
         this.dataServices.getGallery(parseInt(this.volumeEntry.pageId))
         .subscribe((response) => {
 
-            this.volumeEntry['images'] = this.volumeEntry['images'].concat(response);
+            this.volumeEntry.images = this.volumeEntry['images'].concat(response);
 
         });
 
