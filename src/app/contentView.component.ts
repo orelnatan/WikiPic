@@ -133,7 +133,6 @@ export class ContentViewClass {
         let elementPosition = (document.getElementById(paragId).getBoundingClientRect());						
         wrapperRef.scrollTop += elementPosition.top - 400;
 
-                console.log(elementPosition);
     }
 
 

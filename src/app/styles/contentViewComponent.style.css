@@ -143,13 +143,20 @@
 
 .linkDiv{
 
-    color: blue;
+    display: -webkit-box;
+
     cursor: pointer;
 
     width: 300px;
+    height: 30px;
 
     margin-top: 5px;
 
+    color: blue;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  
     overflow: hidden;
 
 }

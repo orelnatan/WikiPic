@@ -17,7 +17,7 @@
                    
                     <div id = 'linksHeaderDiv' > Links:   </div>
 
-                    <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'navigateToParagLocation(linkRef.id, wrapperRef)'  #linkRef   *ngFor = 'let i = index; let title of titles' >
+                    <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'navigateToParagLocation(linkRef.id, wrapperRef)'    #linkRef     *ngFor = 'let i = index; let title of titles' >
 
                         <div> {{ title }} </div>
                    
