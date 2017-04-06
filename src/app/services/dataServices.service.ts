@@ -24,9 +24,6 @@ export class DataServices {
 
     forbiddenFormats = ['webm', 'tif', 'ogg', 'svg'];
     
-    keyword:        string = '';
-    prevKey:        string = '';
-
     index:          number = 0;
     startIndex:     number = 0;
     amount:         number = 25;
@@ -45,16 +42,7 @@ export class DataServices {
         if(keyword == '') return; 
 
         console.log('Searching...');
-        
-        if(this.listIsNew(keyword)){
-
-            this.index          = 0;
-            this.startIndex     = 0;
-            this.amount         = 25;
-            
-            this.lock           = true;
-        }
-       
+          
         return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(this))
 
         .flatMap(this.getPageIdsAndTitles)
@@ -459,16 +447,14 @@ export class DataServices {
      }
 
 
-     listIsNew(keyword: string): boolean {
-       
-        this.keyword = keyword;
-        
-        if(this.keyword == this.prevKey){ 
-            return false;
-        }
+     resetList(){
 
-        this.prevKey = this.keyword;
-        return true;
+        this.index          = 0;
+        this.startIndex     = 0;
+        this.amount         = 25;
+            
+        this.lock           = true;
+
      }
 
 

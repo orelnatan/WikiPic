@@ -3,9 +3,10 @@
 
         <gallery-view  class = 'galleryComponent'    [setGallery] = 'volumeEntry.images'   #galleryViewRef > </gallery-view>
 
+        <div id = 'titleDiv'>  {{volumeEntry.title}}  </div>
+
         <div  [ngClass] = 'getIntroductionDivStyle()' >
 
-            <div id = 'titleDiv'>  {{volumeEntry.title}}              </div>
             <div id = 'descDiv' >  {{volumeEntry.description}}        </div>
 
             <div id = 'buttonDiv' >  <button id = 'openInfoBox'   (click) = 'sendOpenContentBoxEvent()'     [ngStyle] = "{'background-image': 'url(' + notifications.openInfoBoxIcoUrl + ')'}"  >   </button>     </div>

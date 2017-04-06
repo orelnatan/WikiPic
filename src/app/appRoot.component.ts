@@ -30,8 +30,7 @@ export class AppRootClass {
     allVolumes: Volume[] = [];
     volumes:    Volume[] = [];
     
-    text = '';
-
+    searchName:         string = '';
     volumeCounter:      number = 0;
     keyword                    = new FormControl();
     loadingTime:       boolean = false;
@@ -42,8 +41,11 @@ export class AppRootClass {
         this.keyword.valueChanges.debounceTime(600)
         .subscribe((keyword) => {
             
+            this.dataServices.resetList();
+
             if(keyword == '') return;
 
+            this.searchName = keyword;
             this.childRef.resetList();   
 
             this.loadingTime = true;

@@ -14,12 +14,17 @@
 
     </div>
 
-    <div class = 'loaderDivDisplay'  [ngClass] = "{'noneClass': !loadingTime}" >    
+    <div  [ngClass] = "{'noneClass': !loadingTime}" >
+    
+        <div class = 'loaderDivDisplay' >    
 
-        <div id = 'loader' >    </div>
+            <div id = 'loader' >    </div>
+
+        </div>
+
+        <div id = 'searchNameDiv' >  Searching for {{ searchName }}... </div>
 
     </div>
-
 
 </div>
 

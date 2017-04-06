@@ -123,6 +123,38 @@
 }
 
 
+#linksWrapper{
+
+    margin-bottom: 20px;
+
+}
+
+
+#linksHeaderDiv{
+
+    font-size: 25px;
+    font-weight: 800;
+    color: white;
+
+    margin-bottom: 15px;
+
+}
+
+
+.linkDiv{
+
+    color: blue;
+    cursor: pointer;
+
+    width: 300px;
+
+    margin-top: 5px;
+
+    overflow: hidden;
+
+}
+
+
 #paragDiv{
 
     margin-bottom: 15px;
@@ -130,7 +162,7 @@
 }
 
 
-#titleDiv{
+.titleDiv{
 
     font-size: 25px;
     font-weight: 800;

@@ -5,18 +5,31 @@
 
         <div id = 'headerDiv'  >
 
-            {{volumeEntry.title}}
+            {{ volumeEntry.title }}
 
         </div>
 
         <div id = 'contentDiv'  > 
 
-            <div id = 'textWrapper' >
+            <div id = 'textWrapper'  #wrapperRef  >
+
+                <div id = 'linksWrapper' > 
+                   
+                    <div id = 'linksHeaderDiv' > Links:   </div>
+
+                    <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'navigateToParagLocation(linkRef.id, wrapperRef)'  #linkRef   *ngFor = 'let i = index; let title of titles' >
+
+                        <div> {{ title }} </div>
+                   
+                    </div>
+
+                </div>
+
 
                 <div id = 'paragDiv'  *ngFor = 'let i = index; let title of titles' > 
 
-                    <div id = 'titleDiv' > {{title}} </div>
-                    <div id = 'textDiv' >  {{paragraphs[i]}} </div>
+                    <div  id = "{{ 'title' + '#' + i }}"    class = 'titleDiv'   > {{title}} </div>
+                    <div id = 'textDiv' >  {{ paragraphs[i] }} </div>
 
                 </div>
 

@@ -34,7 +34,7 @@
 }
 
 
-.listDivDisplay{
+.listDivDisplay {
 
     display: block;
     margin-top: 40px;
@@ -65,6 +65,17 @@
 	 height: 420px;
 	 
      animation: spin 0.8s linear infinite;	
+}
+
+
+#searchNameDiv{
+
+    text-align: center;
+    color: blue;
+    font-size: 18px;
+
+    margin-top: 80px;
+
 }
 
 
