@@ -11,7 +11,7 @@
 
         <div id = 'contentDiv'  > 
 
-            <div id = 'textWrapper'  #wrapperRef  >
+            <div class = 'textWrapper'  id = "{{ 'textWrapper' + '#' + rowReference.id }}"  #wrapperRef  >
 
                 <div id = 'linksWrapper' > 
                    
@@ -28,7 +28,7 @@
 
                 <div id = 'paragDiv'  *ngFor = 'let i = index; let title of titles' > 
 
-                    <div  id = "{{ 'title' + '#' + i }}"    class = 'titleDiv'   > {{title}} </div>
+                    <div  id = "{{ 'title' + '#' + i + '#' + rowReference.id }}"    class = 'titleDiv'   > {{title}} </div>
                     <div id = 'textDiv' >  {{ paragraphs[i] }} </div>
 
                 </div>

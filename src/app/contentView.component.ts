@@ -126,12 +126,14 @@ export class ContentViewClass {
 
 
     navigateToParagLocation(id: string, wrapperRef){
-
+        
         let idNumber = id.split('#')[1];
-        let paragId = 'title#' + idNumber;
+        let paragId = 'title#' + idNumber + '#' + this.rowReference.id;
         
         let elementPosition = (document.getElementById(paragId).getBoundingClientRect());						
         wrapperRef.scrollTop += elementPosition.top - 400;
+
+                console.log(elementPosition);
     }
 
 

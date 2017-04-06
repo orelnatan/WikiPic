@@ -216,6 +216,16 @@ export class VolumesListClass {
     }
 
 
+    navigateToRowLocation(rowRef){
+
+        var elementPosition = (document.getElementById(rowRef.id).getBoundingClientRect());						
+	    window.scrollBy(0, elementPosition.top - 120);
+
+    }
+
+
+
+
 }
     
 
