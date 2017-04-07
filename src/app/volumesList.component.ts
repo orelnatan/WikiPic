@@ -46,6 +46,7 @@ export class VolumesListClass {
     lock:           boolean; 
     loadingTime:    boolean = false;
     isVisible:      boolean = false;
+    endOfList:      boolean = false;
 
     nextHover:      VolumeEntryClass; 
     prevHover:      VolumeEntryClass;
@@ -61,17 +62,21 @@ export class VolumesListClass {
 
 
      fitResponeToTemplate(list: Volume[]) {
-       
+        
         let length = list.length;
 
         if(length % 5 == 0) return list;
 
+        let customizedList: Volume[] = [];
+
         let rest = length % 5;
         let aptSize = length - rest;
 
-        let customizedList = list.slice(0, aptSize);
+        customizedList = list.slice(0, aptSize);
         this.remnant = list.slice(aptSize, list.length);
-    
+
+        if(this.endOfList){ customizedList = customizedList.concat(this.remnant); }
+
         return customizedList;
     }
 
@@ -81,7 +86,7 @@ export class VolumesListClass {
         let numberOfRows = Math.ceil(list.length / 5);
         let rowIndex = 0;
         let cellIndex = 0;
-
+        
         while(rowIndex < numberOfRows){
 
             let row: Volume[] = [];
@@ -121,6 +126,8 @@ export class VolumesListClass {
 
     requestMorData(){
 
+        if(this.endOfList) return;
+        
         this.sendDataRequest();
         this.loadingTime = true;
         this.lock = true;
@@ -179,6 +186,8 @@ export class VolumesListClass {
 
          this.volumesList = [];
          this.remnant     = [];
+
+         this.endOfList = false;
 
          this.resetRange();
 

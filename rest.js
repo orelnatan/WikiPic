@@ -63,3 +63,40 @@ this.contentDiv = this.rowReference.
 
 
 */
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+   <div class = 'textWrapper'  id = "{{ 'textWrapper' + '#' + rowReference.id }}"  #wrapperRef  >
+
+                <div id = 'linksWrapper' > 
+                   
+                    <div id = 'linksHeaderDiv' > Links:   </div>
+
+                    <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'navigateToParagLocation(linkRef.id, wrapperRef)'    #linkRef     *ngFor = 'let i = index; let title of titles' >
+
+                        <div> {{ title }} </div>
+                   
+                    </div>
+
+                </div>
+
+
+                <div id = 'paragDiv'  *ngFor = 'let i = index; let title of titles' > 
+
+                    <div  id = "{{ 'title' + '#' + i + '#' + rowReference.id }}"    class = 'titleDiv'   > {{title}} </div>
+                    <div id = 'textDiv' >  {{ paragraphs[i] }} </div>
+
+                </div>
+
+   </div>
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

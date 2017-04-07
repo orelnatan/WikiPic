@@ -123,52 +123,6 @@
 }
 
 
-#linksWrapper{
-
-    margin-bottom: 20px;
-
-}
-
-
-#linksHeaderDiv{
-
-    font-size: 25px;
-    font-weight: 800;
-    color: white;
-
-    margin-bottom: 15px;
-
-}
-
-
-.linkDiv{
-
-    display: -webkit-box;
-
-    cursor: pointer;
-
-    width: 300px;
-    height: 30px;
-
-    margin-top: 5px;
-
-    color: blue;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  
-    overflow: hidden;
-
-}
-
-
-#paragDiv{
-
-    margin-bottom: 15px;
-
-}
-
-
 .titleDiv{
 
     font-size: 25px;
@@ -176,13 +130,6 @@
     color: white;
 
     margin-bottom: 10px;
-}
-
-
-#textDiv{
-
-
-
 }
 
 
@@ -198,6 +145,14 @@
 
 
 #galleryComponent {
+
+    width: 100%;
+    height: 100%;
+
+}
+
+
+#infoComponent{
 
     width: 100%;
     height: 100%;

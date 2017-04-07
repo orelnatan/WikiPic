@@ -33,15 +33,12 @@ export class ContentViewClass {
 
     @Output() closeContentBoxEvent = new EventEmitter();
 
-    @ViewChild('galleryViewRef') childRef;
+    @ViewChild('galleryViewRef') galleryViewRef;
+    @ViewChild('infoViewRef')    infoViewRef;
 
     volumeEntry:    Volume;
     isNone:         boolean = false;
     lock:           boolean = false;
-
-    titles:         string[] = [];
-    paragraphs:     string[] = [];
-
 
     notifications = {
 
@@ -61,13 +58,11 @@ export class ContentViewClass {
 
     getSubjectContentFromService(){
         
-         this.dataServices.getContent(parseInt(this.volumeEntry.pageId))
+         this.dataServices.getContent(this.volumeEntry.title, this.volumeEntry.pageId)
         .subscribe((response) => {
 
-            this.volumeEntry.content = response;
-
-            this.titles = this.volumeEntry.content['titles'];
-            this.paragraphs = this.volumeEntry.content['contents'];
+           this.infoViewRef.resetLinks();
+           this.infoViewRef.setInfo(response);
 
         });
 
@@ -108,7 +103,7 @@ export class ContentViewClass {
            this.getSubjectGalleryFromService();
 
            this.rowReference.style.height = 700 + 'px';
-           this.childRef.startAnimation();
+           this.galleryViewRef.startAnimation();
            
            this.lock = true;
         }
@@ -116,22 +111,11 @@ export class ContentViewClass {
         else if(this.rowReference.id != this.selectedRow && this.lock) {
            
            this.rowReference.style.height = 200 + 'px'; 
-           this.childRef.abortAnimation();
+           this.galleryViewRef.abortAnimation();
            
            this.isNone = true;
            this.lock = false;
         }
-
-    }
-
-
-    navigateToParagLocation(id: string, wrapperRef){
-        
-        let idNumber = id.split('#')[1];
-        let paragId = 'title#' + idNumber + '#' + this.rowReference.id;
-        
-        let elementPosition = (document.getElementById(paragId).getBoundingClientRect());						
-        wrapperRef.scrollTop += elementPosition.top - 400;
 
     }
 

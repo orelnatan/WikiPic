@@ -8,11 +8,11 @@ import    { VolumesListClass }             from              './volumesList.comp
 import    { VolumeEntryClass }             from              './volumeEntry.component'; 
 import    { GalleryViewClass }             from              './galleryView.component'; 
 import    { ContentViewClass }             from              './contentView.component';
-
+import    { InfoViewClass }                from              './infoView.component';
 
 @NgModule({
   
-  declarations: [ AppRootClass, VolumesListClass, VolumeEntryClass, GalleryViewClass, ContentViewClass ],
+  declarations: [ AppRootClass, VolumesListClass, VolumeEntryClass, GalleryViewClass, ContentViewClass, InfoViewClass ],
   
   imports: [ BrowserModule, HttpModule, JsonpModule, ReactiveFormsModule ],
   

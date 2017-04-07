@@ -4,6 +4,7 @@ import    { Volume }                         from        '../classes/volume.clas
 import    { Observable }                     from        'rxjs/Rx';
 import    { FormControl }                    from        '@angular/forms';
 import    { Subscription }                   from        'rxjs/Subscription';
+import    { AppRootClass }                   from        '../appRoot.component';
 import                                                   'rxjs/add/operator/mergeMap';
 
 
@@ -15,7 +16,7 @@ export class DataServices {
         allTitles_Api:                  'https://en.wikipedia.org/w/api.php?action=query&origin=*&list=search&format=json&srwhat=text&srlimit=2000&srsearch=',
         pageIdsAndTitles_Api:           'https://en.wikipedia.org/w/api.php?action=query&origin=*&format=json&titles=',
         descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&format=json&search=',
-        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&origin=*&prop=extracts&explaintext=&pageids=',
+        contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&origin=*&redirects=true&titles=',
         mainImg_Api:                    'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=800&origin=*&titles=',
         gallery_Api:                    'https://en.wikipedia.org/w/api.php?action=query&origin=*&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
 
@@ -32,15 +33,18 @@ export class DataServices {
 
     headerResponse         = [];
 
+    targetClass:    AppRootClass;
+
     constructor(private http: Http) {
            
     }
 
 
-  getAllVolumesFromServer(keyword: string): Observable <any>{
+  getAllVolumesFromServer(keyword: string, targetClass: AppRootClass): Observable <any>{
         
         if(keyword == '') return; 
 
+        this.targetClass = targetClass;
         console.log('Searching...');
           
         return this.http.get(this.wikiApis.allTitles_Api + keyword).map(this.getAllTitles(this))
@@ -64,7 +68,7 @@ export class DataServices {
            let titls:   string[] = [];
               
            let reply = classRef.rangeIsValid(classRef.headerResponse.length, classRef.startIndex, classRef.amount);
-
+           
            if(!reply['indicator']) return;
         
             classRef.amount = reply['amount'];
@@ -77,6 +81,13 @@ export class DataServices {
             
             classRef.startIndex += titls.length;
             classRef.amount = classRef.startIndex + 45;
+            
+            
+            if(classRef.startIndex == classRef.headerResponse.length){
+
+                classRef.targetClass.endOfListAlert();
+            }
+
 
             return titls;
         }
@@ -302,21 +313,19 @@ export class DataServices {
     }
 
 
-    getContent(pageId: number){
+    getContent(title: string, pageId: string){
                             
-         return this.http.get(this.wikiApis.contents_Api + pageId).map(this.extrctContent(pageId,this)).catch(this.handleError);            
+         return this.http.get(this.wikiApis.contents_Api + title).map(this.extrctContent(pageId, this)).catch(this.handleError);            
          
     }
 
 
-    extrctContent(pageId: number, classRef){    
+    extrctContent(pageId, classRef){    
 
         return function(response: Response) {
             
-            let data        = response.json();   
-            let content     = data.query.pages[pageId].extract
+            return response.json().query.pages[pageId].extract;   
             
-            return classRef.analyzeContent(content);
         }
     }
 

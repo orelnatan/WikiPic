@@ -27,14 +27,19 @@ export class AppRootClass {
 
     @ViewChild('listRef') childRef;
 
-    allVolumes: Volume[] = [];
-    volumes:    Volume[] = [];
+    allVolumes:         Volume[] = [];
+    volumes:            Volume[] = [];
     
     searchName:         string = '';
+    
     volumeCounter:      number = 0;
+    
     keyword                    = new FormControl();
-    loadingTime:       boolean = false;
-    httpRequest:       Subscription;
+    
+    loadingTime:        boolean = false;
+    endOfList:          boolean = false;
+    
+    httpRequest:        Subscription;
  
     constructor(private dataServices: DataServices){
   
@@ -48,8 +53,11 @@ export class AppRootClass {
             this.searchName = keyword;
             this.childRef.resetList();   
 
+            this.endOfList = false;
             this.loadingTime = true;
-            this.getDataFromService(keyword);      
+            
+            if(!this.endOfList)
+                this.getDataFromService(keyword);      
         
         });
          
@@ -58,7 +66,7 @@ export class AppRootClass {
 
     getDataFromService(keyword: string){
 
-        this.httpRequest = this.dataServices.getAllVolumesFromServer(keyword)
+        this.httpRequest = this.dataServices.getAllVolumesFromServer(keyword, this)
         .subscribe((response) => {
          
               this.allVolumes = [];
@@ -102,7 +110,10 @@ export class AppRootClass {
 
             console.log('Note: End Of Data!!');
             this.childRef.resetRange();
-            this.getDataFromService(this.keyword.value);
+            
+            if(!this.endOfList)
+                this.getDataFromService(this.keyword.value);
+
             return;
         }
 
@@ -111,6 +122,15 @@ export class AppRootClass {
     }
 
     
+    endOfListAlert(){
+
+        this.endOfList = true;
+        this.childRef.endOfList = true;
+
+    }
+
+
+
     abortHttpRequest(){ try{this.httpRequest.unsubscribe();} catch(exp) { } }
 
     
