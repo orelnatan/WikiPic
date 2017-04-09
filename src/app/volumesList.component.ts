@@ -1,6 +1,6 @@
 import      { Component, Input, Output, EventEmitter }       from      '@angular/core';
-import      { Volume }                                                  from      './classes/volume.class';
-import    { VolumeEntryClass }             from              './volumeEntry.component';
+import      { Volume }                                       from      './classes/volume.class';
+import      { VolumeEntryClass }                             from      './volumeEntry.component';
 
 @Component({
 
@@ -24,6 +24,10 @@ export class VolumesListClass {
         this.remnant = [];
         
         let customizedList = this.fitResponeToTemplate(list);
+       
+        if(customizedList.length == 0 && this.remnant.length > 0 && !this.endOfList){ 
+            this.loadMor(); 
+        }
 
         this.divideDataToRows(customizedList);
 
@@ -75,7 +79,7 @@ export class VolumesListClass {
         customizedList = list.slice(0, aptSize);
         this.remnant = list.slice(aptSize, list.length);
 
-        if(this.endOfList){ customizedList = customizedList.concat(this.remnant); }
+        if(this.endOfList)  { customizedList = customizedList.concat(this.remnant); }
 
         return customizedList;
     }
@@ -102,7 +106,7 @@ export class VolumesListClass {
 
         }
     
-        if((this.volumesList.length > 0) && (this.culcPercent() == 0)) {this.isVisible = true;}
+        if((this.volumesList.length > 0) && (this.culcPercent() == 0)) {this.isVisible = true;}        
         else{this.isVisible = false;}
     }
 

@@ -34,6 +34,18 @@
 }
 
 
+.mainVolumeDiv{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    margin-top: 50px;
+    margin-bottom: 100px;
+
+}
+
+
 .listDivDisplay {
 
     display: block;

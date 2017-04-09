@@ -8,6 +8,13 @@
         
     </div>
 
+     <div class = 'mainVolumeDiv' [ngClass] = "{'noneClass': !contentViewRef.forceOpen}" >      
+
+             <content-view   [setVolumeEntry] = 'volumeToShow'    [setSubjectTitle] = 'searchName'    [rowReference] = '-1'  #contentViewRef  >   </content-view>
+
+     </div>
+
+
     <div  class = 'listDivDisplay'  [ngClass] = "{'noneClass': loadingTime}"  >
 
         <volumes-list  [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>

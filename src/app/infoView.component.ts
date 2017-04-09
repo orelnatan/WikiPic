@@ -18,12 +18,16 @@ export class InfoViewClass {
     @Input() set setRowId(id: number){
 
         this.rowId = id;
+        
     }
      
     @Input() outSideWrapperRef:   any;
 
-    rowId:       number;
-    headers:     Object[] = [];
+    headers:          Object[] = [];
+
+    rowId:            number;
+    
+    manuIsOpen:       boolean = true;
 
 
     constructor(){
@@ -33,14 +37,16 @@ export class InfoViewClass {
  
 
      navigateToParagLocation(id: string){
-        
-        let idNumber = id.split('#')[1];
-        
+              
+        let idNumber = id.split('#')[1];       
         let paragId = 'title' + idNumber + '#' + this.rowId;
-        
-        let elementPosition = (document.getElementById(paragId).getBoundingClientRect());						
-        this.outSideWrapperRef.scrollTop += elementPosition.top - 400;
+       
+        setTimeout(() => {
 
+            let elementPosition = (document.getElementById(paragId).getBoundingClientRect());						       
+            this.outSideWrapperRef.scrollTop += elementPosition.top - 400;
+  
+        }, 10);
     }
 
 
@@ -82,6 +88,30 @@ export class InfoViewClass {
     }
 
 
+    linkClicked(linkId){
+
+        this.closeManuBar();
+        this.navigateToParagLocation(linkId);
+
+    }
+
+
+    openManuBar(){
+
+        this.manuIsOpen = true;
+        this.outSideWrapperRef.scrollTop = 0;
+
+    }
+
+
+    closeManuBar(){
+
+        this.manuIsOpen = false;
+        this.outSideWrapperRef.scrollTop = 0;
+
+    }
+
+
     resetLinks(){
 
         this.headers = [];
@@ -92,6 +122,7 @@ export class InfoViewClass {
 
     setInfo(info: string){
         
+        this.manuIsOpen = true;
         document.getElementById('infoPanel' + '#' + this.rowId).innerHTML = info;
 
         let headers = document.getElementById('infoPanel' + '#' + this.rowId).querySelectorAll('h1, h2, h3, h4, h5, h6');

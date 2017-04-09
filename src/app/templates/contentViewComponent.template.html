@@ -5,7 +5,8 @@
 
         <div id = 'headerDiv'  >
 
-            {{ volumeEntry.title }}
+            <div class = 'buttonDiv'  >  <button class = 'buttonElement'  (click) = 'manuButtonClicked()'   [ngStyle] = "{'background-image': 'url(' + notifications.openManuIcoUrl + ')'}" >   </button>        </div>
+            <div id = 'headLineDiv' >  {{ volumeEntry.title }}  </div>
 
         </div>
 
@@ -19,12 +20,12 @@
 
         </div>
 
-        <div id = 'toolsDiv'  > 
+        <!--div id = 'toolsDiv'  > 
 
             <div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'sendCloseContentBoxEvent()'   [ngStyle] = "{'background-image': 'url(' + notifications.closeInfoBoxIcoUrl + ')'}" > </button>    </div>
             <div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'openSubjectOnWikiOrg()'       [ngStyle] = "{'background-image': 'url(' + notifications.openWabIcoUrl + ')'}" >      </button>    </div>
 
-        </div>
+        </div-->
 
     </div>
 

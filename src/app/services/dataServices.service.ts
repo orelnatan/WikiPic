@@ -26,7 +26,7 @@ export class DataServices {
     forbiddenFormats = ['webm', 'tif', 'ogg', 'svg'];
     
     index:          number = 0;
-    startIndex:     number = 0;
+    startIndex:     number = 1;
     amount:         number = 25;
 
     lock:           boolean;
@@ -73,7 +73,7 @@ export class DataServices {
         
             classRef.amount = reply['amount'];
 
-            for(let i = classRef.startIndex; i < classRef.amount; i ++){                         // for(let i in data){ 
+            for(let i = classRef.startIndex; i < classRef.amount; i ++){                       // for(let i = classRef.startIndex; i < classRef.amount; i ++){
 
                 let title = classRef.headerResponse[i].title;           
                 titls.push(title);
@@ -84,7 +84,7 @@ export class DataServices {
             
             
             if(classRef.startIndex == classRef.headerResponse.length){
-
+                console.log('End of list!!!');
                 classRef.targetClass.endOfListAlert();
             }
 
@@ -137,23 +137,6 @@ export class DataServices {
    
         }
         
-        return Observable.forkJoin(observables);
-    }
-
-
-
-    getMedia = (array: Object[]): Observable <any> => {
-        
-        let observables: Observable <any>[] = [];
-        let pageIds = array.map(function(object) {return object['pageId']});
-
-        for(let i in pageIds){
-
-            let media = this.http.get(this.wikiApis.gallery_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i), this)).catch(this.handleError);
-            observables.push(media);
-
-        }
-
         return Observable.forkJoin(observables);
     }
 
@@ -223,53 +206,27 @@ export class DataServices {
     }
 
 
-    extrctMedia(array: Object[], index: number, classRef: any){
-        
-        return function(response: Response): Object {
+    getPageId(title: string){
 
-            let data               = []; 
-            let imgArray: string[] = [];
-            let keys:     string[] = [];
-            
-            //http://www.freeiconspng.com/uploads/no-image-icon-13.png
-            //let emptyImgUrl = 'https://cduperth.s3.amazonaws.com/product_images/no-image.png';
+        return this.http.get(this.wikiApis.pageIdsAndTitles_Api + title).map(this.extrectPageId).catch(this.handleError); 
 
-            let finalObj = {
-
-                description:     array[index]['description'],
-                url:             array[index]['url'],
-                pageId:          array[index]['pageId'],
-                title:           array[index]['title'],
-                content:         array[index]['content'],
-                images:          imgArray
-
-            };
-
-            try{
-                data = response.json().query.pages;   
-            } catch(error){ 
-                imgArray.push('');
-                return finalObj;
-             }
-
-            for (let key in data) { keys.push(key.toString()); }
-            
-            for(let i in keys){
-
-                try{
-                    let imgUrl = data[keys[i]].imageinfo[0].url;                
-                    
-                    if(!classRef.formatIsValid(imgUrl)) { imgArray.push(imgUrl); } 
-                } catch(error){}
-
-            }
-
-            if(imgArray.length == 0){ imgArray.push(''); }
-
-            return finalObj;
-        }
-   
     }
+
+
+    extrectPageId(response: Response){
+
+        let data = response.json();   
+        let pageId: string;
+        
+         for (let key in data.query.pages) {
+            
+              pageId = key.toString();
+
+         }   
+
+         return pageId;
+    }
+
 
 
     getGallery(pageId: number){
@@ -324,97 +281,11 @@ export class DataServices {
 
         return function(response: Response) {
             
-            return response.json().query.pages[pageId].extract;   
-            
-        }
-    }
-
-
-    analyzeContent(content: string){
-
-        let length = content.length;
-        
-        let titles:         string[] = ['General'];
-        let contents:       string[] = [];
-        
-        let backIndex  = 0;
-        let frontIndex = 0;
-
-        while(frontIndex < length){
-
-            if(content[frontIndex] != '='){
-
-                frontIndex ++;
-            }
-
-            else if(content[frontIndex] == '='){
-
-                let text = content.slice(backIndex, frontIndex);
-                contents.push(text);
-
-                while(content[frontIndex] == '=' && frontIndex < length){
-                    frontIndex ++;
-                }
-
-
-                let title = '';
-                while(content[frontIndex] != '=' && frontIndex < length){
-                    
-                    title += content[frontIndex];
-                    frontIndex ++;
-                }
-                titles.push(title);
-
-
-                while(content[frontIndex] == '=' && frontIndex < length){
-                    frontIndex ++;
-                }
-
-                backIndex = frontIndex;
-            }
+            try{
+                return response.json().query.pages[pageId].extract;   
+            }catch(exp){ return '';}
 
         }
-
-      
-        let newArrays = this.dropEmptyTitles(titles, contents);
-
-        titles   = newArrays['titles'];
-        contents = newArrays['contents'];
-        
-        let info = {
-
-            titles:     titles,
-            contents:   contents
-
-        };
-
-        console.log(info);
-        return info; 
-    }
-
-
-    dropEmptyTitles(titles: string[], contents: string[]):Object {
-
-        let newContents: string[] = [];
-        let newTitles:   string[] = [];
-
-        for(let i in contents){
-
-            if(contents[i].length != 3){
-
-                newContents.push(contents[i]);
-                newTitles.push(titles[i]);
-            }
-        }
-        
-       let newArrays = {
-
-           titles:      newTitles,
-           contents:    newContents
-       };
-
-
-       return newArrays;
     }
 
 
@@ -459,7 +330,7 @@ export class DataServices {
      resetList(){
 
         this.index          = 0;
-        this.startIndex     = 0;
+        this.startIndex     = 1;
         this.amount         = 25;
             
         this.lock           = true;

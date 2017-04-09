@@ -3,11 +3,9 @@
 <div id = 'mainWrapper'  >
 
 
-    <div id = 'linksWrapper'  >
+    <div class = 'linksWrapper'  [ngClass] = "{'noneClass': !manuIsOpen}"  >
 
-         <div id = 'linksHeaderDiv' > Links:   </div>
-
-             <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'navigateToParagLocation(linkRef.id)'    #linkRef     *ngFor = 'let i = index; let header of headers' >
+             <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'linkClicked(linkRef.id)'    #linkRef     *ngFor = 'let i = index; let header of headers' >
 
                     <div  [ngClass] = 'getStyle(header.type)'  > {{ header.title }} </div>
                    
@@ -15,7 +13,12 @@
 
     </div>
 
-    <div  id = "{{ 'infoPanel' + '#' + rowId }}"  #wrapperRef >   </div>
+    <div  id = "{{ 'infoPanel' + '#' + rowId }}"  [ngClass] = "{'noneClass': manuIsOpen}"  #wrapperRef >   </div>
 
 
 </div>
+
+
+
+
+<!-- [ngClass] = "{'noneClass': manuIsOpen}" -->

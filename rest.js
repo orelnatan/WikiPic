@@ -100,3 +100,187 @@ this.contentDiv = this.rowReference.
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+ analyzeContent(content: string){
+
+        let length = content.length;
+        
+        let titles:         string[] = ['General'];
+        let contents:       string[] = [];
+        
+        let backIndex  = 0;
+        let frontIndex = 0;
+
+        while(frontIndex < length){
+
+            if(content[frontIndex] != '='){
+
+                frontIndex ++;
+            }
+
+            else if(content[frontIndex] == '='){
+
+                let text = content.slice(backIndex, frontIndex);
+                contents.push(text);
+
+                while(content[frontIndex] == '=' && frontIndex < length){
+                    frontIndex ++;
+                }
+
+
+                let title = '';
+                while(content[frontIndex] != '=' && frontIndex < length){
+                    
+                    title += content[frontIndex];
+                    frontIndex ++;
+                }
+                titles.push(title);
+
+
+                while(content[frontIndex] == '=' && frontIndex < length){
+                    frontIndex ++;
+                }
+
+                backIndex = frontIndex;
+            }
+
+        }
+
+      
+        let newArrays = this.dropEmptyTitles(titles, contents);
+
+        titles   = newArrays['titles'];
+        contents = newArrays['contents'];
+        
+        let info = {
+
+            titles:     titles,
+            contents:   contents
+
+        };
+
+        console.log(info);
+        return info; 
+    }
+
+
+    dropEmptyTitles(titles: string[], contents: string[]):Object {
+
+        let newContents: string[] = [];
+        let newTitles:   string[] = [];
+
+        for(let i in contents){
+
+            if(contents[i].length != 3){
+
+                newContents.push(contents[i]);
+                newTitles.push(titles[i]);
+            }
+        }
+        
+       let newArrays = {
+
+           titles:      newTitles,
+           contents:    newContents
+       };
+
+
+       return newArrays;
+    }
+	
+	
+	
+	 getMedia = (array: Object[]): Observable <any> => {
+        
+        let observables: Observable <any>[] = [];
+        let pageIds = array.map(function(object) {return object['pageId']});
+
+        for(let i in pageIds){
+
+            let media = this.http.get(this.wikiApis.gallery_Api + pageIds[i]).map(this.extrctMedia(array, parseInt(i), this)).catch(this.handleError);
+            observables.push(media);
+
+        }
+
+        return Observable.forkJoin(observables);
+		
+		
+		
+    }
+
+	
+	
+	
+	extrctMedia(array: Object[], index: number, classRef: any){
+        
+        return function(response: Response): Object {
+
+            let data               = []; 
+            let imgArray: string[] = [];
+            let keys:     string[] = [];
+            
+            //http://www.freeiconspng.com/uploads/no-image-icon-13.png
+            //let emptyImgUrl = 'https://cduperth.s3.amazonaws.com/product_images/no-image.png';
+
+            let finalObj = {
+
+                description:     array[index]['description'],
+                url:             array[index]['url'],
+                pageId:          array[index]['pageId'],
+                title:           array[index]['title'],
+                content:         array[index]['content'],
+                images:          imgArray
+
+            };
+
+            try{
+                data = response.json().query.pages;   
+            } catch(error){ 
+                imgArray.push('');
+                return finalObj;
+             }
+
+            for (let key in data) { keys.push(key.toString()); }
+            
+            for(let i in keys){
+
+                try{
+                    let imgUrl = data[keys[i]].imageinfo[0].url;                
+                    
+                    if(!classRef.formatIsValid(imgUrl)) { imgArray.push(imgUrl); } 
+                } catch(error){}
+
+            }
+
+            if(imgArray.length == 0){ imgArray.push(''); }
+
+            return finalObj;
+        }
+   
+    }
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -29,7 +29,8 @@ export class AppRootClass {
 
     allVolumes:         Volume[] = [];
     volumes:            Volume[] = [];
-    
+    volumeToShow:       Volume     = new Volume('', '', {}, [''],'', '', '', '');
+
     searchName:         string = '';
     
     volumeCounter:      number = 0;
@@ -46,6 +47,8 @@ export class AppRootClass {
         this.keyword.valueChanges.debounceTime(600)
         .subscribe((keyword) => {
             
+            this.childRef.mainSubTitle = keyword;
+
             this.dataServices.resetList();
 
             if(keyword == '') return;
@@ -90,7 +93,10 @@ export class AppRootClass {
 
         let response = this.rangeIsValid(this.allVolumes.length, startIndex, amount);
 
-        if(!response['indicator']) return;
+        if(!response['indicator']){
+            this.childRef.endOfList = true;
+            return;
+        } 
         
         amount = response['amount'];
 

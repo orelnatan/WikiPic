@@ -28,8 +28,35 @@ export class ContentViewClass {
 
     }
 
-    @Input() rowReference:   any;
-    @Input() selectedRow:    number = -1;
+
+    @Input() set setSubjectTitle(title){
+
+        this.galleryViewRef.abortAnimation();
+
+       if(title == '') return;
+       
+       this.dataServices.getPageId(title)
+       .subscribe((response) => {
+ 
+            this.volumeEntry.title = title;
+            this.volumeEntry.pageId = response;
+            this.volumeEntry.images = [];
+
+            this.getSubjectContentFromService();
+            this.getSubjectGalleryFromService();
+
+            this.galleryViewRef.startAnimation();
+            
+            this.forceOpen = true;
+            
+            if(response == -1) this.forceOpen = false;
+           
+            console.log(response);
+        });
+    }
+
+    @Input() selectedRow:            number = -1;
+    @Input() rowReference:           any;
 
     @Output() closeContentBoxEvent = new EventEmitter();
 
@@ -37,13 +64,16 @@ export class ContentViewClass {
     @ViewChild('infoViewRef')    infoViewRef;
 
     volumeEntry:    Volume;
+    
     isNone:         boolean = false;
     lock:           boolean = false;
+    forceOpen:      boolean = false;
 
     notifications = {
 
         closeInfoBoxIcoUrl:     'https://maxcdn.icons8.com/Color/PNG/24/Arrows/collapse2-24.png',
-        openWabIcoUrl:          'https://maxcdn.icons8.com/Color/PNG/24/Logos/internet_explorer-24.png'
+        openWabIcoUrl:          'https://maxcdn.icons8.com/Color/PNG/24/Logos/internet_explorer-24.png',
+        openManuIcoUrl:         'https://maxcdn.icons8.com/nolan/PNG/64/Very_Basic/menu-64.png'
 
     }
 
@@ -56,10 +86,24 @@ export class ContentViewClass {
     }
 
 
+    manuButtonClicked(){
+
+        if(this.infoViewRef.manuIsOpen){
+            this.infoViewRef.closeManuBar();
+            return;
+        }
+
+        this.infoViewRef.openManuBar();
+        return;
+    }
+
+
     getSubjectContentFromService(){
         
          this.dataServices.getContent(this.volumeEntry.title, this.volumeEntry.pageId)
         .subscribe((response) => {
+        
+            if(response == ''){ this.forceOpen = false; }
 
            this.infoViewRef.resetLinks();
            this.infoViewRef.setInfo(response);
@@ -97,7 +141,7 @@ export class ContentViewClass {
 
     rowOpened(){
 
-        if(this.rowReference.id == this.selectedRow && !this.lock){
+        if(this.rowReference.id == this.selectedRow  && !this.lock){
            
            this.getSubjectContentFromService();
            this.getSubjectGalleryFromService();
@@ -124,7 +168,7 @@ export class ContentViewClass {
 
         let style = {
            
-           'mainWrapperInvisible':               (this.rowReference.id != this.selectedRow)
+           'mainWrapperInvisible':               (this.rowReference.id != this.selectedRow && !this.forceOpen)
             
        };  
 
