@@ -27,6 +27,7 @@ export class InfoViewClass {
 
     }
      
+
     @Input() outSideWrapperRef:   any;
     @Input() desc:                string; 
 

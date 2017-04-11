@@ -1,6 +1,6 @@
 import      { Component, Input, Output, EventEmitter }       from      '@angular/core';
 import      { Volume }                                       from      './classes/volume.class';
-//import      { Icons }                                        from      './classes/icons.class';
+import      { Icons }                                        from      './classes/icons.class';
 import      { VolumeEntryClass }                             from      './volumeEntry.component';
 
 @Component({
@@ -17,7 +17,7 @@ import      { VolumeEntryClass }                             from      './volume
 export class VolumesListClass {
 
     @Input() set setVolumesList(list: Volume[]){
-        
+       
         this.startIndex += list.length;
         this.amount = this.startIndex + 10;
 
@@ -56,7 +56,15 @@ export class VolumesListClass {
     nextHover:      VolumeEntryClass; 
     prevHover:      VolumeEntryClass;
     
-  //  icons:          Icons = new Icons();
+    icon:               Icons = new Icons();
+    
+    notifications = {
+
+        searchMorIcon:       this.icon.searchMorIcon
+
+
+    };
+    
 
 
     constructor(){

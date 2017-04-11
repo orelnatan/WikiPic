@@ -1,6 +1,7 @@
 import      { Component, Input, Output, EventEmitter, ViewChild  }          from      '@angular/core';
 import      { Volume }                                                      from      './classes/volume.class';
-import      { DataServices }                                                from        './services/dataServices.service';
+import      { Icons }                                                       from      './classes/icons.class';
+import      { DataServices }                                                from      './services/dataServices.service';
 
 @Component({
 
@@ -55,11 +56,13 @@ export class ContentViewClass {
     lock:           boolean = false;
     forceOpen:      boolean = false;
 
+    icon:           Icons = new Icons();
+
     notifications = {
 
         closeInfoBoxIcoUrl:     'https://maxcdn.icons8.com/Color/PNG/24/Arrows/collapse2-24.png',
         openWabIcoUrl:          'https://maxcdn.icons8.com/Color/PNG/24/Logos/internet_explorer-24.png',
-        openManuIcoUrl:         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAs0lEQVRoQ+2XwQ2AIBAE4ad/+tVmqUOjJWwyhFzG/y4yg+HsrcjTi+yjuZHdTGpEIxCBPo9xQd1La/s8x7N0RWgxNwKBjWsLGTnGHWPYKOiFuJGM/1U0ohGIgEcLAhvXaiRGBwUd4yGwcW2hodEfq/gUIMHvY3eMR9CGpV6IITgsphEMbViskRAcFtMIhjYsdowPwWExx3gMbVhcyIhjfHgGoJgXIgQ2rtVIjA4KagQCG9e+we0hQmvX+HkAAAAASUVORK5CYII='
+        openManuIcon:            this.icon.openManuIcon
 
     }
 

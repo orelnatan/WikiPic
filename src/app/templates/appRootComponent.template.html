@@ -10,8 +10,8 @@
             
             <div id = 'searchBoxDiv'> 
                 
-                <div id = 'searchIconDiv' >   <img  id = 'imgElement'   [src] = 'notifications.searchIcoUrl'  />       </div>
-                <input  id = 'searchBox'  placeholder = 'Search for anything...'  (keyup) = 'abortHttpRequest()'  [formControl] = 'keyword' > 
+                <div id = 'searchIconDiv' >   <img  id = 'imgElement'   [src] = 'notifications.searchIcon'  />       </div>
+                <div id = 'inputDiv' >  <input  id = 'searchBox'  placeholder = 'Search for anything...'  (keyup) = 'abortHttpRequest()'  [formControl] = 'keyword' > </div> 
             
             </div>
             
@@ -19,27 +19,35 @@
 
      </div>
 
-     <div class = 'mainVolumeDiv' [ngClass] = "{'spacer': !contentViewRef.forceOpen}" >      
+     <div id = 'bodyWrapper' >  
 
-             <content-view   [setVolumeEntry] = 'primeryVolume'    [rowReference] = '-1'   #contentViewRef  >   </content-view>
+         <div id = 'subBody' >  
 
-     </div>
+            <div class = 'mainVolumeDiv' [ngClass] = "{'spacer': !contentViewRef.forceOpen}" >      
 
-    <div  class = 'listDivDisplay'  [ngClass] = "{'noneClass': loadingTime}"  >
+                    <content-view   [setVolumeEntry] = 'primeryVolume'    [rowReference] = '-1'   #contentViewRef  >   </content-view>
 
-        <volumes-list  [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
+            </div>
 
-    </div>
+            <div  class = 'listDivDisplay'  [ngClass] = "{'noneClass': loadingTime}"  >
 
-    <div  [ngClass] = "{'noneClass': !loadingTime}" >
-    
-        <div class = 'loaderDivDisplay' >    
+                <volumes-list  [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
 
-            <div id = 'loader' >    </div>
+            </div>
+
+            <div  [ngClass] = "{'noneClass': !loadingTime}" >
+            
+                <div class = 'loaderDivDisplay' >    
+
+                    <div id = 'loader' >    </div>
+
+                </div>
+
+                <!--div id = 'searchNameDiv' >  Searching for {{ searchName }}... </div-->
+
+            </div>
 
         </div>
-
-        <!--div id = 'searchNameDiv' >  Searching for {{ searchName }}... </div-->
 
     </div>
 

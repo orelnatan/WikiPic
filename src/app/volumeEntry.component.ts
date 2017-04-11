@@ -1,7 +1,7 @@
 import      { ContentViewClass }                                           from      './contentView.component';
 import      { Component, Input, Output, EventEmitter, ViewChild }          from      '@angular/core';
 import      { Volume }                                                     from      './classes/volume.class';
-
+import      { Icons }                                                      from      './classes/icons.class';
 
 @Component({
 
@@ -38,9 +38,11 @@ export class VolumeEntryClass {
 
      title:                 string;
 
+     icon:                   Icons = new Icons();
+
      notifications = {
 
-        openInfoBoxIcoUrl:       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABqElEQVRoQ+2YQU7DMBBFZ6iEygqk7CgLuBHcgN6AG3AFbgA3gBsBErCLxDJCKkY2BCVtEtvj+WpVTXZVMn/m/e/aaZn25OI94SAD2bUkLRFLBOSALS2QsWJZS0RsHajQEgEZK5btJfI2r66Z6NYxnRysaHn6VT+JlQGFH4fV5feM7r30+nw9kPd59UzM5+0MzrnlWVM/AGbKlgwmMweIcDn3smjqi/ZjP5Gj6pOJj7tddgFmA+IX5HXR1P+m90B8dG7Gj+t2bRNmEIKIeOWuukt/Y9caK9wGTM4sg9tvjkD2Yk8syJ1h9BzJFUqcL+kxSe/JA1EimDTpxEPSntGTXSosASrpFQXxA5U0SAUq7ZEEgoYphfDzJYOgYDQgskG0YbQgRCBaMJoQYpBSGG2IIhApDAKiGCQXBgWhApIKg4RQA4nBhEbdH0V/p6TmG3XWORI7pcdcH6rThFBNpB02BUYbAgIytcz8PQQEDGQMBgUBBWlhiOkuLDtHN8h/ZFS/7LHNAHnfQJDuSrQtEYlryBpLBOmuRNsSkbiGrLFEkO5KtC0RiWvImh8/FU5CWEPYOAAAAABJRU5ErkJggg=='
+        openInfoBoxIcon:       this.icon.openInfoBoxIcon
 
     };
 

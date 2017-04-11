@@ -2,9 +2,12 @@ import      { Component, ViewChild }        from        '@angular/core';
 import      { DataServices }                from        './services/dataServices.service';
 import      { Observable }                  from        'rxjs/Rx';
 import      { Volume }                      from        './classes/volume.class';
+import      { Icons }                       from        './classes/icons.class';
 import      { FormControl }                 from        '@angular/forms';
 import      { Http , Response, Jsonp }      from        '@angular/http';
 import      { Subscription }                from        'rxjs/Subscription';
+
+
 
 @Component({
 
@@ -19,13 +22,6 @@ import      { Subscription }                from        'rxjs/Subscription';
 
 export class AppRootClass {
   
-    notifications = {
-
-        searchIcoUrl:       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAD1ElEQVRoQ+2ZXVbaQBTH/5dQBX0QhReFc0pXUF2BuILiCqor0K5AXUF1BaUraLoCcQWyg+I5qC9E8aVES3J7BgknhoTMTKBFjrxmZu785n5fCHPyoznhwBuI0OQ9crnfC8Y2UqgyqEyEHIDNgZYbzOgQuAkX5tKTc7GKTmdaFqClkdtMoeISHwBUVbsYm9xzTkp/Og21ffGrlUBuM7myC+MIRHvxR49ZwVxLwTlZtzvNROf4NkuD3Czkq66BbwQS5pP4x+BOysH+xpNlJj4MkHP2m8W1A06lTkMFMl8xwTSYTMfpdTyzab3LbRpGOucQV4lRBdH7sP3kuocbj3dnSWFiNXKzuHbIqdTXoCBmXBjA8brdrstcQviVAxwTYTu4nlz3y8bjXfhDyRwepxFhTmzQj0kKjnoYcng3iZlFakQ4tkPGpd8nGPyAnlNJGnWE2SFt1Am04j2S8BmDnS3dABAJcpPJ15jos18b3OttJYXwzhMwlE5f+s8n5u8btqUVEUNBnvMEzl8ImYAdB000zMx0HysU5DqbNwH6NFQ746JktyuSfqe0rJUp1F8GAP5Z7FqKiTYk/PbLjmz63n+bFGNHNjopUQAI0/5St7eqWs6MaGQkUjFfFW2rrHpBlfXXmXzTn2d0ItgoSMDJGXxW6lqHKhdTXdvK5k8JdODt03H6EZCgzU7TrLyLB81LJFtVnxwBuc4WREj0SnHoRhEVrYSE4kax295SOSMMhP0HFLvt2DJGRWDU2utsIZHc+QVpZQsNAj4Oc8gEs3mUNkZMSyNSzq+zB2us/xF+dWTKJMRm0bY+TMKhIx09k/8FomHSnUhCnJsSRbxaSNFYL9ntnWlopZUpnBNhWJDqZHVxr/ku4wXhtBursKoX0CvhIzUiPgxa3UawHUXP2UnaJQ5a3fNgG73cdcqq5fuw0Bxn92OGD9ojnOjREpvFrrWr64exddSYcVDdAE5kG67BOOjI79gjl2auFW1rXwcmFqTvLxGzrb5A5iYTmQZDDOgeAgO6FYdQJWYxoJNrzjRhpED6MM8j05rfZ3ReTmqPBow0iBcAGMZxcEwkdTnfIpEr+soMjJtenKMIowTiCXquVo1j/6RFBkYAEKjm+VVYiNeF0QLxhIlyprtgVMQfPS6oDELOawH6U0mmBogbYDSWbccMC62TgkkEIqMFmTWTgJkJkKhKQsXMZgYkKcxMgSSBmTkQXZiZBJGBYeb9km3VpIpGmYgzzTVR0Sys+ZpZjXgPFISJ6iBnHsRvZuPa4FcBImBamfye3yeCJv1qQOJ88Q0k7oX+9fe//5NWUftXKbcAAAAASUVORK5CYII='
-
-
-    };
-
     @ViewChild('listRef') childRef;
 
     allVolumes:         Volume[] = [];
@@ -43,6 +39,15 @@ export class AppRootClass {
     
     httpRequest:        Subscription;
  
+    icon:               Icons = new Icons();
+
+    notifications = {
+
+        searchIcon:       this.icon.searchIcon
+
+
+    };
+
     constructor(private dataServices: DataServices){
   
         this.keyword.valueChanges.debounceTime(600).subscribe((keyword) => {

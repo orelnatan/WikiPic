@@ -5,7 +5,7 @@
 
         <div id = 'headerDiv'  >
 
-            <div class = 'buttonDiv'  >  <button class = 'buttonElement'  (click) = 'manuButtonClicked()'   [ngStyle] = "{'background-image': 'url(' + notifications.openManuIcoUrl + ')'}" >   </button>        </div>
+            <div class = 'buttonDiv'  >  <button class = 'buttonElement'  (click) = 'manuButtonClicked()'   [ngStyle] = "{'background-image': 'url(' + notifications.openManuIcon + ')'}" >   </button>        </div>
             <div id = 'headLineDiv' >  {{ volumeEntry.title }}  </div>
 
         </div>
@@ -14,7 +14,7 @@
 
             <div class = 'textWrapper'   #outSideWrapperRef  >
 
-                <info-view  id = 'infoComponent'   [desc] = 'volumeEntry.description'    [outSideWrapperRef] = 'outSideWrapperRef'   [setRowId] = 'rowReference.id'   #infoViewRef  >     </info-view>
+                <info-view  id = 'infoComponent'   [desc] = 'volumeEntry.description'   [outSideWrapperRef] = 'outSideWrapperRef'   [setRowId] = 'rowReference.id'   #infoViewRef  >     </info-view>
 
             </div>
 
