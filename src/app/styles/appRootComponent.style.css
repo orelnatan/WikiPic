@@ -157,6 +157,17 @@
 }
 
 
+.spacer{
+
+    background-color: transparent;
+
+    width: 100%;
+    
+    margin-bottom: -30px;
+
+}
+
+
 .noneClass{
 
     display: none;

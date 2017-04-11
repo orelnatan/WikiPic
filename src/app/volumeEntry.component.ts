@@ -66,12 +66,6 @@ export class VolumeEntryClass {
         this.mouseEnter = true;
 
         this.childRef.isDark = true;
-
-        if(this.rowIsLock()){
-            
-            this.sendOpenContentBoxEvent();
-        } 
-
     }
 
 

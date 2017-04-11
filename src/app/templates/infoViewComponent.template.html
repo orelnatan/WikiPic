@@ -9,11 +9,11 @@
 
             </div>
 
-            <div  class = 'H2'  (click) = 'linkClicked(-1)' >  General  </div>
+            <div  class = 'linkDiv'  (click) = 'linkClicked(-1)' >  General  </div>
 
              <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'linkClicked(linkRef.id)'    #linkRef     *ngFor = 'let i = index; let header of headers' >
 
-                    <div  [ngClass] = 'getStyle(header.type)'  > {{ header.title }} </div>
+                    <div  class = 'linkDiv'  [ngClass] = 'getStyle(header.type)'  > {{ header.title }} </div>
                    
             </div>
 

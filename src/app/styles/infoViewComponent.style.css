@@ -36,6 +36,14 @@
 }
 
 
+.linkDiv:hover{
+
+    color: #e50914;
+
+}
+
+
+
 .linksWrapper{
 
     margin-bottom: 20px;
@@ -66,9 +74,11 @@ color: blue;
 
 }
 
+
 .mathbox {
     color: dodgerblue;
 }
+
 
 .noneClass{
     
