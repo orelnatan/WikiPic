@@ -17,7 +17,7 @@ import      { DataServices }                                                from
 export class ContentViewClass {
 
    @Input() set setVolumeEntry(volume: Volume){
-
+       
        this.galleryViewRef.abortAnimation();
        this.forceOpen = false;
        
@@ -31,7 +31,7 @@ export class ContentViewClass {
 
        try{
             if(this.rowReference.id == this.selectedRow || this.forceOpen){
-                
+                 
                 this.getSubjectContentFromService();
                 this.getSubjectGalleryFromService();
 

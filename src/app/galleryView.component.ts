@@ -63,6 +63,7 @@ export class GalleryViewClass {
 
         else this.imgIndex = 0;    
 
+        clearTimeout(this.clock);
         this.startAnimation();
     }
 
