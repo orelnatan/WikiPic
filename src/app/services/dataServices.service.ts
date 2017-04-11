@@ -18,16 +18,16 @@ export class DataServices {
         descriptionsAndUrls_Api:        'https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&format=json&search=',
         contents_Api:                   'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&origin=*&redirects=true&titles=',
         mainImg_Api:                    'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=800&origin=*&titles=',
-        gallery_Api:                    'https://en.wikipedia.org/w/api.php?action=query&origin=*&generator=images&prop=imageinfo&iiprop=url&format=json&pageids='
-
+        gallery_Api:                    'https://en.wikipedia.org/w/api.php?action=query&origin=*&generator=images&prop=imageinfo&iiprop=url&format=json&pageids=',
+        autocomplete:                   'http://en.wikipedia.org/w/api.php?action=opensearch&callback=JSONP_CALLBACK&format=json&origin=*&search='
     };
 
 
     forbiddenFormats = ['webm', 'tif', 'ogg', 'svg'];
     
     index:          number = 0;
-    startIndex:     number = 1;
-    amount:         number = 25;
+    startIndex:     number = 0;
+    amount:         number = 0;
 
     lock:           boolean;
 
@@ -38,6 +38,22 @@ export class DataServices {
     constructor(private http: Http) {
            
     }
+
+
+  getPrimeryVolume(keyword: string, targetClass: AppRootClass): Observable <any> {
+
+      if(keyword == '') return;
+
+      this.startIndex = 0;
+      this.amount     = 1;
+      this.lock = true;
+
+      return this.getAllVolumesFromServer(keyword, targetClass).map((observable) => {
+
+          return observable[0];
+
+      });
+  }
 
 
   getAllVolumesFromServer(keyword: string, targetClass: AppRootClass): Observable <any>{
@@ -56,36 +72,37 @@ export class DataServices {
 
     }
     
-   getAllTitles(classRef) {
 
+   getAllTitles(classReference: DataServices){
+      
         return function (response: Response): string[] {
             
-           if(classRef.lock){
-              classRef.headerResponse = response.json().query.search;
+           if(classReference.lock){
+              classReference.headerResponse = response.json().query.search;
             }
-
-           classRef.lock = false;  
+            
+           classReference.lock = false;  
            let titls:   string[] = [];
               
-           let reply = classRef.rangeIsValid(classRef.headerResponse.length, classRef.startIndex, classRef.amount);
+           let reply = classReference.rangeIsValid(classReference.headerResponse.length, classReference.startIndex, classReference.amount);
            
            if(!reply['indicator']) return;
         
-            classRef.amount = reply['amount'];
+            classReference.amount = reply['amount'];
 
-            for(let i = classRef.startIndex; i < classRef.amount; i ++){                       // for(let i = classRef.startIndex; i < classRef.amount; i ++){
+            for(let i = classReference.startIndex; i < classReference.amount; i ++){                       // for(let i = classRef.startIndex; i < classRef.amount; i ++){
 
-                let title = classRef.headerResponse[i].title;           
+                let title = classReference.headerResponse[i].title;           
                 titls.push(title);
             } 
             
-            classRef.startIndex += titls.length;
-            classRef.amount = classRef.startIndex + 45;
+            classReference.startIndex += titls.length;
+            classReference.amount = classReference.startIndex + 45;
             
             
-            if(classRef.startIndex == classRef.headerResponse.length){
+            if(classReference.startIndex == classReference.headerResponse.length){
                 console.log('End of list!!!');
-                classRef.targetClass.endOfListAlert();
+                classReference.targetClass.endOfListAlert();
             }
 
 
@@ -93,6 +110,7 @@ export class DataServices {
         }
 
    }
+
 
      getPageIdsAndTitles = (titles: string[]): Observable <any> => {
         
@@ -311,6 +329,12 @@ export class DataServices {
 
          }
          
+         if(volumes.length == 0) {
+            
+           let volume = this.http.get('').map(this.createVolume('', '', {}, [], '', ' ', '', ''));
+           volumes.push(volume);
+         }
+
          return Observable.forkJoin(volumes);
      }
 

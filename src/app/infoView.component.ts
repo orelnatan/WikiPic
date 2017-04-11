@@ -1,6 +1,7 @@
 import      { Component, Input }          from      '@angular/core';
 import      { Volume }                    from      './classes/volume.class';
 
+declare var katex: any;
 
 @Component({
 
@@ -17,14 +18,21 @@ export class InfoViewClass {
 
     @Input() set setRowId(id: number){
 
+        if(id == undefined) id = -1;
+
         this.rowId = id;
-        
+
+        if(this.rowId == -1) this.top = 160;
+        else this.top = 400;
+
     }
      
     @Input() outSideWrapperRef:   any;
+    @Input() desc:                string; 
 
     headers:          Object[] = [];
 
+    top:              number;
     rowId:            number;
     
     manuIsOpen:       boolean = true;
@@ -37,16 +45,17 @@ export class InfoViewClass {
  
 
      navigateToParagLocation(id: string){
-              
+        
         let idNumber = id.split('#')[1];       
+        
         let paragId = 'title' + idNumber + '#' + this.rowId;
        
         setTimeout(() => {
 
             let elementPosition = (document.getElementById(paragId).getBoundingClientRect());						       
-            this.outSideWrapperRef.scrollTop += elementPosition.top - 400;
+            this.outSideWrapperRef.scrollTop += elementPosition.top - this.top;
   
-        }, 10);
+        }, 0);
     }
 
 
@@ -91,6 +100,9 @@ export class InfoViewClass {
     linkClicked(linkId){
 
         this.closeManuBar();
+
+        if(linkId == '-1') return;
+
         this.navigateToParagLocation(linkId);
 
     }
@@ -125,12 +137,35 @@ export class InfoViewClass {
         this.manuIsOpen = true;
         document.getElementById('infoPanel' + '#' + this.rowId).innerHTML = info;
 
-        let headers = document.getElementById('infoPanel' + '#' + this.rowId).querySelectorAll('h1, h2, h3, h4, h5, h6');
+        let headers     = document.getElementById('infoPanel' + '#' + this.rowId).querySelectorAll('h1, h2, h3, h4, h5, h6');
+        let spans       = document.getElementById('infoPanel' + '#' + this.rowId).querySelectorAll('span');
+        let annotations = document.getElementById('infoPanel' + '#' + this.rowId).querySelectorAll('annotation'); 
+
+        for (let i in annotations) {
+            
+                let mathBox = document.createElement("div");
+                
+                mathBox.style.color = 'dodgerblue';
+                mathBox.style.padding = '10px';
+            
+                if ((annotations[i] != undefined) && (annotations[i].innerHTML != undefined)) {
+
+                        try {
+                            katex.render(annotations[i].innerHTML, mathBox);
+                            annotations[i].parentElement.replaceChild(mathBox, annotations[i]);
+                        } catch (e) {
+
+                        }
+                    
+                }
+        }
+
+         for(let i = 0; i < headers.length; i ++){
         
-        for(let i in headers){
-        
-            if(headers[i].id != undefined)
-                 headers[i].id = 'title' + i + '#' + this.rowId;
+            if(headers[i].id != undefined){
+                headers[i].id = 'title' + i + '#' + this.rowId;
+                document.getElementById('title' + i + '#' + this.rowId).style.color = '#e50914'; 
+            }
 
             let obj = {
 
@@ -139,8 +174,9 @@ export class InfoViewClass {
 
             }
             
-            if(obj.title != undefined)
+            if(obj.title != undefined){
                 this.headers.push(obj);
+            }
         }
 
         

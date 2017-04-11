@@ -29,6 +29,7 @@ export class GalleryViewClass {
      clock:    any;
 
      loadingTime:   boolean = true;
+     isDark:        boolean = false;
 
     constructor(){
 

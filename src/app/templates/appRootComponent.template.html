@@ -1,19 +1,29 @@
 
 
 <div id = 'mainWrapper' >
+    
+      <div id = 'panelWrapper' >
 
-    <div id = 'userPanelWrapper' >
+        <div id = 'userPanelDiv' >
 
-        <div id = 'searchBoxDiv'> <input  id = 'searchBox'  placeholder = 'Search for anything...'  (keyup) = 'abortHttpRequest()'  [formControl] = 'keyword' > </div>
-        
-    </div>
-
-     <div class = 'mainVolumeDiv' [ngClass] = "{'noneClass': !contentViewRef.forceOpen}" >      
-
-             <content-view   [setVolumeEntry] = 'volumeToShow'    [setSubjectTitle] = 'searchName'    [rowReference] = '-1'  #contentViewRef  >   </content-view>
+            <div id = 'logoDiv' >     </div>
+            
+            <div id = 'searchBoxDiv'> 
+                
+                <div id = 'searchIconDiv' >   <img  id = 'imgElement'   [src] = 'notifications.searchIcoUrl'  />       </div>
+                <input  id = 'searchBox'  placeholder = 'Search for anything...'  (keyup) = 'abortHttpRequest()'  [formControl] = 'keyword' > 
+            
+            </div>
+            
+        </div>
 
      </div>
 
+     <div class = 'mainVolumeDiv' [ngClass] = "{'noneClass': !contentViewRef.forceOpen}" >      
+
+             <content-view   [setVolumeEntry] = 'primeryVolume'    [rowReference] = '-1'   #contentViewRef  >   </content-view>
+
+     </div>
 
     <div  class = 'listDivDisplay'  [ngClass] = "{'noneClass': loadingTime}"  >
 
@@ -29,7 +39,7 @@
 
         </div>
 
-        <div id = 'searchNameDiv' >  Searching for {{ searchName }}... </div>
+        <!--div id = 'searchNameDiv' >  Searching for {{ searchName }}... </div-->
 
     </div>
 

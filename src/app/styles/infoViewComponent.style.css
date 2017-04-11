@@ -26,7 +26,7 @@
 
     margin-top: 5px;
 
-    color: blue;
+    color: white;
     text-overflow: ellipsis;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -54,6 +54,22 @@
 }
 
 
+.infoPanel{
+
+    color: white;
+}
+
+
+.mainTextHeader{
+
+color: blue;
+
+}
+
+.mathbox {
+    color: dodgerblue;
+}
+
 .noneClass{
     
     display: none;
@@ -61,8 +77,22 @@
 }
 
 
+#descDiv{
+
+    color: white;
+
+    width: 650px;
+    
+    margin-bottom: 30px;
+    margin-top: 30px;
+
+}
+
+
 .H2{
 
+    color: white;
+    cursor: pointer;
 
 }
 

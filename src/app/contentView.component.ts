@@ -17,10 +17,20 @@ export class ContentViewClass {
 
    @Input() set setVolumeEntry(volume: Volume){
 
+       this.galleryViewRef.abortAnimation();
+       this.forceOpen = false;
+       
        this.volumeEntry = volume;
 
+       if(this.rowReference == -1) {
+           
+           this.forceOpen = true;
+           this.galleryViewRef.startAnimation();
+       }
+
        try{
-            if(this.rowReference.id == this.selectedRow){
+            if(this.rowReference.id == this.selectedRow || this.forceOpen){
+                
                 this.getSubjectContentFromService();
                 this.getSubjectGalleryFromService();
             }
@@ -28,32 +38,6 @@ export class ContentViewClass {
 
     }
 
-
-    @Input() set setSubjectTitle(title){
-
-        this.galleryViewRef.abortAnimation();
-
-       if(title == '') return;
-       
-       this.dataServices.getPageId(title)
-       .subscribe((response) => {
- 
-            this.volumeEntry.title = title;
-            this.volumeEntry.pageId = response;
-            this.volumeEntry.images = [];
-
-            this.getSubjectContentFromService();
-            this.getSubjectGalleryFromService();
-
-            this.galleryViewRef.startAnimation();
-            
-            this.forceOpen = true;
-            
-            if(response == -1) this.forceOpen = false;
-           
-            console.log(response);
-        });
-    }
 
     @Input() selectedRow:            number = -1;
     @Input() rowReference:           any;
@@ -73,7 +57,7 @@ export class ContentViewClass {
 
         closeInfoBoxIcoUrl:     'https://maxcdn.icons8.com/Color/PNG/24/Arrows/collapse2-24.png',
         openWabIcoUrl:          'https://maxcdn.icons8.com/Color/PNG/24/Logos/internet_explorer-24.png',
-        openManuIcoUrl:         'https://maxcdn.icons8.com/nolan/PNG/64/Very_Basic/menu-64.png'
+        openManuIcoUrl:         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAs0lEQVRoQ+2XwQ2AIBAE4ad/+tVmqUOjJWwyhFzG/y4yg+HsrcjTi+yjuZHdTGpEIxCBPo9xQd1La/s8x7N0RWgxNwKBjWsLGTnGHWPYKOiFuJGM/1U0ohGIgEcLAhvXaiRGBwUd4yGwcW2hodEfq/gUIMHvY3eMR9CGpV6IITgsphEMbViskRAcFtMIhjYsdowPwWExx3gMbVhcyIhjfHgGoJgXIgQ2rtVIjA4KagQCG9e+we0hQmvX+HkAAAAASUVORK5CYII='
 
     }
 
@@ -179,3 +163,32 @@ export class ContentViewClass {
 
 
 }
+
+
+
+/*
+    @Input() set setSubjectTitle(title){
+
+        this.galleryViewRef.abortAnimation();
+
+       if(title == '') return;
+       
+       this.dataServices.getPageId(title).subscribe((response) => {
+ 
+            this.volumeEntry.title = title;
+            this.volumeEntry.pageId = response;
+            this.volumeEntry.images = [];
+
+            this.getSubjectContentFromService();
+            this.getSubjectGalleryFromService();
+
+            this.galleryViewRef.startAnimation();
+            
+            this.forceOpen = true;
+            
+            if(response == -1) this.forceOpen = false;
+           
+            console.log(response);
+        });
+    }
+*/

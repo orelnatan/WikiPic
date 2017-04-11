@@ -1,5 +1,6 @@
 import      { Component, Input, Output, EventEmitter }       from      '@angular/core';
 import      { Volume }                                       from      './classes/volume.class';
+//import      { Icons }                                        from      './classes/icons.class';
 import      { VolumeEntryClass }                             from      './volumeEntry.component';
 
 @Component({
@@ -54,14 +55,17 @@ export class VolumesListClass {
 
     nextHover:      VolumeEntryClass; 
     prevHover:      VolumeEntryClass;
+    
+  //  icons:          Icons = new Icons();
+
 
     constructor(){
 
     }
 
 
-    print(ref){
-        console.log(ref);
+    print(){
+       
     }
 
 

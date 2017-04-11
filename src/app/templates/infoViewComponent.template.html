@@ -1,9 +1,15 @@
 
-
 <div id = 'mainWrapper'  >
 
-
     <div class = 'linksWrapper'  [ngClass] = "{'noneClass': !manuIsOpen}"  >
+
+            <div id = 'descDiv' >
+
+                {{desc}}
+
+            </div>
+
+            <div  class = 'H2'  (click) = 'linkClicked(-1)' >  General  </div>
 
              <div  id = "{{ 'link' + '#' + i }}"    class = 'linkDiv'   (click) = 'linkClicked(linkRef.id)'    #linkRef     *ngFor = 'let i = index; let header of headers' >
 
@@ -13,7 +19,7 @@
 
     </div>
 
-    <div  id = "{{ 'infoPanel' + '#' + rowId }}"  [ngClass] = "{'noneClass': manuIsOpen}"  #wrapperRef >   </div>
+    <div  id = "{{ 'infoPanel' + '#' + rowId }}"  class = 'infoPanel'   [ngClass] = "{'noneClass': manuIsOpen}"  #wrapperRef >   </div>
 
 
 </div>

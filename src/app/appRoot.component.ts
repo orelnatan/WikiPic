@@ -21,7 +21,8 @@ export class AppRootClass {
   
     notifications = {
 
-        searchIcoUrl:       'https://maxcdn.icons8.com/ultraviolet/PNG/20/Very_Basic/search-20.png'
+        searchIcoUrl:       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAD1ElEQVRoQ+2ZXVbaQBTH/5dQBX0QhReFc0pXUF2BuILiCqor0K5AXUF1BaUraLoCcQWyg+I5qC9E8aVES3J7BgknhoTMTKBFjrxmZu785n5fCHPyoznhwBuI0OQ9crnfC8Y2UqgyqEyEHIDNgZYbzOgQuAkX5tKTc7GKTmdaFqClkdtMoeISHwBUVbsYm9xzTkp/Og21ffGrlUBuM7myC+MIRHvxR49ZwVxLwTlZtzvNROf4NkuD3Czkq66BbwQS5pP4x+BOysH+xpNlJj4MkHP2m8W1A06lTkMFMl8xwTSYTMfpdTyzab3LbRpGOucQV4lRBdH7sP3kuocbj3dnSWFiNXKzuHbIqdTXoCBmXBjA8brdrstcQviVAxwTYTu4nlz3y8bjXfhDyRwepxFhTmzQj0kKjnoYcng3iZlFakQ4tkPGpd8nGPyAnlNJGnWE2SFt1Am04j2S8BmDnS3dABAJcpPJ15jos18b3OttJYXwzhMwlE5f+s8n5u8btqUVEUNBnvMEzl8ImYAdB000zMx0HysU5DqbNwH6NFQ746JktyuSfqe0rJUp1F8GAP5Z7FqKiTYk/PbLjmz63n+bFGNHNjopUQAI0/5St7eqWs6MaGQkUjFfFW2rrHpBlfXXmXzTn2d0ItgoSMDJGXxW6lqHKhdTXdvK5k8JdODt03H6EZCgzU7TrLyLB81LJFtVnxwBuc4WREj0SnHoRhEVrYSE4kax295SOSMMhP0HFLvt2DJGRWDU2utsIZHc+QVpZQsNAj4Oc8gEs3mUNkZMSyNSzq+zB2us/xF+dWTKJMRm0bY+TMKhIx09k/8FomHSnUhCnJsSRbxaSNFYL9ntnWlopZUpnBNhWJDqZHVxr/ku4wXhtBursKoX0CvhIzUiPgxa3UawHUXP2UnaJQ5a3fNgG73cdcqq5fuw0Bxn92OGD9ojnOjREpvFrrWr64exddSYcVDdAE5kG67BOOjI79gjl2auFW1rXwcmFqTvLxGzrb5A5iYTmQZDDOgeAgO6FYdQJWYxoJNrzjRhpED6MM8j05rfZ3ReTmqPBow0iBcAGMZxcEwkdTnfIpEr+soMjJtenKMIowTiCXquVo1j/6RFBkYAEKjm+VVYiNeF0QLxhIlyprtgVMQfPS6oDELOawH6U0mmBogbYDSWbccMC62TgkkEIqMFmTWTgJkJkKhKQsXMZgYkKcxMgSSBmTkQXZiZBJGBYeb9km3VpIpGmYgzzTVR0Sys+ZpZjXgPFISJ6iBnHsRvZuPa4FcBImBamfye3yeCJv1qQOJ88Q0k7oX+9fe//5NWUftXKbcAAAAASUVORK5CYII='
+
 
     };
 
@@ -29,7 +30,7 @@ export class AppRootClass {
 
     allVolumes:         Volume[] = [];
     volumes:            Volume[] = [];
-    volumeToShow:       Volume     = new Volume('', '', {}, [''],'', '', '', '');
+    primeryVolume:      Volume   = new Volume('', '', {}, [''],'', '', '', '');
 
     searchName:         string = '';
     
@@ -44,24 +45,18 @@ export class AppRootClass {
  
     constructor(private dataServices: DataServices){
   
-        this.keyword.valueChanges.debounceTime(600)
-        .subscribe((keyword) => {
+        this.keyword.valueChanges.debounceTime(600).subscribe((keyword) => {
             
-            this.childRef.mainSubTitle = keyword;
-
-            this.dataServices.resetList();
-
             if(keyword == '') return;
 
-            this.searchName = keyword;
-            this.childRef.resetList();   
+            this.httpRequest = this.dataServices.getPrimeryVolume(keyword, this).subscribe((response) => {
 
-            this.endOfList = false;
-            this.loadingTime = true;
-            
-            if(!this.endOfList)
-                this.getDataFromService(keyword);      
+                this.primeryVolume = response;
+                
+                this.listActivation(keyword);
         
+            });
+
         });
          
     }
@@ -69,8 +64,7 @@ export class AppRootClass {
 
     getDataFromService(keyword: string){
 
-        this.httpRequest = this.dataServices.getAllVolumesFromServer(keyword, this)
-        .subscribe((response) => {
+         this.dataServices.getAllVolumesFromServer(keyword, this).subscribe((response) => {
          
               this.allVolumes = [];
               this.allVolumes = response;
@@ -83,6 +77,26 @@ export class AppRootClass {
               this.sendDataToList(0, 10);
               
         });
+
+    }
+
+
+    listActivation(keyword: string){
+
+        this.childRef.mainSubTitle = keyword;
+
+        this.dataServices.resetList();
+
+        if(keyword == '') return;
+
+        this.searchName = keyword;
+        this.childRef.resetList();   
+
+        this.endOfList = false;
+        this.loadingTime = true;
+                
+        if(!this.endOfList)
+            this.getDataFromService(keyword);      
 
     }
 
@@ -136,13 +150,10 @@ export class AppRootClass {
     }
 
 
-
     abortHttpRequest(){ try{this.httpRequest.unsubscribe();} catch(exp) { } }
 
     
     rangeIsValid(maxLength, startIndex, amount): Object{
-
-
 
           let indicator: boolean = true;
 

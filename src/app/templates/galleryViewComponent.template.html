@@ -1,12 +1,15 @@
 
 <div id = 'mainWrapper'  >
 
+    <div class = 'galleryMonitor'  [ngClass] = "{'noneClass': loadingTime}"  > <img  class = 'imgElement'  [ngClass] = "{'imgElementDark': isDark}"   [src] = 'singleImg'  (load) = "imgLoaded()" />   </div>
 
-    <div class = 'galleryMonitor'  [ngClass] = "{'noneClass': loadingTime}"  > <img  class = 'imgElement'  [src] = 'singleImg'  (load) = "imgLoaded()" />   </div>
-
-    <div class = 'loaderDivDisplay' [ngClass] = "{'noneClass': !loadingTime}"  >   <div id = 'loader' >  </div>    </div>
+    <div   [ngClass] = "{'noneClass': !loadingTime}"  >   </div>
 
 </div>
 
 
 
+
+
+
+<!-- <div  class = 'loaderDivDisplay' [ngClass] = "{'noneClass': !loadingTime}"  >   <div id = 'loader' >  </div>    </div> -->
