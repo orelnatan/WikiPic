@@ -20,16 +20,22 @@ export class GalleryViewClass {
          this.gallery = gallery;
          this.singleImg = this.gallery[0];
      }
-
     
      gallery:   string[] = [];
      singleImg: string;
 
      imgIndex: number  = 0;
-     clock:    any;
+     
+     clock: any;
+
 
      loadingTime:   boolean = true;
      isDark:        boolean = false;
+     isFade:        boolean = false;
+     isfirst:       boolean = false;
+
+     nextImg = document.createElement("IMG");
+     prevImg = document.createElement("IMG");
 
     constructor(){
 
@@ -67,6 +73,9 @@ export class GalleryViewClass {
         this.startAnimation();
     }
 
+    
+
+
 
     imgLoaded(){
 
@@ -74,4 +83,110 @@ export class GalleryViewClass {
     }
 
 
+    getStyle(){
+
+        let style = {
+           
+           'galleryMonitor':            (!this.isFade),
+           'galleryMonitorFadeIn':      (this.isFade)           
+            
+       };  
+
+
+       return style;
+    }
+
+
+
 }
+
+
+/*  old 
+
+abortAnimation(){
+
+        clearTimeout(this.clock);
+
+        this.imgIndex = 0;
+        this.singleImg = this.gallery[this.imgIndex];
+        
+    }
+
+
+    startAnimation(){
+
+        this.clock = setTimeout(this.setNextImg , 2000);
+
+    } 
+
+
+    setNextImg = () => {
+
+        if(this.imgIndex < this.gallery.length){
+        
+            this.singleImg = this.gallery[this.imgIndex];
+            this.imgIndex ++;
+        }
+
+        else this.imgIndex = 0;    
+
+        clearTimeout(this.clock);
+        this.startAnimation();
+    }
+
+
+
+      abortAnimation = () => {
+
+        clearTimeout(this.clock);
+
+        this.imgIndex = 0;
+        this.singleImg = this.gallery[this.imgIndex];
+        
+    }
+
+
+    startAnimation = () => {
+
+        this.isFade = false;
+
+        this.prevImg.setAttribute("src", this.gallery[this.imgIndex]);
+        //this.nextImg.setAttribute("src", this.gallery[this.imgIndex + 1]);
+
+        this.prevImg.onload = (() => {
+
+            this.setNextImg();
+            
+        });
+      
+    } 
+
+
+    setNextImg = () => {
+        
+        this.isFade = true;
+        this.singleImg = this.prevImg.innerHTML;
+
+        this.imgIndex ++;
+
+        //this.prevImg.setAttribute("src", this.gallery[this.imgIndex]);
+
+       // this.prevImg.onload = (() => {
+
+           
+
+         clearTimeout(this.clock);
+         console.log('hi');
+         this.isFade = false;
+        this.imgIndex ++;
+            
+        this.startAnimation();
+
+    
+            
+     //   });
+                           
+    }
+
+
+*/

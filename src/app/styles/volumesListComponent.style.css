@@ -42,7 +42,6 @@
 
     z-index: 0;
 
-    margin-bottom: 100px;
 
 }
 
@@ -56,7 +55,7 @@
 
 #contentViewDiv{
 
-     z-index: 0;
+    z-index: 0;
 
 }
 
@@ -103,6 +102,11 @@
 
 }
 
+
+#contentComp{
+
+  
+}
 
 
 .noneClass{

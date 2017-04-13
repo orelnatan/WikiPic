@@ -3,7 +3,7 @@
 
     <div id = 'listWrapper' >
 
-        <div  class = 'rowDiv'  [attr.id] = 'i'  *ngFor = 'let i = index; let volumesRow of volumesList'  #rowRef   (click) = 'navigateToRowLocation(rowRef)'   [style.height] = "200 + 'px'"  >
+        <div  class = 'rowDiv'  [attr.id] = 'i'  *ngFor = 'let i = index; let volumesRow of volumesList'  #rowRef   (click) = 'navigateToRowLocation(rowRef)'     >
 
             <div id = 'rowVolumesDiv'>
             
@@ -17,7 +17,7 @@
     
             <div  id = 'contentViewDiv' >
                 
-                   <content-view   [setVolumeEntry] = 'volumeToShow'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'   (closeContentBoxEvent) = 'closeContentBox()' >     </content-view>
+                   <content-view  id = 'contentComp'   [setVolumeEntry] = 'volumeToShow'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'   (closeContentBoxEvent) = 'closeContentBox()' >     </content-view>
 
             </div>
              
