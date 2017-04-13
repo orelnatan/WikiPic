@@ -54,6 +54,7 @@ export class GalleryViewClass {
 
     startAnimation(){
 
+        this.isFade = false;
         this.clock = setTimeout(this.setNextImg , 2000);
 
     } 
@@ -63,14 +64,25 @@ export class GalleryViewClass {
 
         if(this.imgIndex < this.gallery.length){
         
-            this.singleImg = this.gallery[this.imgIndex];
+            if(this.imgIndex != 0){
+                this.isFade = true;
+            }
+            
+            this.singleImg = this.gallery[this.imgIndex]; 
             this.imgIndex ++;
         }
 
         else this.imgIndex = 0;    
 
         clearTimeout(this.clock);
-        this.startAnimation();
+        
+        setTimeout(() => {
+
+            this.startAnimation();
+
+        },3000);
+        
+        
     }
 
     
@@ -135,6 +147,7 @@ abortAnimation(){
     }
 
 
+///////////////////////////////////////////////////////////////////////////////////////
 
       abortAnimation = () => {
 
