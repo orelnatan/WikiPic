@@ -15,13 +15,19 @@ import      { Volume }                    from      './classes/volume.class';
 
 export class GalleryViewClass {
 
+     gallery;
+     isLoaded; 
+     currentImageIndex: number = 0;
+
      @Input() set setGallery(gallery: string[]){
 
+         if (gallery == [""]) {
+             gallery = [];
+         }
          this.gallery = gallery;
-         this.singleImg = this.gallery[0];
+         this.isLoaded = gallery.map(function(x){return false;}); 
      }
     
-     gallery:   string[] = [];
      singleImg: string;
 
      imgIndex: number  = 0;
@@ -41,24 +47,31 @@ export class GalleryViewClass {
 
     }
 
+    nextImage = () => {
+
+        this.currentImageIndex++;
+        if (this.currentImageIndex > this.gallery.length - 1) {
+            this.currentImageIndex = 0;
+        }        
+
+    }
 
     abortAnimation(){
 
-        clearTimeout(this.clock);
-
-        this.imgIndex = 0;
-        this.singleImg = this.gallery[this.imgIndex];
+        clearInterval(this.clock);
+        this.currentImageIndex = 0;
         
     }
 
 
     startAnimation(){
-
-        this.isFade = false;
-        this.clock = setTimeout(this.setNextImg , 2000);
+        clearInterval(this.clock);
+        if ((this.gallery != undefined) && (this.gallery.length > 0)) {
+            this.currentImageIndex = 0;
+            this.clock = setInterval(this.nextImage, 5000);
+        }
 
     } 
-
 
     setNextImg = () => {
 
@@ -91,7 +104,7 @@ export class GalleryViewClass {
 
     imgLoaded(){
 
-        this.loadingTime = false;
+        
     }
 
 

@@ -1,4 +1,17 @@
 
+#gallery-container {position: relative; font-size: 0; height: 100%; width: 100%;}
+.slide {
+    border: none; 
+    opacity: 0; 
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    -webkit-transition: opacity 3s linear;
+    -moz-transition: opacity 3s linear;
+    -o-transition: opacity 3s linear;
+    transition: opacity 3s linear;
+}
+.showMe {opacity: 1;}
 #mainWrapper{
  
    display: flex;
@@ -30,7 +43,6 @@
     width: 100%;
     height: 100%;
     
-    animation: linear fadeIn 3s;
 
 }
 
@@ -57,7 +69,6 @@
 
    z-index: -10;
    
-   transition-duration: 3s;
 
 }
 

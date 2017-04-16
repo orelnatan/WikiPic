@@ -79,7 +79,7 @@ export class AppRootClass {
               this.loadingTime = false;
               
               console.log(this.allVolumes);
-              this.sendDataToList(0, 10);
+              this.sendDataToList(0, 8);
               
         });
 

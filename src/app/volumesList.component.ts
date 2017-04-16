@@ -16,10 +16,12 @@ import      { VolumeEntryClass }                             from      './volume
 
 export class VolumesListClass {
 
+    @Input() columns: number; 
+
     @Input() set setVolumesList(list: Volume[]){
        
         this.startIndex += list.length;
-        this.amount = this.startIndex + 10;
+        this.amount = this.startIndex + this.columns*2;
 
         list = this.remnant.concat(list);
         this.remnant = [];
@@ -81,11 +83,11 @@ export class VolumesListClass {
         
         let length = list.length;
 
-        if(length % 5 == 0) return list;
+        if(length % this.columns == 0) return list;
 
         let customizedList: Volume[] = [];
 
-        let rest = length % 5;
+        let rest = length % this.columns;
         let aptSize = length - rest;
 
         customizedList = list.slice(0, aptSize);
@@ -99,7 +101,7 @@ export class VolumesListClass {
 
     divideDataToRows(list: Volume[]){
         
-        let numberOfRows = Math.ceil(list.length / 5);
+        let numberOfRows = Math.ceil(list.length / this.columns);
         let rowIndex = 0;
         let cellIndex = 0;
         
@@ -107,7 +109,7 @@ export class VolumesListClass {
 
             let row: Volume[] = [];
 
-            for(let i = 0; i < 5 && cellIndex < list.length; i ++){
+            for(let i = 0; i < this.columns && cellIndex < list.length; i ++){
 
                 row.push(list[cellIndex]);
                 cellIndex ++;

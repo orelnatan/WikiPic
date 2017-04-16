@@ -31,7 +31,7 @@
 
             <div  class = 'listDivDisplay'  [ngClass] = "{'noneClass': loadingTime}"  >
 
-                <volumes-list  [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
+                <volumes-list  [columns] = '5' [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
 
             </div>
 
