@@ -24,8 +24,6 @@
     width: 500px;
     height: 30px;
 
-    margin-top: 5px;
-
     color: white;
     text-overflow: ellipsis;
     -webkit-line-clamp: 1;
@@ -91,7 +89,7 @@ color: blue;
 
     color: white;
 
-    width: 650px;
+    width: 430px;
     
     margin-bottom: 30px;
     margin-top: 30px;

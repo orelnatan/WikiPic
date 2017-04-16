@@ -15,8 +15,8 @@
     
     margin: 10px;
     
-    width: 297.156px;
-    height: 164.875px;
+    width: 234px;
+    height: 130px;
 
     border-style: none;
     
@@ -28,8 +28,8 @@
 
 .mainWrapperOnHover {
 
-    width: 397.156px;
-    height: 264.875px;
+    width: 334px;
+    height: 230px;
      
     margin: -50px;
     margin-right: 20px;
@@ -72,8 +72,8 @@
     display: flex;
     flex-direction: column;
 
-    width: 297.156px;
-    height: 164.875px;
+    width: 234px;
+    height: 130px;
 
     padding-top: 110px;
     padding-left: 10px;
@@ -89,8 +89,8 @@
 
 .introductionDivVisible:hover {
 
-    width: 397.156px;
-    height: 264.875px;
+    width: 334px;
+    height: 230px;
 
 }
 
@@ -108,18 +108,18 @@
 
    position: absolute;
 
-   width: 280px;
+   width: 200px;
    height: 30px;
 
    color: white;
    font-weight: 700;
-   font-size: 22px;
+   font-size: 18px;
   
    text-overflow: ellipsis;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 
-   margin-top: 120px;
+   margin-top: 90px;
    margin-left: 10px;
 
    overflow: hidden;
@@ -130,15 +130,15 @@
 
     display: -webkit-box;
     
-    width: 350px;
-    height: 58px;
+    width: 250px;
+    height: 38px;
     
     font-weight: 600;
     color: white;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 
-     margin-top: 45px;
+     margin-top: 15px;
 
     text-overflow: ellipsis;
     overflow: hidden;
@@ -148,7 +148,7 @@
 
 #buttonDiv{
 
-    margin-top: 10px;
+    margin-top: 25px;
     margin-left: 38%;
 }
 

@@ -27,8 +27,6 @@
     flex-direction: column;
     flex-wrap: nowrap;
 
-    width: 1600px;
-
 }
 
 
@@ -37,6 +35,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    justify-content: center;
 
     z-index: 0;
 
@@ -65,9 +64,6 @@
     display:flex;
 	flex-direction:row;
 	justify-content:center;
-	
-    margin-top: -150px;
-    margin-bottom: 100px;
 
 }
 

@@ -21,7 +21,7 @@ export class VolumesListClass {
     @Input() set setVolumesList(list: Volume[]){
        
         this.startIndex += list.length;
-        this.amount = this.startIndex + this.columns*2;
+        this.amount = this.startIndex + 12;
 
         list = this.remnant.concat(list);
         this.remnant = [];

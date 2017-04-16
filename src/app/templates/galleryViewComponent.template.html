@@ -1,12 +1,10 @@
 
 <div id = 'mainWrapper'  >
 
-    <div id="gallery-container" >
-        <img *ngFor="let imagePath of gallery; let i = index" class="imgElement slide"  [src]="imagePath" [ngClass] = "{'showMe': i == currentImageIndex  , 'imgElementDark': isDark}" (load) = "isLoaded[i]=true; this.loadingTime = false;">
+    <div id = "gallery-container" >
+        <img *ngFor = "let imagePath of gallery; let i = index" class = "imgElement slide"  [src] = "imagePath"  [ngClass] = "{'showMe': i == currentImageIndex  , 'imgElementDark': isDark}"  (load) = "isLoaded[i] = true; this.loadingTime = false;">
     </div>
-
-    <!--div   [ngClass] = "{'noneClass': !loadingTime}"  >   </div>
-
+  
 </div>
 
 
@@ -14,4 +12,3 @@
 
 
 
-<!-- <div  class = 'loaderDivDisplay' [ngClass] = "{'noneClass': !loadingTime}"  >   <div id = 'loader' >  </div>    </div> -->

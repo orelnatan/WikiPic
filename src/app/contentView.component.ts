@@ -17,7 +17,7 @@ import      { DataServices }                                                from
 export class ContentViewClass {
 
    @Input() set setVolumeEntry(volume: Volume){
-      
+      console.log('close1');
        this.galleryViewRef.abortAnimation();
        this.forceOpen = false;
        
@@ -32,6 +32,9 @@ export class ContentViewClass {
        try{
             if(this.rowReference.id == this.selectedRow || this.forceOpen){
                  
+                console.log('close2'); 
+                this.galleryViewRef.abortAnimation(); 
+
                 this.getSubjectContentFromService();
                 this.getSubjectGalleryFromService();
 
@@ -135,7 +138,6 @@ export class ContentViewClass {
            this.getSubjectContentFromService();
            this.getSubjectGalleryFromService();
 
-         //  this.rowReference.style.height = 700 + 'px';
            this.galleryViewRef.startAnimation();
            
            this.lock = true;
@@ -143,8 +145,7 @@ export class ContentViewClass {
 
         else if(this.rowReference.id != this.selectedRow && this.lock) {
            
-           console.log('close');
-          // this.rowReference.style.height = 200 + 'px'; 
+           console.log('close4');
            this.galleryViewRef.abortAnimation();
            
            this.isNone = true;
