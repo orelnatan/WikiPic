@@ -46,7 +46,7 @@ export class GalleryViewClass {
 
 
     nextImage = () => {
-        console.log('round' + this.gallery.length);
+        
         this.currentImageIndex++;
         if (this.currentImageIndex > this.gallery.length - 1) {
             this.currentImageIndex = 0;
@@ -56,7 +56,7 @@ export class GalleryViewClass {
 
 
     abortAnimation(){
-        console.log(this.clock);
+     
         clearInterval(this.clock);
         this.currentImageIndex = 0;
         

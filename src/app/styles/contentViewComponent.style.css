@@ -16,27 +16,85 @@
 }
 
 
-.mainWrapperVisible {
+.containerVisible {
 
     background-color: transparent;
 
-    display: flex;
+    position: relative;
  
-    height: 400px;
     width: 1006px;
+    height: 400px;
 
     margin-left: 10px;
 
     z-index: 0;
     
-    animation: linear fadeIn 5s;
+    overflow: hidden;
+
+    animation: slideDown 2s ease;
  
 }
 
 
-.mainWrapperInvisible{
+@keyframes slideDown
+{
+  0% {height: 0px;}
+  100% {height: 400px;}
+}
 
-    display: none;
+
+.containerInvisible{
+
+   background-color: transparent;
+
+    position: relative;
+ 
+    width: 1006px;
+
+    margin-left: 10px;
+
+    overflow: hidden;
+
+    transition: slideUp 2s linear;
+}
+
+
+@keyframes slideUp
+{
+  0% {height: 400px;}
+  100% {height: 0px;}
+}
+
+
+#mainWrapper {
+
+    background-color: transparent;
+
+    position: absolute;
+
+    display: flex;
+
+    height: 100%;
+    width: 100%;
+
+    z-index: 0;
+
+    overflow: hidden;
+ 
+}
+
+
+@keyframes slideUp
+{
+  0% {top: 0px;}
+  100% {top: -400px;}
+}
+
+
+@keyframes xxxslideDown
+{
+  0% {top: -400px;}
+  100% {top: 0px;}
 }
 
 

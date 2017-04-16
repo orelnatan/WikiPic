@@ -1,4 +1,4 @@
-import      { Component, Input, Output, EventEmitter, ViewChild  }          from      '@angular/core';
+import      { Component, Input, Output, EventEmitter, ViewChild, OnDestroy  }          from      '@angular/core';
 import      { Volume }                                                      from      './classes/volume.class';
 import      { Icons }                                                       from      './classes/icons.class';
 import      { DataServices }                                                from      './services/dataServices.service';
@@ -14,7 +14,7 @@ import      { DataServices }                                                from
 })
 
 
-export class ContentViewClass {
+export class ContentViewClass implements OnDestroy {
 
    @Input() set setVolumeEntry(volume: Volume){
       console.log('close1');
@@ -76,6 +76,15 @@ export class ContentViewClass {
     print(){
        
     }
+
+
+    ngOnDestroy(){
+
+        this.galleryViewRef.abortAnimation();
+        console.log('distroy');
+
+    }
+
 
 
     manuButtonClicked(){
@@ -159,7 +168,8 @@ export class ContentViewClass {
 
         let style = {
            
-           'mainWrapperInvisible':               (this.rowReference.id != this.selectedRow && !this.forceOpen)
+           'containerVisible':                 (this.rowReference.id == this.selectedRow || this.forceOpen) ,
+           'containerInvisible':               (this.rowReference.id != this.selectedRow && !this.forceOpen)
             
        };  
 

@@ -1,40 +1,44 @@
 
-<div  class = 'mainWrapperVisible' [ngClass] = 'getStyle()' (click)  = 'print()' >  
+<div id = 'container'  [ngClass] = 'getStyle()' >  
 
-    <div id = 'contentWrapper' >
+    <div   id = 'mainWrapper'  (click)  = 'print()' >  
 
-        <div id = 'headerDiv'  >
+        <div id = 'contentWrapper' >
 
-            <div class = 'buttonDiv'  >  <button class = 'buttonElement'  (click) = 'manuButtonClicked()'   [ngStyle] = "{'background-image': 'url(' + notifications.openManuIcon + ')'}" >   </button>        </div>
-            <div id = 'headLineDiv' >  {{ volumeEntry.title }}  </div>
+            <div id = 'headerDiv'  >
 
-        </div>
+                <div class = 'buttonDiv'  >  <button class = 'buttonElement'  (click) = 'manuButtonClicked()'   [ngStyle] = "{'background-image': 'url(' + notifications.openManuIcon + ')'}" >   </button>        </div>
+                <div id = 'headLineDiv' >  {{ volumeEntry.title }}  </div>
 
-        <div id = 'contentDiv'  > 
+            </div>
 
-            <div class = 'textWrapper'   #outSideWrapperRef  >
+            <div id = 'contentDiv'  > 
 
-                <info-view  id = 'infoComponent'   [desc] = 'volumeEntry.description'   [outSideWrapperRef] = 'outSideWrapperRef'   [setRowId] = 'rowReference.id'   #infoViewRef  >     </info-view>
+                <div class = 'textWrapper'   #outSideWrapperRef  >
+
+                    <info-view  id = 'infoComponent'   [desc] = 'volumeEntry.description'   [outSideWrapperRef] = 'outSideWrapperRef'   [setRowId] = 'rowReference.id'   #infoViewRef  >     </info-view>
+
+                </div>
+
+            </div>
+
+            <div id = 'toolsDiv'  > 
+
+                <!--div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'sendCloseContentBoxEvent()'   [ngStyle] = "{'background-image': 'url(' + notifications.closeInfoBoxIcoUrl + ')'}" > </button>    </div-->
+                <!--div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'openSubjectOnWikiOrg()'       [ngStyle] = "{'background-image': 'url(' + notifications.openWabIcoUrl + ')'}" >      </button>    </div-->
 
             </div>
 
         </div>
 
-        <!--div id = 'toolsDiv'  > 
+        <div id = 'galleryWrapper'  > 
 
-            <div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'sendCloseContentBoxEvent()'   [ngStyle] = "{'background-image': 'url(' + notifications.closeInfoBoxIcoUrl + ')'}" > </button>    </div>
-            <div class = 'buttonDiv' >  <button  class = 'buttonElement'  (click) = 'openSubjectOnWikiOrg()'       [ngStyle] = "{'background-image': 'url(' + notifications.openWabIcoUrl + ')'}" >      </button>    </div>
+            <div id = 'fadeDiv'> </div>
+            <gallery-view  id = 'galleryComponent'    [setGallery] = 'volumeEntry.images'   #galleryViewRef > </gallery-view>
 
-        </div-->
+        </div>
 
-    </div>
-
-    <div id = 'galleryWrapper'  > 
-
-        <div id = 'fadeDiv'> </div>
-        <gallery-view  id = 'galleryComponent'    [setGallery] = 'volumeEntry.images'   #galleryViewRef > </gallery-view>
 
     </div>
-
 
 </div>
