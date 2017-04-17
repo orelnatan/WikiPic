@@ -20,6 +20,8 @@
 
     border-style: none;
     
+    cursor: pointer;
+
     transition: width 0.5s, height 0.5s, margin 0.5s;
     transition-delay: 0.4s;
     text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.84);
@@ -34,6 +36,8 @@
     margin: -50px;
     margin-right: 20px;
     text-shadow: none;
+
+    cursor: pointer;
 
 }
 
@@ -76,9 +80,8 @@
     height: 130px;
 
     padding-top: 110px;
-    padding-left: 10px;
 
-    
+    cursor: pointer;
 
     animation: fadeIn 2s linear;
     transition: width 0.5s, height 0.5s, margin 0.5s;
@@ -92,12 +95,16 @@
     width: 334px;
     height: 230px;
 
+    cursor: pointer;
+
 }
 
 
 .introductionDivInvisible {
 
     display: none;
+
+    cursor: pointer;
 
 }
 
@@ -166,6 +173,8 @@
     outline: none;
 
     border-style: none;
+
+    cursor: pointer;
 
 }
 
