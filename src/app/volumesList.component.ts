@@ -3,6 +3,8 @@ import      { Volume }                                       from      './classe
 import      { Icons }                                        from      './classes/icons.class';
 import      { VolumeEntryClass }                             from      './volumeEntry.component';
 
+declare var $:any;
+
 @Component({
 
   selector: 'volumes-list',
@@ -15,6 +17,8 @@ import      { VolumeEntryClass }                             from      './volume
 
 
 export class VolumesListClass {
+
+    
 
     @Input() columns: number; 
 
@@ -70,7 +74,6 @@ export class VolumesListClass {
 
 
     constructor(){
-
     }
 
 
@@ -246,7 +249,10 @@ export class VolumesListClass {
     navigateToRowLocation(rowRef){
 
         var elementPosition = (document.getElementById(rowRef.id).getBoundingClientRect());						
-	    window.scrollBy(0, elementPosition.top - 120);
+	    //window.scrollBy(0, elementPosition.top - 120);
+        $('html, body').animate({
+            scrollTop: $("#"+rowRef.id).offset().top
+        }, 2000);        
 
     }
 
