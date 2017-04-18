@@ -59,7 +59,7 @@ export class GalleryViewClass {
             this.showImgs = true;
             this.startAnimation();
 
-        }, 2000)
+        }, 3000)
 
     }
 
