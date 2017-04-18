@@ -1,7 +1,7 @@
 import      { Component, Input, Output, EventEmitter, ViewChild, OnDestroy  }          from      '@angular/core';
-import      { Volume }                                                      from      './classes/volume.class';
-import      { Icons }                                                       from      './classes/icons.class';
-import      { DataServices }                                                from      './services/dataServices.service';
+import      { Volume }                                                                 from      './classes/volume.class';
+import      { Icons }                                                                  from      './classes/icons.class';
+import      { DataServices }                                                           from      './services/dataServices.service';
 
 @Component({
 
@@ -17,8 +17,9 @@ import      { DataServices }                                                from
 export class ContentViewClass implements OnDestroy {
 
    @Input() set setVolumeEntry(volume: Volume){
-      console.log('close1');
+      
        this.galleryViewRef.abortAnimation();
+
        this.forceOpen = false;
        
        this.volumeEntry = volume;
@@ -26,19 +27,18 @@ export class ContentViewClass implements OnDestroy {
        if(this.rowReference == -1) {
            
            this.forceOpen = true;
-           this.galleryViewRef.startAnimation();
+           this.galleryViewRef.galleryOpened();
        }
 
        try{
             if(this.rowReference.id == this.selectedRow || this.forceOpen){
                  
-                console.log('close2'); 
                 this.galleryViewRef.abortAnimation(); 
 
                 this.getSubjectContentFromService();
                 this.getSubjectGalleryFromService();
 
-                this.galleryViewRef.startAnimation();
+               this.galleryViewRef.galleryOpened();
             }
        }catch(exp){ }
 
@@ -81,7 +81,6 @@ export class ContentViewClass implements OnDestroy {
     ngOnDestroy(){
 
         this.galleryViewRef.abortAnimation();
-        console.log('distroy');
 
     }
 
@@ -147,16 +146,15 @@ export class ContentViewClass implements OnDestroy {
            this.getSubjectContentFromService();
            this.getSubjectGalleryFromService();
 
-           this.galleryViewRef.startAnimation();
+           this.galleryViewRef.galleryOpened();
            
            this.lock = true;
         }
 
         else if(this.rowReference.id != this.selectedRow && this.lock) {
            
-           console.log('close4');
            this.galleryViewRef.abortAnimation();
-           
+
            this.isNone = true;
            this.lock = false;
         }

@@ -1,4 +1,4 @@
-import      { Component, Input }          from      '@angular/core';
+import      { Component, Input, ViewChild }          from      '@angular/core';
 import      { Volume }                    from      './classes/volume.class';
 
 
@@ -15,10 +15,6 @@ import      { Volume }                    from      './classes/volume.class';
 
 export class GalleryViewClass {
 
-     gallery;
-     isLoaded; 
-     currentImageIndex: number = 0;
-
      @Input() set setGallery(gallery: string[]){
 
          if (gallery == [""]) {
@@ -27,17 +23,19 @@ export class GalleryViewClass {
          this.gallery = gallery;
          this.isLoaded = gallery.map(function(x){return false;}); 
      }
+  
+     currentImageIndex: number = 0;
     
-     singleImg: string;
-
-     imgIndex: number  = 0;
+     gallery:   string[] = [];
+     isLoaded:  boolean[] = [];
      
      clock: any;
-
-
-     loadingTime:   boolean = true;
+     
+     loadingTime:   boolean = false;
      isDark:        boolean = false;
      isFade:        boolean = false;
+     isNone:        boolean = false;
+     showImgs:      boolean = false;
 
 
     constructor(){
@@ -45,9 +43,30 @@ export class GalleryViewClass {
     }
 
 
+    showMainImg(){
+
+        this.isNone = false;
+        this.showImgs = true;
+
+    }
+
+
+
+    galleryOpened(){
+        
+        setTimeout(() => {
+            console.log('run');
+            this.showImgs = true;
+            this.startAnimation();
+
+        }, 2000)
+
+    }
+
+
     nextImage = () => {
         
-        this.currentImageIndex++;
+        this.currentImageIndex ++;
         if (this.currentImageIndex > this.gallery.length - 1) {
             this.currentImageIndex = 0;
         }        
@@ -57,13 +76,18 @@ export class GalleryViewClass {
 
     abortAnimation(){
      
+        this.showImgs = false;
         clearInterval(this.clock);
         this.currentImageIndex = 0;
-        
+
+        this.isNone = true;
     }
 
 
     startAnimation(){
+        
+        this.isNone = false;
+
         clearInterval(this.clock);
         if ((this.gallery != undefined) && (this.gallery.length > 0)) {
             this.currentImageIndex = 0;
@@ -79,7 +103,7 @@ export class GalleryViewClass {
     }
 
 
-
+   
 
 
 }

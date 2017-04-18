@@ -19,6 +19,8 @@ export class VolumeEntryClass {
      @Input() set setVolumeEntry(volume: Volume){
 
          this.volumeEntry = volume;
+
+         this.childRef.showMainImg();
      };
 
      

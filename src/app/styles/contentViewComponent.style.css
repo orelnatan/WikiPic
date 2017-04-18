@@ -31,38 +31,12 @@
     
     overflow: hidden;
 
-    animation: slideDown 2s ease;
- 
-}
-
-
-@keyframes slideDown
-{
-  0% {height: 0px;}
-  100% {height: 400px;}
 }
 
 
 .containerInvisible{
 
-   background-color: transparent;
-
-    position: relative;
- 
-    width: 1006px;
-
-    margin-left: 10px;
-
-    overflow: hidden;
-
-    transition: slideUp 2s linear;
-}
-
-
-@keyframes slideUp
-{
-  0% {height: 400px;}
-  100% {height: 0px;}
+   display: none;
 }
 
 
@@ -80,7 +54,16 @@
     z-index: 0;
 
     overflow: hidden;
+
+    animation: slideDown 1s ease;
  
+}
+
+
+@keyframes slideDown
+{
+  0% {top: -450px;}
+  100% {top: 0px;}
 }
 
 
