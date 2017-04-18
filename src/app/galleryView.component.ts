@@ -55,11 +55,11 @@ export class GalleryViewClass {
     galleryOpened(){
         
         setTimeout(() => {
-            console.log('run');
+            //console.log('run');
             this.showImgs = true;
             this.startAnimation();
 
-        }, 3000)
+        }, 1000)
 
     }
 

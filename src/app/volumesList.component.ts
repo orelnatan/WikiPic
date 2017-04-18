@@ -249,10 +249,10 @@ export class VolumesListClass {
     navigateToRowLocation(rowRef){
 
         var elementPosition = (document.getElementById(rowRef.id).getBoundingClientRect());						
-	    //window.scrollBy(0, elementPosition.top - 120);
-        $('html, body').animate({
-            scrollTop: $("#"+rowRef.id).offset().top
-        }, 2000);        
+	    window.scrollBy(0, elementPosition.top - 120);
+        //$('html, body').animate({
+        //    scrollTop: $("#"+rowRef.id).offset().top
+        //}, 2000);        
 
     }
 

@@ -1,7 +1,7 @@
 
 <div  [ngClass] = "{'mainWrapper':   !isNone, 'noneClass':   isNone}"   >
 
-    <div id = "gallery-container"  *ngIf = "showImgs"   >
+    <div id = "gallery-container" *ngIf = "showImgs"  >
         
         <img *ngFor = "let imagePath of gallery; let i = index"   class = "imgElement slide"   id = "{{ 'img' + i + '#' + rowReferenceId }}"  [src] = "imagePath"  [ngClass] = "{'showMe': i == currentImageIndex  , 'imgElementDark': isDark}"  (load) = "isLoaded[i] = true; this.loadingTime = false;">
         <!--img     -->
