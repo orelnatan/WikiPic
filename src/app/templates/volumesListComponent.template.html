@@ -7,9 +7,9 @@
 
             <div id = 'rowVolumesDiv'>
             
-                <div id = 'volumeDiv'  *ngFor = 'let volume of volumesRow' >
+                <div class = 'volumeDiv'  *ngFor = 'let volume of volumesRow' >
 
-                    <volume-entry  [setVolumeEntry] = 'volume'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'    (hoverRequestEvent) = 'hoverEntry($event)'     (openContentBoxEvent) = 'getVolumeById($event)'  >  </volume-entry>
+                    <volume-entry   [setVolumeEntry] = 'volume'    [rowReference] = 'rowRef'    [selectedRow] = 'openRowId'    (hoverRequestEvent) = 'hoverEntry($event)'     (openContentBoxEvent) = 'getVolumeById($event)'  >  </volume-entry>
                 
                 </div>
 

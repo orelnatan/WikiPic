@@ -23,7 +23,7 @@ export class InfoViewClass {
         this.rowId = id;
 
         if(this.rowId == -1) this.top = 160;
-        else this.top = 190;
+        else this.top = 320;
 
     }
      

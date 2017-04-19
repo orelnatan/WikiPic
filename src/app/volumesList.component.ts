@@ -1,7 +1,8 @@
 import      { Component, Input, Output, EventEmitter }       from      '@angular/core';
-import      { Volume }                                       from      './classes/volume.class';
-import      { Icons }                                        from      './classes/icons.class';
-import      { VolumeEntryClass }                             from      './volumeEntry.component';
+import      { Volume }                                               from      './classes/volume.class';
+import      { Icons }                                                from      './classes/icons.class';
+import      { VolumeEntryClass }                                     from      './volumeEntry.component';
+import      { Location, LocationStrategy, PathLocationStrategy }     from      '@angular/common';
 
 declare var $:any;
 
@@ -11,19 +12,17 @@ declare var $:any;
   templateUrl: './templates/volumesListComponent.template.html',
   styleUrls:  ['./styles/volumesListComponent.style.css'],
  
-  
+  providers: [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
 
 })
 
 
 export class VolumesListClass {
 
-    
-
     @Input() columns: number; 
 
     @Input() set setVolumesList(list: Volume[]){
-       
+      
         this.startIndex += list.length;
         this.amount = this.startIndex + 12;
 
@@ -38,8 +37,8 @@ export class VolumesListClass {
 
         this.divideDataToRows(customizedList);
 
-        this.lock        = false;
-        this.loadingTime = false;
+        this.lockDataFlow        = false;
+        this.loadingTime         = false;
                
     }
     
@@ -54,7 +53,8 @@ export class VolumesListClass {
     amount:         number = 0;
     openRowId:      number = -1;
 
-    lock:           boolean; 
+    lockUrl:        boolean = false;
+    lockDataFlow:   boolean = false; 
     loadingTime:    boolean = false;
     isVisible:      boolean = false;
     endOfList:      boolean = false;
@@ -73,13 +73,11 @@ export class VolumesListClass {
     
 
 
-    constructor(){
+    constructor(private location: Location){
     }
 
 
-    print(){
-       
-    }
+    print(){ }
 
 
      fitResponeToTemplate(list: Volume[]) {
@@ -137,7 +135,7 @@ export class VolumesListClass {
 
     onScroll(event){
        
-         if(this.culcPercent() > 97 && !this.lock){
+         if(this.culcPercent() > 97 && !this.lockDataFlow){
 
               this.requestMorData();
          }  
@@ -151,7 +149,7 @@ export class VolumesListClass {
         
         this.sendDataRequest();
         this.loadingTime = true;
-        this.lock = true;
+        this.lockDataFlow = true;
 
     }
 
@@ -194,6 +192,7 @@ export class VolumesListClass {
 
                    this.volumeToShow = this.volumesList[row][cell];
                    this.openRowId = parseInt(row);
+                
                    return;
                }
 
@@ -202,14 +201,14 @@ export class VolumesListClass {
         
     }
 
-
     resetList(){
 
          this.volumesList = [];
          this.remnant     = [];
 
          this.endOfList = false;
-
+         this.lockUrl = false;
+         
          this.resetRange();
 
          this.closeContentBox();
@@ -263,38 +262,3 @@ export class VolumesListClass {
     
 
 
-/*
-
-@Input() set setVolumesList(list: Volume[]){
-        
-        this.startIndex = list.length;
-        this.amount = this.startIndex + 40;
-       
-        this.volumesList = [];
-        this.divideDataToRows(list);
-
-        if(this.newList(list[0])) this.closeContentBox();
-
-        this.lock        = false;
-        this.loadingTime = false; 
-    }
-
-processRespone(list: Volume[]): Volume[] {
-        console.log('hiii');
-        let length = list.length;
-
-        if(length % 5 == 0) return list;
-
-        let rest = length % 5;
-        let aptSize = length - rest;
-
-        let newList = list.slice(0, aptSize);
-
-        this.startIndex += newList.length;
-        this.amount = this.startIndex + 40;
-        console.log(this.startIndex);
-        return newList;
-    }
-
-
-*/

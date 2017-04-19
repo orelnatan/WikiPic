@@ -1,13 +1,12 @@
-import      { Component, ViewChild }        from        '@angular/core';
-import      { DataServices }                from        './services/dataServices.service';
-import      { Observable }                  from        'rxjs/Rx';
-import      { Volume }                      from        './classes/volume.class';
-import      { Icons }                       from        './classes/icons.class';
-import      { FormControl }                 from        '@angular/forms';
-import      { Http , Response, Jsonp }      from        '@angular/http';
-import      { Subscription }                from        'rxjs/Subscription';
-
-
+import      { Component, ViewChild, OnInit }                         from        '@angular/core';
+import      { DataServices }                                         from        './services/dataServices.service';
+import      { Observable }                                           from        'rxjs/Rx';
+import      { Volume }                                               from        './classes/volume.class';
+import      { Icons }                                                from        './classes/icons.class';
+import      { FormControl }                                          from        '@angular/forms';
+import      { Http , Response, Jsonp }                               from        '@angular/http';
+import      { Subscription }                                         from        'rxjs/Subscription';
+import      { Location, LocationStrategy, PathLocationStrategy }     from        '@angular/common';
 
 @Component({
 
@@ -15,12 +14,13 @@ import      { Subscription }                from        'rxjs/Subscription';
   templateUrl: './templates/appRootComponent.template.html',
   styleUrls:  ['./styles/appRootComponent.style.css'],
   
-  providers:  [ DataServices ],
+  providers: [DataServices ,Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
+  
 
 })
 
 
-export class AppRootClass {
+export class AppRootClass implements OnInit {
   
     @ViewChild('listRef') childRef;
 
@@ -29,7 +29,8 @@ export class AppRootClass {
     primeryVolume:      Volume   = new Volume('', '', {}, [''],'', '', '', '');
 
     searchName:         string = '';
-    
+    defaultValue:       string = '';
+
     volumeCounter:      number = 0;
     
     keyword                    = new FormControl();
@@ -48,7 +49,8 @@ export class AppRootClass {
 
     };
 
-    constructor(private dataServices: DataServices){
+    constructor(private dataServices:   DataServices,                
+                private location:         Location){
   
         this.keyword.valueChanges.debounceTime(600).subscribe((keyword) => {
             
@@ -58,12 +60,32 @@ export class AppRootClass {
 
                 this.primeryVolume = response;
                 
+                this.updateUrl(keyword);
+
                 this.listActivation(keyword);
         
             });
 
         });
          
+    }
+
+
+     ngOnInit(): void {
+  
+        this.searchName = ((document.location.href).split('/')[4]);
+
+        if(this.searchName != undefined){
+            this.defaultValue = this.searchName;
+        }
+
+    }
+
+
+    updateUrl(keyword: string){
+
+        this.location.replaceState('/searchKey/' + keyword + '/');
+        
     }
 
 
@@ -133,7 +155,6 @@ export class AppRootClass {
         
         if(this.volumeCounter == this.allVolumes.length){
 
-            console.log('Note: End Of Data!!');
             this.childRef.resetRange();
             
             if(!this.endOfList)
@@ -142,7 +163,6 @@ export class AppRootClass {
             return;
         }
 
-        
         this.sendDataToList(event.startIndex, event.amount);
     }
 

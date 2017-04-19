@@ -11,7 +11,7 @@
             <div id = 'searchBoxDiv'> 
                 
                 <div id = 'searchIconDiv' >   <img  id = 'imgElement'   [src] = 'notifications.searchIcon'  />       </div>
-                <div id = 'inputDiv' >  <input  id = 'searchBox'  placeholder = 'Search for anything...'  (keyup) = 'abortHttpRequest()'  [formControl] = 'keyword' > </div> 
+                <div id = 'inputDiv' >  <input  id = 'searchBox'  placeholder = 'Search for anything...'  (keyup) = 'abortHttpRequest()'  [(ngModel)] = 'defaultValue'  [formControl] = 'keyword' > </div> 
             
             </div>
             
@@ -31,7 +31,7 @@
 
             <div  class = 'listDivDisplay'  [ngClass] = "{'noneClass': loadingTime}"  >
 
-                <volumes-list  [columns] = '4' [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
+                <volumes-list  [columns] = '4'   [setVolumesList] = 'volumes'    #listRef     (dataRequestEvent) = 'processDataRequest($event)'  >   </volumes-list>
 
             </div>
 

@@ -12,9 +12,9 @@ import    { InfoViewClass }                from              './infoView.compone
 
 @NgModule({
   
-  declarations: [ AppRootClass, VolumesListClass, VolumeEntryClass, GalleryViewClass, ContentViewClass, InfoViewClass ],
+  declarations: [ AppRootClass, VolumesListClass, VolumeEntryClass, GalleryViewClass, ContentViewClass, InfoViewClass,  ],
   
-  imports: [ BrowserModule, HttpModule, JsonpModule, ReactiveFormsModule ],
+  imports: [ BrowserModule, HttpModule, JsonpModule, ReactiveFormsModule, ],
   
   providers: [ ],
   
