@@ -29,7 +29,6 @@ export class AppRootClass implements OnInit {
     primeryVolume:      Volume   = new Volume('', '', {}, [''],'', '', '', '');
 
     searchName:         string = '';
-    defaultValue:       string = '';
 
     volumeCounter:      number = 0;
     
@@ -60,8 +59,6 @@ export class AppRootClass implements OnInit {
 
                 this.primeryVolume = response;
                 
-                this.updateUrl(keyword);
-
                 this.listActivation(keyword);
         
             });
@@ -79,13 +76,6 @@ export class AppRootClass implements OnInit {
             this.defaultValue = this.searchName;
         }
 
-    }
-
-
-    updateUrl(keyword: string){
-
-        this.location.replaceState('/searchKey/' + keyword + '/');
-        
     }
 
 
