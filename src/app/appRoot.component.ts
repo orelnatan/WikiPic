@@ -13,7 +13,7 @@ import      { Subscription }                                         from       
   templateUrl: './templates/appRootComponent.template.html',
   styleUrls:  ['./styles/appRootComponent.style.css'],
   
-  providers: [DataServices ],
+  providers: [DataServices],
   
 
 })
@@ -47,8 +47,7 @@ export class AppRootClass {
 
     };
 
-    constructor(private dataServices:   DataServices,                
-                private location:         Location){
+    constructor(private dataServices:   DataServices){
   
         this.keyword.valueChanges.debounceTime(600).subscribe((keyword) => {
             
