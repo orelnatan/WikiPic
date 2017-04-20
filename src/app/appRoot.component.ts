@@ -6,7 +6,6 @@ import      { Icons }                                                from       
 import      { FormControl }                                          from        '@angular/forms';
 import      { Http , Response, Jsonp }                               from        '@angular/http';
 import      { Subscription }                                         from        'rxjs/Subscription';
-import      { Location, LocationStrategy, PathLocationStrategy }     from        '@angular/common';
 
 @Component({
 
@@ -14,7 +13,7 @@ import      { Location, LocationStrategy, PathLocationStrategy }     from       
   templateUrl: './templates/appRootComponent.template.html',
   styleUrls:  ['./styles/appRootComponent.style.css'],
   
-  providers: [DataServices ,Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
+  providers: [DataServices ],
   
 
 })
