@@ -1,4 +1,4 @@
-import      { Component, ViewChild, OnInit }                         from        '@angular/core';
+import      { Component, ViewChild }                         from        '@angular/core';
 import      { DataServices }                                         from        './services/dataServices.service';
 import      { Observable }                                           from        'rxjs/Rx';
 import      { Volume }                                               from        './classes/volume.class';
@@ -20,7 +20,7 @@ import      { Location, LocationStrategy, PathLocationStrategy }     from       
 })
 
 
-export class AppRootClass implements OnInit {
+export class AppRootClass {
   
     @ViewChild('listRef') childRef;
 
@@ -65,17 +65,6 @@ export class AppRootClass implements OnInit {
 
         });
          
-    }
-
-
-     ngOnInit(): void {
-  
-        this.searchName = ((document.location.href).split('/')[4]);
-
-        if(this.searchName != undefined){
-            this.defaultValue = this.searchName;
-        }
-
     }
 
 
